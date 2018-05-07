@@ -1,0 +1,7 @@
+.idea
+/build
+/build_webpack
+/installed_contracts
+/node_modules
+/dapp/node_modules
+.env
