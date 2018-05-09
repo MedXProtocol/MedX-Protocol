@@ -40,6 +40,7 @@ class App extends Component {
             activeRegistry: true,
             activeChallenge: false,
             activeVote: false,
+            activeTest: false,
 
             activeOpacity: false,
 
@@ -163,29 +164,6 @@ class App extends Component {
                                             PHYSICIAN REGISTRY
                                         </p>
                                     </NavLink>
-
-                                    {/*<div className="collapse in" aria-expanded="true">
-                                        <ul className="nav">
-                                            <li id="4" onClick={this.mountSubNavClick} className={this.state.activeApp ? 'active' : null}>
-                                                <NavLink to="/registry-application">
-                                                    <span className="sidebar-mini">R</span>
-                                                    <span className="sidebar-normal">Registry</span>
-                                                </NavLink>
-                                            </li>
-                                            <li id="5" onClick={this.mountSubNavClick} className={this.state.activeVot ? 'active' : null}>
-                                                <NavLink to="/registry-voting">
-                                                    <span className="sidebar-mini">C</span>
-                                                    <span className="sidebar-normal">Challenges</span>
-                                                </NavLink>
-                                            </li>
-                                            <li id="6" onClick={this.mountSubNavClick} className={this.state.activeRet ? 'active' : null}>
-                                                <NavLink to="/registry-revealing">
-                                                    <span className="sidebar-mini">V</span>
-                                                    <span className="sidebar-normal">Votes</span>
-                                                </NavLink>
-                                            </li>
-                                        </ul>
-                                    </div>*/}
                                 </li>
                                 <li id="3" onClick={this.mountNavClick} className={this.state.activeChallenge ? 'active' : null}>
                                     <NavLink to="/registry-voting">
@@ -201,6 +179,14 @@ class App extends Component {
                                         <i className="ti-stats-up"></i>
                                         <p>
                                             VOTES
+                                        </p>
+                                    </NavLink>
+                                </li>
+                                <li id="5" onClick={this.mountNavClick} className={this.state.activeTest ? 'active' : null}>
+                                    <NavLink to="/test">
+                                        <i className="ti-apple"></i>
+                                        <p>
+                                            TEST
                                         </p>
                                     </NavLink>
                                 </li>
@@ -247,6 +233,7 @@ class App extends Component {
                                         <Route path="/voting-view/:id" render={(props) => <VotingView {...props} parentCallback={this.handlePageTitleChange} />} />
                                         <Route path="/challenge-view/:id" render={(props) => <ChallengeView {...props} parentCallback={this.handlePageTitleChange} />} />
                                         <Route path='/wallet' render={(props) => <Wallet {...props} parentCallback={this.handlePageTitleChange} />} />
+                                        <Route path='/test' render={(props) => <Search {...props} parentCallback={this.handlePageTitleChange} />} />
                                     </div>
                                 </div>
                             </div>
