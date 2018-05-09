@@ -198,26 +198,6 @@ export async function approveRegistryAllowance(_numTokens, callback) {
     }
 }
 
-export async function increaseRegistryAllowance(_numTokens, callback) {
-    await ethConfig.ready();
-    try {
-        const result = await ethConfig.MEDXTokenInstance.increaseApproval(ethConfig.registryInstance.address, fromTokenDecimal(_numTokens), { from: ethConfig.selectedAccount });
-        await waitForTxComplete(result.tx, callback);
-    } catch (error) {
-        callback(error, "");
-    }
-}
-
-export async function decreaseRegistryAllowance(_numTokens, callback) {
-    await ethConfig.ready();
-    try {
-        const result = await ethConfig.MEDXTokenInstance.decreaseApproval(ethConfig.registryInstance.address, fromTokenDecimal(_numTokens), { from: ethConfig.selectedAccount });
-        await waitForTxComplete(result.tx, callback);
-    } catch (error) {
-        callback(error, "");
-    }
-}
-
 export async function getAllPolls(callback) {
     await ethConfig.ready();
 
@@ -410,12 +390,6 @@ export async function getSelectedAccount(callback) {
 export async function getSelectedAccountBalance() {
     await ethConfig.ready();
     const result = await ethConfig.MEDXTokenInstance.balanceOf.call(ethConfig.selectedAccount);
-    return toTokenDecimal(result.toNumber());
-}
-
-export async function getRegistryContactAllowance() {
-    await ethConfig.ready();
-    const result = await ethConfig.MEDXTokenInstance.allowance(ethConfig.selectedAccount, ethConfig.registryInstance.address);
     return toTokenDecimal(result.toNumber());
 }
 

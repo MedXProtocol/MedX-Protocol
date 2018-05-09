@@ -2,13 +2,9 @@ import React, {Component} from 'react';
 import {
     getSelectedAccountBalance,
     getSelectedAccount,
-    getRegistryContactAllowance,
     getVotingTokensBalance,
     requestVotingRights,
-    withdrawVotingRights,
-    increaseRegistryAllowance,
-    decreaseRegistryAllowance,
-    approveRegistryAllowance
+    withdrawVotingRights
 } from '../../utils/web3-util';
 import {Modal} from "react-bootstrap";
 import TxMiningModal from "../modals/TxMiningModal";
@@ -22,15 +18,11 @@ export class Wallet extends Component {
         this.state = {
             balance: '0',
             selectedAccount: '0',
-            registryAllowance: '0',
             votingTokens: '0',
             addVotingTokens: '0',
             withdrawVotingTokens: '0',
-            increaseAllowance: '0',
-            decreaseAllowance: '0',
             submitInProgress: false,
             showManageVotingTokensModal: false,
-            showManageAllowanceModal: false,
             showErrorModal: false
         };
     }
@@ -38,15 +30,13 @@ export class Wallet extends Component {
     componentDidMount = async () => {
         const accountBalance = await getSelectedAccountBalance();
         const selectedAccount = await getSelectedAccount();
-        const registryContractAllowance = await getRegistryContactAllowance();
         const votingTokens = await getVotingTokensBalance();
 
-        this.props.parentCallback("My Wallet");
+        this.props.parentCallback("My Account");
 
         this.setState({
             balance: accountBalance.toFixed(3),
             account: selectedAccount,
-            registryAllowance: registryContractAllowance.toFixed(3),
             votingTokens: votingTokens.toFixed(3)
         });
     };
@@ -61,30 +51,12 @@ export class Wallet extends Component {
         this.withdrawVotingTokens();
     };
 
-    handleIncreaseAllowanceSubmit = (event) =>  {
-        event.preventDefault();
-        this.increaseAllowance();
-    };
-
-    handleDecreaseAllowanceSubmit = (event) =>  {
-        event.preventDefault();
-        this.decreaseAllowance();
-    };
-
     handleVotingTokensManageClick = (event) =>  {
         this.setState({showManageVotingTokensModal: true});
     };
 
-    handleManageAllowanceClick = (event) =>  {
-        this.setState({showManageAllowanceModal: true});
-    };
-
     handleCloseManageVotingTokensModal = (event) =>  {
         this.setState({showManageVotingTokensModal: false});
-    };
-
-    handleCloseManageAllowanceModal = (event) =>  {
-        this.setState({showManageAllowanceModal: false});
     };
 
     addVotingTokens = async () => {
@@ -114,53 +86,12 @@ export class Wallet extends Component {
     };
 
 
-    increaseAllowance = async () => {
-        this.setState({submitInProgress: true, showManageAllowanceModal: false});
-        const currentAllowance = await getRegistryContactAllowance();
-        if (currentAllowance === 0) {
-            await approveRegistryAllowance(this.state.increaseAllowance, (error, result) => {
-                if (!error) {
-                    this.onSuccess();
-                } else {
-                    this.onError();
-                }
-            });
-        } else {
-            await increaseRegistryAllowance(this.state.increaseAllowance, (error, result) => {
-                if (!error) {
-                    this.onSuccess();
-                } else {
-                    this.onError();
-                }
-            });
-        }
-    };
-
-    decreaseAllowance = async () => {
-        this.setState({submitInProgress: true, showManageAllowanceModal: false});
-        await decreaseRegistryAllowance(this.state.decreaseAllowance, (error, result) => {
-            if (!error) {
-                this.onSuccess();
-            } else {
-                this.onError();
-            }
-        });
-    };
-
     updatedAddVotingTokens = (event) => {
         this.setState({addVotingTokens: event.target.value});
     };
 
     updatedWithdrawVotingTokens = (event) => {
         this.setState({withdrawVotingTokens: event.target.value});
-    };
-
-    updatedIncreasedAllowance = (event) => {
-        this.setState({increaseAllowance: event.target.value});
-    };
-
-    updatedDecreasedAllowance = (event) => {
-        this.setState({decreaseAllowance: event.target.value});
     };
 
     handleErrorOkClickModal = (event) => {
@@ -171,9 +102,6 @@ export class Wallet extends Component {
     onSuccess = () => {
         getSelectedAccountBalance().then((_balance) => {
             this.setState({balance: _balance.toFixed(3)});
-        });
-        getRegistryContactAllowance().then((_allowance) => {
-            this.setState({registryAllowance: _allowance.toFixed(3)});
         });
 
         this.setState({submitInProgress: false});
@@ -245,37 +173,6 @@ export class Wallet extends Component {
 
                 </div>
                 <div className="row">
-                    <div className="col-lg-6 col-md-12">
-                        <div className="card card-wallet card-account-balance">
-                            <div className="card-header">
-                                <div className="row">
-                                    <div className="col-xs-2">
-                                        <div className="icon-big icon-success text-center">
-                                            <i className="ti-bag"></i>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-10 text-right">
-                                        <h4 className="card-title">Application Token Allowance</h4>
-                                        <p className="category">Application MEDX token allowance</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="card-content">
-                                <div className="row">
-                                    <div className="col-xs-12">
-                                        <div className="numbers">
-                                            {this.state.registryAllowance} MEDX &nbsp;
-                                            <span onClick={this.handleManageAllowanceClick} className="icon-danger text-center" style={{cursor:'pointer'}}>
-                                                <i className="ti-settings btn btn-danger btn-lg"></i>
-                                            </span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div className="col-lg-6 col-md-12">
                         <div className="card card-wallet card-account-balance">
                             <div className="card-header">
@@ -382,85 +279,6 @@ export class Wallet extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <button onClick={this.handleCloseManageVotingTokensModal} type="button" className="btn btn-default">Close</button>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal 
-                    show={this.state.showManageAllowanceModal}
-                    dialogClassName="manage-wallet-modal">
-                    <Modal.Header>
-                        <h3>Manage Application Allowance</h3>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="row">
-                            <div className="col-lg-6 col-md-12">
-                                <div className="card card-account-balance">
-                                    <div className="card-header">
-                                        <div className="row">
-                                            <div className="col-xs-2">
-                                                <div className="icon-big icon-success text-center">
-                                                    <i className="ti-thumb-up"></i>
-                                                </div>
-                                            </div>
-                                            <div className="col-xs-10 text-right">
-                                                <h5 className="card-title">Increase Allowance</h5>
-                                                <p className="category">Increase the application allowance</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="card-content">
-                                        <div className="row form-group">
-                                            <div className="col-xs-12">
-                                                <form onSubmit={this.handleIncreaseAllowanceSubmit}>
-                                                    <div className="col-sm-8">
-                                                        <input className="form-control" id="increaeAllowance" onChange={this.updatedIncreasedAllowance} required/>
-                                                    </div>
-                                                    <div className="col-sm-4">
-                                                        <button type="submit" className="btn btn-fill btn-success" disabled={this.state.submitInProgress}>
-                                                            <i className="ti-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-12">
-                                <div className="card card-account-balance">
-                                    <div className="card-header">
-                                        <div className="row">
-                                            <div className="col-xs-2">
-                                                <div className="icon-big icon-danger text-center">
-                                                    <i className="ti-thumb-down"></i>
-                                                </div>
-                                            </div>
-                                            <div className="col-xs-10 text-right">
-                                                <h5 className="card-title">Decrease Allowance</h5>
-                                                <p className="category">Decrease the application allowance</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="card-content">
-                                        <div className="row form-group">
-                                            <div className="col-xs-12">
-                                                <form onSubmit={this.handleDecreaseAllowanceSubmit}>
-                                                    <div className="col-sm-8">
-                                                        <input className="form-control" id="withdraw" onChange={this.updatedDecreasedAllowance} required/>
-                                                    </div>
-                                                    <div className="col-sm-4">
-                                                        <button type="submit" className="btn btn-fill btn-danger" disabled={this.state.submitInProgress}><i className="ti-minus"></i></button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <button onClick={this.handleCloseManageAllowanceModal} type="button" className="btn btn-default">Close</button>
                     </Modal.Footer>
                 </Modal>
 
