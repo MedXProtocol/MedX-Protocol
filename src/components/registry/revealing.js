@@ -288,6 +288,14 @@ export default class RegistryRevealing extends React.Component {
                                     rowStyle={this._rowClassName}
                                 >
                                     <Column
+                                        dataKey="id"
+                                        label="Poll ID"
+                                        width={500}
+                                        cellRenderer={({rowData}) => {
+                                            return rowData.pollID;
+                                        }}
+                                    />
+                                    <Column
                                         dataKey="period"
                                         label="Status"
                                         width={1250}
@@ -298,6 +306,16 @@ export default class RegistryRevealing extends React.Component {
                                         label="Time Left"
                                         width={1250}
                                         cellRenderer={timeCellRenderer}
+                                    />
+                                    <Column
+                                        dataKey="reward"
+                                        label="Reward Earned"
+                                        width={500}
+                                        className={"text-center"}
+                                        headerClassName={"text-center"}
+                                        cellRenderer={({rowData}) => {
+                                            return rowData.voterReward === "N/A" ? rowData.voterReward : (rowData.voterReward / 10 ** 18).toFixed(3) + " MEDX";
+                                        }}
                                     />
                                     <Column
                                         dataKey="action"
@@ -352,9 +370,6 @@ export default class RegistryRevealing extends React.Component {
 
                 </div>
 
-                <SuccessModal showModal={this.state.showThankYouModal} header={"Successfully Revealed Vote"} content={"Thank you for revealing your vote, it has been recorded."} closeHandler={this.handleThankYouOKClickModal}/>
-                <SuccessModal showModal={this.state.showThankYouClaimModal} header={"Claim Successful"} content={"Thank you. Your MEDX tokens have been claimed"} closeHandler={this.handleThankYouClaimOKClickModal}/>
-
                 <Modal show={this.state.showChallengeLoadingModal}>
                     <Modal.Body>
                         <div className="row">
@@ -378,6 +393,8 @@ export default class RegistryRevealing extends React.Component {
                 </Modal>
 
                 <VoteUpload show={this.state.showVoteUploadModal} callback={this.state.voteUploadCallbackFunction} />
+                <SuccessModal showModal={this.state.showThankYouModal} header={"Vote Successfully Revealed"} content={"Thank you for revealing your vote, it has been recorded."} closeHandler={this.handleThankYouOKClickModal}/>
+                <SuccessModal showModal={this.state.showThankYouClaimModal} header={"Claim Successful"} content={"Thank you. Your MEDX tokens have been claimed"} closeHandler={this.handleThankYouClaimOKClickModal}/>
                 <TxMiningModal showLoadingModal={this.state.showLoadingModal} />
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
             </div>

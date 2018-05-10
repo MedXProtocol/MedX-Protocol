@@ -238,7 +238,8 @@ export async function getPoll(counter) {
         revealEndDate: pollData[1],
         voteQuorum: pollData[2],
         votesFor: pollData[3],
-        votesAgainst: pollData[4]
+        votesAgainst: pollData[4],
+        voterReward: "N/A"
     };
 
     //Note: numTokens is an indicator of whether the user has submitted a vote
@@ -257,12 +258,17 @@ export async function getPoll(counter) {
             poll.voterHasReward = true;
         else
             poll.voterHasReward = false;
-        //poll.voterReward = await ethConfig.registryInstance.voterReward(ethConfig.selectedAccount, poll.pollID, persistedPoll.salt);
     }
 
     if (poll.pollEnded && poll.hasBeenRevealed && poll.numTokens > 0) {
         let poorlyNamedCanClaimReward = await ethConfig.registryInstance.voterCanClaimReward(poll.pollID, ethConfig.selectedAccount);
         poll.voterCanClaimReward = !poorlyNamedCanClaimReward;
+
+        try {
+            poll.voterReward = await ethConfig.registryInstance.voterReward(ethConfig.selectedAccount, poll.pollID, persistedPoll.salt);
+        } catch (exception) {
+            poll.voterReward = "N/A"
+        }
     }
     return poll;
 }
@@ -369,7 +375,7 @@ export async function getAllListings(callback) {
             registryEntries[i] = registryEntry;
         }
         catch(e) {
-            console.log("error: could not load listing with hash " + registryEntryHashes[i]);
+            console.log("error: listing with hash [" + registryEntryHashes[i] + "] has been removed from the registry");
         }
     }
 
