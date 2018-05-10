@@ -163,29 +163,6 @@ class App extends Component {
                                             PHYSICIAN REGISTRY
                                         </p>
                                     </NavLink>
-
-                                    {/*<div className="collapse in" aria-expanded="true">
-                                        <ul className="nav">
-                                            <li id="4" onClick={this.mountSubNavClick} className={this.state.activeApp ? 'active' : null}>
-                                                <NavLink to="/registry-application">
-                                                    <span className="sidebar-mini">R</span>
-                                                    <span className="sidebar-normal">Registry</span>
-                                                </NavLink>
-                                            </li>
-                                            <li id="5" onClick={this.mountSubNavClick} className={this.state.activeVot ? 'active' : null}>
-                                                <NavLink to="/registry-voting">
-                                                    <span className="sidebar-mini">C</span>
-                                                    <span className="sidebar-normal">Challenges</span>
-                                                </NavLink>
-                                            </li>
-                                            <li id="6" onClick={this.mountSubNavClick} className={this.state.activeRet ? 'active' : null}>
-                                                <NavLink to="/registry-revealing">
-                                                    <span className="sidebar-mini">V</span>
-                                                    <span className="sidebar-normal">Votes</span>
-                                                </NavLink>
-                                            </li>
-                                        </ul>
-                                    </div>*/}
                                 </li>
                                 <li id="3" onClick={this.mountNavClick} className={this.state.activeChallenge ? 'active' : null}>
                                     <NavLink to="/registry-voting">
@@ -225,7 +202,7 @@ class App extends Component {
                                             <a id="wallet-link" className="btn-magnify" href="">
                                                 <NavLink to="/wallet">
                                                     <i className="ti-wallet"></i>
-                                                    &nbsp; My Wallet
+                                                    &nbsp; My Account
                                                 </NavLink>
                                             </a>
                                         </li>
