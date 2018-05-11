@@ -3,10 +3,10 @@ import { Modal } from 'react-bootstrap';
 import Spinner from '../spinner/Spinner';
 import { isNotEmptyString } from '../../utils/common-util';
 import { uploadJson, uploadFile } from '../../utils/storage-util';
-import {apply, getSelectedAccountBalance} from '../../utils/web3-util';
-import TxMiningModal from "../modals/TxMiningModal";
+import {apply, getSelectedAccountBalance, approveRegistryAllowance} from '../../utils/web3-util';
 import ErrorModal from "../modals/ErrorModal"
 import SuccessModal from "../modals/SuccessModal";
+import DoubleTxMiningModal from "../modals/DoubleTxMiningModal";
 
 class Apply extends Component {
 
@@ -49,7 +49,10 @@ class Apply extends Component {
         showBalanceTooLowModal: false,
         showThankYouModal: false,
         showErrorModal: false,
-        showLoadingModal: false
+        showLoadingModal: false,
+
+        processTx1: false,
+        processTx2: false
     };
     
   }
@@ -224,7 +227,7 @@ class Apply extends Component {
   }
 
   submitApplication = async () => {
-    this.setState({submitInProgress: true});
+    this.setState({submitInProgress: true, processTx1: true});
 
     const applicationObj = {
       firstName: this.state.firstName,
@@ -251,13 +254,22 @@ class Apply extends Component {
 
     const hash = await uploadJson(applicationJson);
 
-    await apply(hash, function (_error, _txHash) {
-        if (!_error) 
-          this.setState({submitInProgress: false, showThankYouModal: true});          
-        else          
-          this.setState({submitInProgress: false, showErrorModal: true});          
-        
-      }.bind(this));    
+    await approveRegistryAllowance(20, async function (error, result) {
+        if (!error) {
+            this.setState({processTx1: false, processTx2: true});
+            await apply(hash, function (_error, _txHash) {
+                if (!_error) {
+                  this.setState({submitInProgress: false, showThankYouModal: true, processTx2: false});          
+                } else {        
+                  this.setState({submitInProgress: false, showErrorModal: true, processTx2: false});          
+                }
+              }.bind(this));    
+        }
+        else {
+            this.setState({submitInProgress: false, showErrorModal: true, processTx1: false});
+        }
+    }.bind(this));
+
   }
 
   render() {
@@ -570,9 +582,14 @@ class Apply extends Component {
             </Modal.Footer>
         </Modal>
 
-        <SuccessModal showModal={this.state.showThankYouModal} header={"Thank you"} content={"Your application will be reviewed within 3 days."} closeHandler={this.handleCloseThankYouModal}/>
-        <TxMiningModal showLoadingModal={this.state.submitInProgress} />
-        <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleCloseErrorModal} />
+        <SuccessModal showModal={this.state.showThankYouModal} header={"Thank you"} content={"Your application will be reviewed within 3 days."} closeHandler={this.handleCloseThankYouModal}/>        
+        <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleCloseErrorModal} />        
+        <DoubleTxMiningModal
+          showModal={this.state.submitInProgress}
+          processingTx1={this.state.processTx1}
+          processingTx2={this.state.processTx2}
+          tx1Desc={"Transferring required tokens"}
+          tx2Desc={"Submitting application"} />
 
         <Spinner loading={this.state.fileUploadInProgress}/>
       </div>

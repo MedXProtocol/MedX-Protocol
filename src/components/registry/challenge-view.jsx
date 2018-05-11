@@ -1,10 +1,15 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
-import {verify, challenge, getListingbyHash} from '../../utils/web3-util';
+import {
+    verify,
+    challenge,
+    getListingbyHash,
+    approveRegistryAllowance
+} from '../../utils/web3-util';
 import {getFileUrl} from '../../utils/storage-util';
-import TxMiningModal from "../modals/TxMiningModal";
 import ErrorModal from "../modals/ErrorModal";
 import SuccessModal from "../modals/SuccessModal";
+import DoubleTxMiningModal from "../modals/DoubleTxMiningModal";
 
 export class ChallengeView extends React.Component {
     constructor(props) {
@@ -15,7 +20,9 @@ export class ChallengeView extends React.Component {
             showErrorModal: false,
             showLoadingModal: false,
             showZoomModal: false,
-            disabledButton: true
+            disabledButton: true,
+            processTx1: false,
+            processTx2: false
         };
     }
 
@@ -63,19 +70,25 @@ export class ChallengeView extends React.Component {
         }.bind(this));
     }
 
-    handleChallengeClick = (e) => {
+    handleChallengeClick = async (e) => {
         e.preventDefault();
-        this.setState({showLoadingModal: true});
-        challenge(this.state.listing.listingHash, function (error, result) {
-            console.log("error: " + error);
-            console.log("result: " + result);
+        this.setState({showLoadingModal: true, processTx1: true});
 
-            this.setState({showLoadingModal: false});
+        await approveRegistryAllowance(20, async function (error, result) {
             if (!error) {
-                this.setState({showThankYouChallengeModal: true});
+                this.setState({processTx1: false, processTx2: true});
+                await challenge(this.state.listing.listingHash, function (error, result) {
+                    console.log("error: " + error);
+                    console.log("result: " + result);
+                    if (!error)
+                        this.setState({showLoadingModal: false, showThankYouChallengeModal: true, processTx2: false});
+                    else
+                        this.setState({showLoadingModal: false, showErrorModal: true});
+                }.bind(this));
             }
-            else
-                this.setState({showErrorModal: true});
+            else {
+                this.setState({showLoadingModal: false, showErrorModal: true});
+            }
         }.bind(this));
     };
 
@@ -105,7 +118,7 @@ export class ChallengeView extends React.Component {
         else {
             this.setState({disabledButton: true});
         }
-    }
+    };
 
     render() {
 
@@ -203,7 +216,6 @@ export class ChallengeView extends React.Component {
 
                 <SuccessModal showModal={this.state.showThankYouModal} header={"Verification Successful"} content={"Thank you for verifying this entry in the registry."} closeHandler={this.handleThankYouOKClickModal}/>
                 <SuccessModal showModal={this.state.showThankYouChallengeModal} header={"Challenge Successful"} content={"Thank you, your challenge has been recorded."} closeHandler={this.handleThankYouChallengeOKClickModal}/>
-                <TxMiningModal showLoadingModal={this.state.showLoadingModal} />
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
 
                 <Modal show={this.state.showZoomModal} bsSize="large">
@@ -219,6 +231,14 @@ export class ChallengeView extends React.Component {
                         <button onClick={this.handleZoomCloseModal} type="button" className="btn btn-default">Close</button>
                     </Modal.Footer>
                 </Modal>
+
+                <DoubleTxMiningModal
+                    showModal={this.state.showLoadingModal}
+                    processingTx1={this.state.processTx1}
+                    processingTx2={this.state.processTx2}
+                    tx1Desc={"Transferring required tokens"}
+                    tx2Desc={"Registering challenge"} />
+
 
                 <div><a id="downloadSaltAnchorElem" style={{display: 'none'}}></a></div>
             </div>
