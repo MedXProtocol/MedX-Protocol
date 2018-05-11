@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import {getSelectedAccount, commitVote, waitForTxComplete, getListingbyHash} from '../../utils/web3-util';
 import {getFileUrl} from '../../utils/storage-util';
-import TxMiningModal from "../modals/TxMiningModal";
+import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
 
 export class VotingView extends React.Component {
@@ -298,7 +298,7 @@ export class VotingView extends React.Component {
                     </Modal.Footer>
                 </Modal>
 
-                <TxMiningModal showLoadingModal={this.state.showLoadingModal} />
+                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
 
                 <div><a id="downloadSaltAnchorElem" style={{display: 'none'}}></a></div>
