@@ -54,6 +54,7 @@
     "zeppelin-solidity": "1.8.0"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "bignumber.js": "5.0.0",
     "bip39": "2.5.0",
     "bn.js": "4.11.8",

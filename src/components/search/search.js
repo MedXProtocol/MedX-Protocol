@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 const civic = require('civic');
+const axios = require('axios');
 
 export class Search extends Component {
 
@@ -7,7 +8,6 @@ export class Search extends Component {
         super();
         this.state = {
             showErrorModal: false,
-            civic: null
         };
     }
 
@@ -16,17 +16,37 @@ export class Search extends Component {
 
         const civicSip = new civic.sip({ appId: 'SyPITFJRM' });
         civicSip.on('auth-code-received', this.handleAuthCodeReceived);
-        this.setState({civic: civicSip});
+        civicSip.on('civic-sip-error', this.handCivicError);
     };
 
     handleCivicLogin = () => {
         const civicSip = this.state.civic;
-        civicSip.signup({ style: 'popup', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP });
+        civicSip.signup({ style: 'popupa', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP });
+    };
+
+    handCivicError = (event) => {
+        console.log('   Error type = ' + event.type);
+        console.log('   Error message = ' + event.message);
     };
 
     handleAuthCodeReceived = (event) => {
-        // encoded JWT Token is sent to the server
+        const apiKey = "QJFv9MWdnj1zKMXlNqyyOaY3ZyXlZnyB1Bb0lxca";
         console.log(event.response);
+
+        const jwtToken = event.response;
+        // Your function to pass JWT token to your server
+
+        axios({
+            url: "/userdetail",
+            method: "POST",
+            baseURL: "https://fut4p1vbrb.execute-api.us-east-1.amazonaws.com/medcredits",
+            header: {"x-api-key": apiKey, "Access-Control-Allow-Origin": "*"},
+            data: { "jwtToken": jwtToken}
+        }).then((data) => {
+            console.log(data);
+        }).catch((error) => {
+            console.log(error);
+        });
     };
 
     render() {

@@ -6,7 +6,7 @@ import { getPoll, claimVoterReward, updateStatus, waitForTxComplete, revealVote,
 import { msToTime } from '../../utils/common-util';
 import spinner from '../../img/spinner.gif';
 import VoteUpload from './vote-upload'
-import TxMiningModal from "../modals/TxMiningModal";
+import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
 import SuccessModal from "../modals/SuccessModal";
 
@@ -395,7 +395,7 @@ export default class RegistryRevealing extends React.Component {
                 <VoteUpload show={this.state.showVoteUploadModal} callback={this.state.voteUploadCallbackFunction} />
                 <SuccessModal showModal={this.state.showThankYouModal} header={"Vote Successfully Revealed"} content={"Thank you for revealing your vote, it has been recorded."} closeHandler={this.handleThankYouOKClickModal}/>
                 <SuccessModal showModal={this.state.showThankYouClaimModal} header={"Claim Successful"} content={"Thank you. Your MEDX tokens have been claimed"} closeHandler={this.handleThankYouClaimOKClickModal}/>
-                <TxMiningModal showLoadingModal={this.state.showLoadingModal} />
+                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
             </div>
         );
