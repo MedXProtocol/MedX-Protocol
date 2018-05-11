@@ -7,7 +7,7 @@ import {
     withdrawVotingRights
 } from '../../utils/web3-util';
 import {Modal} from "react-bootstrap";
-import TxMiningModal from "../modals/TxMiningModal";
+import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
 import './wallet.css'
 
@@ -282,7 +282,7 @@ export class Wallet extends Component {
                     </Modal.Footer>
                 </Modal>
 
-                <TxMiningModal showLoadingModal={this.state.submitInProgress} />
+                <GenericLoadingModal showModal={this.state.submitInProgress} contentText={"Waiting for transaction to be mined..."}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOkClickModal}/>
             </div>
         );

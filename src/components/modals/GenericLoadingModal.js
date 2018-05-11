@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import {Modal} from 'react-bootstrap';
+import {Modal} from "react-bootstrap";
 import spinner from '../../img/spinner.gif';
 
-class TxMiningModal extends Component {
+class GenericLoadingModal extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <Modal show={this.props.showLoadingModal}>
+            <Modal show={this.props.showModal}>
+
                 <Modal.Header>
-                    <h3 className="text-center">Waiting for transaction to be mined...</h3>
+                    <h3 className="text-center">{this.props.contentText}</h3>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
@@ -24,7 +25,7 @@ class TxMiningModal extends Component {
                             <div className="row">
                                 <div className="col-xs-1">&nbsp;</div>
                                 <div className="col-xs-10 text-center">
-                                    <h5 className="card-title">Please be patient. </h5>
+                                    <h5 className="card-title">Please be patient.</h5>
                                 </div>
                                 <div className="col-xs-1">&nbsp;</div>
                             </div>
@@ -39,4 +40,4 @@ class TxMiningModal extends Component {
     }
 }
 
-export default TxMiningModal;
+export default GenericLoadingModal;
