@@ -158,10 +158,10 @@ export async function verify(listingHash, callback) {
     }
 }
 
-export async function challenge(listingHash, callback) {
+export async function challenge(listingHash, challengeReasonHash, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.challenge(listingHash, "", { from: ethConfig.selectedAccount });
+        const result = await ethConfig.registryInstance.challenge(listingHash, challengeReasonHash, { from: ethConfig.selectedAccount });
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -291,7 +291,6 @@ export async function getListingbyHash(listingHash, callback) {
     //6 data/ipfshash
 
     let registryData = await ethConfig.registryInstance.listings(listingHash, { from: ethConfig.selectedAccount });
-
     let registryEntry = {
         listingHash: listingHash,
         applicationExpiry: registryData[0],
@@ -312,12 +311,19 @@ export async function getListingbyHash(listingHash, callback) {
         //mapping(address => bool) voterCanClaimReward; // Indicates whether a voter has claimed a reward yet
 
         let lastChallengeData = await ethConfig.registryInstance.challenges(registryEntry.challengeID, { from: ethConfig.selectedAccount });
+        let hashedChallengeReasonIndexes = {reasonIndexes: ""};
+        if (lastChallengeData[5] !== "") {
+            hashedChallengeReasonIndexes = await downloadJson(lastChallengeData[5]);
+            hashedChallengeReasonIndexes = JSON.parse(hashedChallengeReasonIndexes.toString('utf8'));
+        }
+
         registryEntry.challenge = {
             rewardPool: lastChallengeData[0],
             challenger: lastChallengeData[1],
             resolved: lastChallengeData[2],
             stake: lastChallengeData[3],
-            totalTokens: lastChallengeData[4]
+            totalTokens: lastChallengeData[4],
+            reasonIndexes: hashedChallengeReasonIndexes.reasonIndexes
         };
 
         if (!registryEntry.challenge.resolved && registryEntry.challengeID > 0) {
@@ -325,8 +331,7 @@ export async function getListingbyHash(listingHash, callback) {
             registryEntry.poll = unresolvedPoll;
         }
     }
-
-    //Go get the IPFS data
+        //Go get the IPFS data
     let hashedData = await downloadJson(registryEntry.ipfsHash);
     hashedData = hashedData.toString('utf8');
     hashedData = JSON.parse(hashedData);
@@ -379,7 +384,7 @@ export async function getAllListings(callback) {
             registryEntries[i] = registryEntry;
         }
         catch(e) {
-            console.log("error: listing with hash [" + registryEntryHashes[i] + "] has been removed from the registry");
+            console.log("error: listing with hash [" + registryEntryHashes[i] + "] could not be loaded");
         }
     }
 
