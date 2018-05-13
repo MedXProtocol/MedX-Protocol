@@ -8,11 +8,7 @@ import ErrorModal from "../modals/ErrorModal";
 import GenericOkModal from "../modals/GenericOkModal";
 import GenericLoadingModal from "../modals/GenericLoadingModal";
 
-function actionCellRenderer({
-                                cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                            }) {
-    let routeLink = "/challenge-view/" + rowData.listingHash;
-
+function actionCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     const newTo = {
         pathname: "/challenge-view/" + rowData.listingHash,
         state: {message: rowData.listingHash}
@@ -22,17 +18,21 @@ function actionCellRenderer({
     );
 }
 
-function locationCellRenderer({
-                                  cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                              }) {
+function locationCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     return (
         <div>{rowData.application.medLicenseLocation}</div>
     );
 }
 
-function nameCellRenderer({
-                              cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                          }) {
+function verifiedRenderer({rowData}) {
+    let verified = localStorage.getItem("verify" + rowData.listingHash);
+    return (
+        <div>{verified === "true" ? <b><i className="ti-check text-success" style={{fontSize: "x-large"}} /></b> : null}</div>
+
+    );
+}
+
+function nameCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     return (
         <div>{rowData.application.physicianName}</div>
     );
@@ -175,7 +175,7 @@ export class RegistryApplication extends React.Component {
                                     <Column
                                         dataKey="applicationExpiry"
                                         label="Status"
-                                        width={1250}
+                                        width={1000}
                                         cellRenderer={({
                                                            cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
                                                        }) => {
@@ -199,6 +199,14 @@ export class RegistryApplication extends React.Component {
 
                                         }
                                         }
+                                    />
+                                    <Column
+                                        dataKey="verified"
+                                        label="Verified"
+                                        width={500}
+                                        className={"text-center"}
+                                        headerClassName={"text-center"}
+                                        cellRenderer={verifiedRenderer}
                                     />
                                     <Column
                                         dataKey="action"
