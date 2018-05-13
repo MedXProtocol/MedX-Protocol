@@ -8,7 +8,7 @@ import {msToTime} from '../../utils/common-util';
 import spinner from '../../img/spinner.gif';
 import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
-import SuccessModal from "../modals/SuccessModal";
+import GenericOkModal from "../modals/GenericOkModal";
 
 function actionCellRenderer({
                                 cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
@@ -46,7 +46,7 @@ function nameCellRenderer({
                               cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
                           }) {
     return (
-        <div>Dr. {rowData.application.firstName} {rowData.application.lastName}</div>
+        <div>{rowData.application.physicianName}</div>
     );
 }
 
@@ -248,7 +248,7 @@ export default class RegistryVoting extends React.Component {
                     </div>
                 </div>
 
-                <SuccessModal showModal={this.state.showWhitelistedModal} header={"Status Updated"} content={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
+                <GenericOkModal showModal={this.state.showWhitelistedModal} header={"Status Updated"} content={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
                 <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
             </div>

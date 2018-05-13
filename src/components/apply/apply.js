@@ -3,11 +3,11 @@ import {Modal} from 'react-bootstrap';
 import Spinner from '../spinner/Spinner';
 import {isNotEmptyString} from '../../utils/common-util';
 import {uploadJson, uploadFile} from '../../utils/storage-util';
-import {apply, getSelectedAccountBalance, approveRegistryAllowance} from '../../utils/web3-util';
+import {apply, getSelectedAccountBalance, approveRegistryAllowance, getListingbyId} from '../../utils/web3-util';
 import ErrorModal from "../modals/ErrorModal"
-import SuccessModal from "../modals/SuccessModal";
 import DoubleTxMiningModal from "../modals/DoubleTxMiningModal";
 import GenericLoadingModal from "../modals/GenericLoadingModal";
+import GenericOkModal from "../modals/GenericOkModal";
 
 const civic = require('civic');
 const axios = require('axios');
@@ -18,11 +18,10 @@ class Apply extends Component {
         super()
 
         this.state = {
-            devMode: false,
+            testMode: false,
 
             civicUserId: null,
-            firstName: null,
-            lastName: null,
+            physicianName: null,
 
             medSchoolDiplomaDocHash: null,
             medSchoolDiplomaDocFileName: null,
@@ -58,23 +57,25 @@ class Apply extends Component {
             showErrorModal: false,
             showLoadingModal: false,
             civicLoading: false,
+            showAlreadyRegistered: false,
+            showNoCivicDocuments: false,
 
             processTx1: false,
             processTx2: false
         };
-
     }
 
     componentDidMount = () => {
         this.props.parentCallback("Apply to MedCredits Physician Registry");
 
-        if (!this.state.devMode) {
-            const civicSip = new civic.sip({appId: 'SyPITFJRM'});
+        if (!this.props.noCivic) {
+            const civicSip = new civic.sip({appId: 'HJZgzIcTM'});
             civicSip.on('auth-code-received', this.handleAuthCodeReceived);
             civicSip.on('civic-sip-error', this.handCivicError);
             civicSip.on('user-cancelled', this.handleCivicCancel);
-            civicSip.signup({style: 'popup', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP});
+            civicSip.login({style: 'popup', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP});
         } else {
+            this.setState({testMode: true});
             this.setState({civicUserId: Date.now()});
         }
     };
@@ -127,12 +128,8 @@ class Apply extends Component {
         return imageHash;
     }
 
-    firstNameUpdated = (event) => {
-        this.setState({firstName: event.target.value}, this.validateInputs);
-    }
-
-    lastNameUpdated = (event) => {
-        this.setState({lastName: event.target.value}, this.validateInputs);
+    physicianNameUpdated = (event) => {
+        this.setState({physicianName: event.target.value}, this.validateInputs);
     }
 
     medLicenseExpirationDateUpdated = (event) => {
@@ -186,8 +183,7 @@ class Apply extends Component {
     validateInputs = () => {
         let valid =
             isNotEmptyString(this.state.civicUserId) &&
-            isNotEmptyString(this.state.firstName) &&
-            isNotEmptyString(this.state.lastName) &&
+            isNotEmptyString(this.state.physicianName) &&
             isNotEmptyString(this.state.medSchoolDiplomaDocHash) &&
             isNotEmptyString(this.state.residencyDiplomaDocHash) &&
             isNotEmptyString(this.state.medLicenseDocHash) &&
@@ -231,6 +227,18 @@ class Apply extends Component {
         this.props.history.push('/registry-application');
     }
 
+    handleCloseAlreadyRegisteredModal = (event) => {
+        event.preventDefault();
+        this.setState({showAlreadyRegistered: false});
+        this.props.history.push('/registry-application');
+    }
+
+    handleCloseNoCivicDataModal = (event) => {
+        event.preventDefault();
+        this.setState({showNoCivicDocuments: false});
+        this.props.history.push('/registry-application');
+    }
+
     handleCloseErrorModal = (event) => {
         event.preventDefault();
         this.setState({showThankYouModal: false});
@@ -256,26 +264,34 @@ class Apply extends Component {
     handleAuthCodeReceived = (event) => {
         this.setState({civicLoading: true});
 
-        const apiKey = "QJFv9MWdnj1zKMXlNqyyOaY3ZyXlZnyB1Bb0lxca";
+        const apiKey = "jAWxgBs6fo49pq7Vx8wMgW1uyr9LAWb90l718EWa";
         const jwtToken = event.response;
         axios({
-            url: "/userdetail",
+            url: "/CivicServer",
             method: "POST",
-            baseURL: "https://fut4p1vbrb.execute-api.us-east-1.amazonaws.com/medcredits",
-            header: {"x-api-key": apiKey, "Access-Control-Allow-Origin": "*"},
+            baseURL: "https://wdpmsvxesi.execute-api.us-east-1.amazonaws.com/medcredits",
+            header: {"x-api-key": apiKey},
             data: {"jwtToken": jwtToken}
         }).then((userObject) => {
             console.log(userObject);
             this.setState({civicLoading: false, civicUserId: userObject.data.userId});
-            userObject.data.data.forEach((item) => {
-                //TODO: Check if userId already has a listing hash -> if yes, then show error message
-                //TODO: Change this to save fistname and lastname
-                if (item.label === 'contact.personal.email') {
-                    this.setState({firstName: item.value});
-                } else if (item.label === 'contact.personal.phoneNumber') {
-                    this.setState({lastName: item.value});
-                }
 
+            getListingbyId(userObject.data.userId).then((listingData) => {
+                let _physicianName = null;
+                userObject.data.data.forEach((item) => {
+                    //TODO: Change this to save physician name
+                    //if (item.label === 'documents.genericId.name') {
+                    if (item.label === 'contact.personal.email') {
+                        _physicianName = item.value;
+                        this.setState({physicianName: _physicianName});
+                    }
+                });
+
+                if (_physicianName === null) {
+                    this.setState({showNoCivicDocuments: true});
+                } else if (listingData[2] !== "0x0000000000000000000000000000000000000000") {
+                    this.setState({showAlreadyRegistered: true});
+                }
             });
         }).catch((error) => {
             this.setState({showErrorModal: true});
@@ -293,8 +309,7 @@ class Apply extends Component {
 
         const applicationObj = {
             userId: this.state.civicUserId,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
+            physicianName: this.state.physicianName,
             medSchoolDiplomaDocHash: this.state.medSchoolDiplomaDocHash,
             residencyDiplomaDocHash: this.state.residencyDiplomaDocHash,
             medLicenseDocHash: this.state.medLicenseDocHash,
@@ -320,7 +335,7 @@ class Apply extends Component {
         await approveRegistryAllowance(20, async function (error, result) {
             if (!error) {
                 this.setState({processTx1: false, processTx2: true});
-                await apply(hash, function (_error, _txHash) {
+                await apply(applicationObj.userId, hash, function (_error, _txHash) {
                     if (!_error) {
                         this.setState({submitInProgress: false, showThankYouModal: true, processTx2: false});
                     } else {
@@ -344,7 +359,7 @@ class Apply extends Component {
 
                         <div className="row">
                             <div className="col-lg-12 col-md-12 top15">
-                                <h3>{this.state.firstName} {this.state.lastName}</h3>
+                                {this.state.physicianName === null ? null : <h3>Welcome, {this.state.physicianName}</h3>}
                             </div>
                         </div>
 
@@ -418,28 +433,16 @@ class Apply extends Component {
 
                         <hr/>
 
-                        {this.state.devMode ?
+                        {this.state.testMode ?
                             <div className="row">
-                                <div className="col-lg-6 col-md-6 top15">
+                                <div className="col-lg-12 col-md-12 top15">
                                     <fieldset>
                                         <div className="form-group">
-                                            <label className="control-label col-xs-4">First Name:
+                                            <label className="control-label col-xs-2">Physician Name:
                                                 <star>*</star>
                                             </label>
-                                            <div className="col-xs-8">
-                                                <input onChange={this.firstNameUpdated} type="text" className="form-control" required/>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                                <div className="col-lg-6 col-md-6 top15">
-                                    <fieldset>
-                                        <div className="form-group">
-                                            <label className="control-label col-xs-4">Last Name:
-                                                <star>*</star>
-                                            </label>
-                                            <div className="col-xs-8">
-                                                <input onChange={this.lastNameUpdated} type="text" className="form-control" required/>
+                                            <div className="col-xs-10">
+                                                <input onChange={this.physicianNameUpdated} type="text" className="form-control" required/>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -673,7 +676,9 @@ class Apply extends Component {
                     </Modal.Footer>
                 </Modal>
 
-                <SuccessModal showModal={this.state.showThankYouModal} header={"Thank you"} content={"Your application will be reviewed within 3 days."} closeHandler={this.handleCloseThankYouModal}/>
+                <GenericOkModal showModal={this.state.showThankYouModal} header={"Thank you"} content={"Your application will be reviewed within 3 days."} closeHandler={this.handleCloseThankYouModal}/>
+                <GenericOkModal showModal={this.state.showAlreadyRegistered} header={"Welcome " + this.state.physicianName} content={"You have already applied to be part of the registry. You can view your application by using the menu links on the left."} closeHandler={this.handleCloseAlreadyRegisteredModal}/>
+                <GenericOkModal showModal={this.state.showNoCivicDocuments} header={"Required Civic Data Not Received"} content={"Looks like you have not uploaded to the required identity documentation to Civic, please do so before continuing."} closeHandler={this.handleCloseNoCivicDataModal}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleCloseErrorModal}/>
                 <GenericLoadingModal showModal={this.state.civicLoading} contentText={"Loading Data from Civic..."}/>
                 <DoubleTxMiningModal

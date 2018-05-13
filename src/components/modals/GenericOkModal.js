@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal} from "react-bootstrap";
 
-class SuccessModal extends Component {
+class GenericOkModal extends Component {
     constructor(props) {
         super(props);
     }
@@ -45,4 +45,4 @@ class SuccessModal extends Component {
     }
 }
 
-export default SuccessModal;
+export default GenericOkModal;
