@@ -8,7 +8,7 @@ import {
 } from '../../utils/web3-util';
 import {getFileUrl} from '../../utils/storage-util';
 import ErrorModal from "../modals/ErrorModal";
-import SuccessModal from "../modals/SuccessModal";
+import GenericOkModal from "../modals/GenericOkModal";
 import DoubleTxMiningModal from "../modals/DoubleTxMiningModal";
 
 export class ChallengeView extends React.Component {
@@ -33,7 +33,7 @@ export class ChallengeView extends React.Component {
     getListing = async (event) => {
         getListingbyHash(this.props.match.params.id, function (result) {
             this.setState({listing: result});
-            this.props.parentCallback("Review Dr. " + result.application.firstName + " " + result.application.lastName + "'s Credentials");
+            this.props.parentCallback("Review " + result.application.physicianName + "'s Credentials");
         }.bind(this));
     }
 
@@ -133,7 +133,7 @@ export class ChallengeView extends React.Component {
             <div className='card'>
                 <br />
                 <div className="card-header">
-                    <h5 className="card-title">Please verify whether <strong>Dr. {this.state.listing.application.firstName} {this.state.listing.application.lastName}</strong> is certified
+                    <h5 className="card-title">Please verify whether <strong>{this.state.listing.application.physicianName}</strong> is certified
                         in <strong>{this.state.listing.application.specialty}</strong> by reviewing the following information:</h5>
                 </div>
 
@@ -214,8 +214,8 @@ export class ChallengeView extends React.Component {
                     </div>
                 </div>
 
-                <SuccessModal showModal={this.state.showThankYouModal} header={"Verification Successful"} content={"Thank you for verifying this entry in the registry."} closeHandler={this.handleThankYouOKClickModal}/>
-                <SuccessModal showModal={this.state.showThankYouChallengeModal} header={"Challenge Successful"} content={"Thank you, your challenge has been recorded."} closeHandler={this.handleThankYouChallengeOKClickModal}/>
+                <GenericOkModal showModal={this.state.showThankYouModal} header={"Verification Successful"} content={"Thank you for verifying this entry in the registry."} closeHandler={this.handleThankYouOKClickModal}/>
+                <GenericOkModal showModal={this.state.showThankYouChallengeModal} header={"Challenge Successful"} content={"Thank you, your challenge has been recorded."} closeHandler={this.handleThankYouChallengeOKClickModal}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
 
                 <Modal show={this.state.showZoomModal} bsSize="large">

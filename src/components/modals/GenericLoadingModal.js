@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Modal} from "react-bootstrap";
+import spinner from '../../img/spinner.gif';
 
-class SuccessModal extends Component {
+class GenericLoadingModal extends Component {
     constructor(props) {
         super(props);
     }
@@ -11,20 +12,20 @@ class SuccessModal extends Component {
             <Modal show={this.props.showModal}>
 
                 <Modal.Header>
-                    <h3 className="text-center">{this.props.header}</h3>
+                    <h3 className="text-center">{this.props.contentText}</h3>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
                         <div className="col-lg-12 col-md-12">
                             <div className="row">
                                 <div className="col-xs-12 text-center">
-                                    <span className="ti-announcement text-info" style={{fontSize: '46pt'}}>&nbsp;</span>
+                                    <img style={{maxWidth: '100px'}} src={spinner}/>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-1">&nbsp;</div>
                                 <div className="col-xs-10 text-center">
-                                    <h5 className="card-title">{this.props.content}</h5>
+                                    <h5 className="card-title">Please be patient.</h5>
                                 </div>
                                 <div className="col-xs-1">&nbsp;</div>
                             </div>
@@ -32,17 +33,11 @@ class SuccessModal extends Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className="row">
-                        <div className="col-lg-8">&nbsp;</div>
-                        <div className="col-lg-3">
-                            <button onClick={this.props.closeHandler} type="button" className="btn btn-default btn-sm btn-block">OK</button>
-                        </div>
-                        <div className="col-lg-1">&nbsp;</div>
-                    </div>
+                    &nbsp;
                 </Modal.Footer>
             </Modal>
         );
     }
 }
 
-export default SuccessModal;
+export default GenericLoadingModal;

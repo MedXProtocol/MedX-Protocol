@@ -40,6 +40,7 @@ class App extends Component {
             activeRegistry: true,
             activeChallenge: false,
             activeVote: false,
+            activeApplyCivic: false,
 
             activeOpacity: false,
 
@@ -78,13 +79,15 @@ class App extends Component {
         //this.setState({activeApp: false, activeVot: false, activeRet: false});
 
         if (e.currentTarget.id === '1')
-            this.setState({activeApply: true, activeRegistry: false, activeChallenge: false, activeVote: false});
+            this.setState({activeApply: true, activeApplyCivic: false, activeRegistry: false, activeChallenge: false, activeVote: false});
         else if (e.currentTarget.id === '2')
-            this.setState({activeApply: false, activeRegistry: true, activeChallenge: false, activeVote: false});
+            this.setState({activeApply: false, activeApplyCivic: false, activeRegistry: true, activeChallenge: false, activeVote: false});
         else if (e.currentTarget.id === '3')
-            this.setState({activeApply: false, activeRegistry: false, activeChallenge: true, activeVote: false});
+            this.setState({activeApply: false, activeApplyCivic: false, activeRegistry: false, activeChallenge: true, activeVote: false});
         else if (e.currentTarget.id === '4')
-            this.setState({activeApply: false, activeRegistry: false, activeChallenge: false, activeVote: true});
+            this.setState({activeApply: false, activeApplyCivic: false, activeRegistry: false, activeChallenge: false, activeVote: true});
+        else if (e.currentTarget.id === '5')
+            this.setState({activeApply: false, activeApplyCivic: true, activeRegistry: false, activeChallenge: false, activeVote: false});
     }
 
     getClasses() {
@@ -149,7 +152,15 @@ class App extends Component {
                                     <NavLink to="/apply">
                                         <i className="ti-pencil-alt"></i>
                                         <p>
-                                            APPLY
+                                            APPLY (With Civic)
+                                        </p>
+                                    </NavLink>
+                                </li>
+                                <li id="5" onClick={this.mountNavClick} className={this.state.activeApplyCivic ? 'active' : null}>
+                                    <NavLink to="/applynocivic">
+                                        <i className="ti-pencil-alt"></i>
+                                        <p>
+                                            APPLY (Without Civic)
                                         </p>
                                     </NavLink>
                                 </li>
@@ -216,6 +227,7 @@ class App extends Component {
                                     <div className="col-lg-12">
                                         <Route path="/registry" component={Registry}/>
                                         <Route path="/apply" render={(props) => <Apply {...props} parentCallback={this.handlePageTitleChange} />} />
+                                        <Route path="/applynocivic" render={(props) => <Apply {...props} parentCallback={this.handlePageTitleChange} noCivic={true} />} />
                                         <Route path="/search" render={(props) => <Search {...props} parentCallback={this.handlePageTitleChange} />} />
                                         <Route path="/registry-application" render={(props) => <RegistryApplication {...props} parentCallback={this.handlePageTitleChange} />} />
                                         <Route path="/registry-voting" render={(props) => <RegistryVoting {...props} parentCallback={this.handlePageTitleChange} />} />

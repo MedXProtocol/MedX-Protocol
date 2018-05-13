@@ -28,6 +28,7 @@ contract Registry {
         uint unstakedDeposit;   // Number of tokens in the listing not locked in a challenge
         uint challengeID;       // Corresponds to a PollID in PLCRVoting
         string locationHash;    // Location of the JSON file with all the data
+        uint index;
     }
 
     struct Challenge {
@@ -89,9 +90,12 @@ contract Registry {
         require(!appWasMade(_listingHash));
         require(_amount >= parameterizer.get("minDeposit"));
 
+        allListings.push(_listingHash);
+
         // Sets owner
         Listing storage listing = listings[_listingHash];
         listing.owner = msg.sender;
+        listing.index = allListings.length - 1;
 
         // Transfers tokens from user to Registry contract
         require(token.transferFrom(listing.owner, address(this), _amount));
@@ -101,7 +105,6 @@ contract Registry {
         listing.unstakedDeposit = _amount;
         listing.locationHash = _data;
 
-        allListings.push(_listingHash);
         _Application(_listingHash, _amount, _data);
     }
 
@@ -154,6 +157,7 @@ contract Registry {
         // Cannot exit during ongoing challenge
         require(listing.challengeID == 0 || challenges[listing.challengeID].resolved);
 
+        removeUserFromList(listing.index);
         // Remove listingHash & return tokens
         resetListing(_listingHash);
     }
@@ -180,6 +184,7 @@ contract Registry {
 
         if (listing.unstakedDeposit < deposit) {
             // Not enough tokens, listingHash auto-delisted
+            removeUserFromList(listing.index);
             resetListing(_listingHash);
             return 0;
         }
@@ -399,6 +404,7 @@ contract Registry {
         }
         // Case: challenge succeeded
         else {
+            removeUserFromList(listings[_listingHash].index);
             resetListing(_listingHash);
             // Transfer the reward to the challenger
             require(token.transfer(challenges[challengeID].challenger, reward));
@@ -439,4 +445,17 @@ contract Registry {
 
         delete listings[_listingHash];
     }
+
+    /**
+     * @dev Move the last element of the array to the index of the element being deleted, update the index of the item being moved, delete the last element of the
+     *      array (because its now at position _index), reduce the size of the array
+     * @param _index Index of deleted item
+     */
+    function removeUserFromList(uint256 _index) internal {
+        allListings[_index] = allListings[allListings.length - 1];
+        listings[allListings[_index]].index = _index;
+        delete allListings[allListings.length - 1];
+        allListings.length--;
+    }
+
 }
