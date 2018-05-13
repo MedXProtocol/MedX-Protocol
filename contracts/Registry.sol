@@ -38,6 +38,7 @@ contract Registry {
         uint stake;             // Number of tokens at stake for either party during challenge
         uint totalTokens;       // (remaining) Number of tokens used in voting by the winning side
         mapping(address => bool) voterCanClaimReward; // Indicates whether a voter has claimed a reward yet
+        string additionalDataHash;
     }
 
     // Maps challengeIDs to associated challenge data
@@ -204,7 +205,8 @@ contract Registry {
             rewardPool: ((100 - parameterizer.get("dispensationPct")) * deposit) / 100,
             stake: deposit,
             resolved: false,
-            totalTokens: 0
+            totalTokens: 0,
+            additionalDataHash: _data
         });
 
         // Updates listingHash to store most recent challenge
