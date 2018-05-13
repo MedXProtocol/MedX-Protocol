@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import {getSelectedAccount, commitVote, waitForTxComplete, getListingbyHash} from '../../utils/web3-util';
 import {getFileUrl} from '../../utils/storage-util';
-import TxMiningModal from "../modals/TxMiningModal";
+import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
 
 export class VotingView extends React.Component {
@@ -28,7 +28,7 @@ export class VotingView extends React.Component {
     getListing = async (event) => {
         getListingbyHash(this.props.match.params.id, function (result) {
             this.setState({listing: result});
-            this.props.parentCallback("Vote on Dr. " + result.application.firstName + " " + result.application.lastName + "'s Credentials");
+            this.props.parentCallback("Vote on " + result.application.physicianName + "'s Credentials");
         }.bind(this));
     }
 
@@ -139,7 +139,7 @@ export class VotingView extends React.Component {
             <div className='card'>
                 <br/>
                 <div className="card-header">
-                    <h5 className="card-title">Please vote on whether <strong>Dr. {this.state.listing.application.firstName} {this.state.listing.application.lastName}</strong> is certified
+                    <h5 className="card-title">Please vote on whether <strong>{this.state.listing.application.physicianName}</strong> is certified
                         in <strong>{this.state.listing.application.specialty}</strong> by reviewing the following information:</h5>
                 </div>
 
@@ -298,7 +298,7 @@ export class VotingView extends React.Component {
                     </Modal.Footer>
                 </Modal>
 
-                <TxMiningModal showLoadingModal={this.state.showLoadingModal} />
+                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
 
                 <div><a id="downloadSaltAnchorElem" style={{display: 'none'}}></a></div>

@@ -4,9 +4,9 @@ import {Link} from 'react-router-dom';
 import 'react-virtualized/styles.css';
 import {updateStatus, getAllListings} from '../../utils/web3-util';
 import spinner from '../../img/spinner.gif';
-import TxMiningModal from "../modals/TxMiningModal";
 import ErrorModal from "../modals/ErrorModal";
-import SuccessModal from "../modals/SuccessModal";
+import GenericOkModal from "../modals/GenericOkModal";
+import GenericLoadingModal from "../modals/GenericLoadingModal";
 
 function actionCellRenderer({
                                 cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
@@ -34,7 +34,7 @@ function nameCellRenderer({
                               cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
                           }) {
     return (
-        <div>Dr. {rowData.application.firstName} {rowData.application.lastName}</div>
+        <div>{rowData.application.physicianName}</div>
     );
 }
 
@@ -214,9 +214,9 @@ export class RegistryApplication extends React.Component {
                     </div>
                 </div>
 
-                <TxMiningModal showLoadingModal={this.state.showLoadingModal} />
+                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
-                <SuccessModal showModal={this.state.showWhitelistedModal} header={"Status Updated"} content={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
+                <GenericOkModal showModal={this.state.showWhitelistedModal} header={"Status Updated"} content={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
             </div>
         );
     }

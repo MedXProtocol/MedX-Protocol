@@ -89,10 +89,10 @@ let ethConfig = {
 };
 
 
-export async function apply(documentHash, callback) {
+export async function apply(userId, documentHash, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.apply(ethConfig.web3.utils.sha3(documentHash), fromTokenDecimal(20), documentHash, { from: ethConfig.selectedAccount });
+        const result = await ethConfig.registryInstance.apply(ethConfig.web3.utils.sha3(userId.toString()), fromTokenDecimal(20), documentHash, { from: ethConfig.selectedAccount });
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -273,6 +273,11 @@ export async function getPoll(counter) {
     return poll;
 }
 
+export async function getListingbyId(civicId) {
+    await ethConfig.ready();
+    return await ethConfig.registryInstance.listings(ethConfig.web3.utils.sha3(civicId.toString()), { from: ethConfig.selectedAccount });
+}
+
 export async function getListingbyHash(listingHash, callback) {
     await ethConfig.ready();
 
@@ -326,8 +331,7 @@ export async function getListingbyHash(listingHash, callback) {
     hashedData = hashedData.toString('utf8');
     hashedData = JSON.parse(hashedData);
     registryEntry.application = {
-        firstName: hashedData.firstName,
-        lastName: hashedData.lastName,
+        physicianName: hashedData.physicianName,
         medSchoolDiplomaDocHash: hashedData.medSchoolDiplomaDocHash,
         residencyDiplomaDocHash: hashedData.residencyDiplomaDocHash,
         medLicenseDocHash: hashedData.medLicenseDocHash,
