@@ -11,13 +11,14 @@ export class VotingView extends React.Component {
         super(props);
 
         this.state = {
-            showVoteModal: true,
+            showVoteModal: false,
             showThankYouModal: false,
             showErrorModal: false,
             showLoadingModal: false,
             showZoomModal: false,
             voteChoice: null,
-            salt: null
+            salt: null,
+            reasonIndexes: []
         };
     }
 
@@ -29,6 +30,9 @@ export class VotingView extends React.Component {
         getListingbyHash(this.props.match.params.id, function (result) {
             this.setState({listing: result});
             this.props.parentCallback("Vote on " + result.application.physicianName + "'s Credentials");
+            const reasonIndexes = result.challenge.reasonIndexes.split(" ");
+            this.setState({reasonIndexes: reasonIndexes});
+            console.log("Challenge reason Indexes: ", reasonIndexes);
         }.bind(this));
     }
 
@@ -154,7 +158,8 @@ export class VotingView extends React.Component {
                                     <thead>
                                     <tr style={{fontVariant: 'small-caps', backgroundColor: '#d9d9da'}}>
                                         <th scope="col">Verification</th>
-                                        <th scope="col" className="text-center">Supplied Info</th>
+                                        <th scope="col" className="text-center">Supplied Information</th>
+                                        <th scope="col" className="text-center">&nbsp;</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -163,12 +168,18 @@ export class VotingView extends React.Component {
                                         <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash))}><img
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash)}/></a>
                                         </td>
+                                        <td>
+                                            { (this.state.reasonIndexes).includes("0") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">Completed <strong>{this.state.listing.application.specialty}</strong> at <strong>{this.state.listing.application.residencyProgram}</strong>
                                         </td>
                                         <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}><img
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.residencyDiplomaDocHash)}/></a>
+                                        </td>
+                                        <td>
+                                            { (this.state.reasonIndexes).includes("1") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
@@ -177,20 +188,32 @@ export class VotingView extends React.Component {
                                         </td>
                                         <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medLicenseDocHash)}/></a></td>
+                                        <td>
+                                            { (this.state.reasonIndexes).includes("2") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">Is a certified <strong>{this.state.listing.application.specialty}</strong></td>
                                         <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}><img
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}}
                                             src={getFileUrl(this.state.listing.application.specialtyCertificateDocHash)}/></a></td>
+                                        <td>
+                                            { (this.state.reasonIndexes).includes("3") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">License Number</td>
                                         <td className="text-center"><strong>{this.state.listing.application.medLicenseNumber}</strong></td>
+                                        <td>
+                                            { (this.state.reasonIndexes).includes("4") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">Prescriber Number</td>
                                         <td className="text-center"><strong>{this.state.listing.application.prescribesNumber}</strong></td>
+                                        <td>
+                                            { (this.state.reasonIndexes).includes("5") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -206,7 +229,7 @@ export class VotingView extends React.Component {
                             <Link className="btn btn-fill btn-danger" style={{display: 'block', height: '100%'}} to="/registry-voting/">Cancel</Link>
                         </div>
                         <div className="col-lg-2 col-md-2">
-                            <button className="btn btn-fill btn-block btn-primary" onClick={this.handleVoteClick}>Vote</button>
+                            <button className="btn btn-fill btn-block btn-primary" onClick={this.handleVoteClick}>Vote...</button>
                         </div>
                         <div className="col-lg-1 col-md-1">&nbsp;</div>
                     </div>
@@ -227,7 +250,7 @@ export class VotingView extends React.Component {
                                 <div className="row">
                                     <div className="col-xs-1">&nbsp;</div>
                                     <div className="col-xs-10 text-center">
-                                        <h5 className="card-title">Is this doctor certified in <strong>{this.state.listing.application.specialty}</strong>?<br/></h5>
+                                        <h5 className="card-title">Based on this information, is <strong>{this.state.listing.application.physicianName}</strong> a certified doctor?<br/></h5>
                                     </div>
                                     <div className="col-xs-1">&nbsp;</div>
                                 </div>
@@ -257,13 +280,12 @@ export class VotingView extends React.Component {
                         <div className="row">
                             <div className="col-lg-6">&nbsp;</div>
                             <div className="col-lg-3">
-                                <button onClick={this.handleCancelClickModal} type="button" className="btn btn-default btn-fill btn-sm btn-block">Cancel</button>
+                                <button onClick={this.handleCancelClickModal} type="button" className="btn btn-danger btn-fill btn-block">Cancel</button>
                             </div>
                             <div className="col-lg-3">
-                                <button onClick={this.handleVoteClickModal} type="button" className="btn btn-primary btn-fill btn-sm btn-block">Vote</button>
+                                <button onClick={this.handleVoteClickModal} type="button" className="btn btn-primary btn-fill btn-block">Vote</button>
                                 <span id="spanValidation" style={{color: 'red'}}></span>
                             </div>
-                            <div className="col-lg-1">&nbsp;</div>
                         </div>
                     </Modal.Footer>
                 </Modal>

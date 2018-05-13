@@ -213,7 +213,7 @@ class App extends Component {
                                             <a id="wallet-link" className="btn-magnify" href="">
                                                 <NavLink to="/wallet">
                                                     <i className="ti-wallet"></i>
-                                                    &nbsp; My Wallet
+                                                    &nbsp; My Account
                                                 </NavLink>
                                             </a>
                                         </li>

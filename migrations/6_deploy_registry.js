@@ -10,15 +10,6 @@ const PLCRVoting = artifacts.require('PLCRVoting.sol');
 const fs = require('fs');
 
 module.exports = (deployer, network, accounts) => {
-  async function approveRegistryFor(addresses) {
-    const token = await Token.deployed();
-    const user = addresses[0];
-    const balanceOfUser = await token.balanceOf(user);
-    await token.approve(Registry.address, balanceOfUser, { from: user });
-    if (addresses.length === 1) { return true; }
-    return approveRegistryFor(addresses.slice(1));
-  }
-
   deployer.link(DLL, Registry);
   deployer.link(AttributeStore, Registry);
 
@@ -36,10 +27,5 @@ module.exports = (deployer, network, accounts) => {
       PLCRVoting.address,
       Parameterizer.address,
     );
-  })
-    .then(async () => {
-      if (network !== 'mainnet') {
-        await approveRegistryFor(accounts);
-      }
-    }).catch((err) => { throw err; });
+  }).catch((err) => { throw err; });
 };
