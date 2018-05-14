@@ -55,11 +55,6 @@ export class ChallengeView extends React.Component {
         this.props.history.push("/registry-application");
     }
 
-    handleErrorOKClickModal = (e) => {
-        e.preventDefault();
-        this.setState({showErrorModal: false});
-    }
-
     handleVerifyClick = (e) => {
         localStorage.setItem("verify" + this.state.listing.listingHash, "true");
         this.setState({showThankYouModal: true});
@@ -242,9 +237,9 @@ export class ChallengeView extends React.Component {
                     </div>
                 </div>
 
-                <GenericOkModal showModal={this.state.showThankYouModal} header={"Verification Successful"} content={"Thank you for verifying this entry in the registry."} closeHandler={this.handleThankYouOKClickModal}/>
-                <GenericOkModal showModal={this.state.showThankYouChallengeModal} header={"Challenge Successful"} content={"Thank you, your challenge has been recorded."} closeHandler={this.handleThankYouChallengeOKClickModal}/>
-                <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
+                <GenericOkModal showModal={this.state.showThankYouModal} headerText={"Verification Successful"} contentText={"Thank you for verifying this entry in the registry."} closeHandler={this.handleThankYouOKClickModal}/>
+                <GenericOkModal showModal={this.state.showThankYouChallengeModal} headerText={"Challenge Successful"} contentText={"Thank you, your challenge has been recorded."} closeHandler={this.handleThankYouChallengeOKClickModal}/>
+                <ErrorModal showModal={this.state.showErrorModal} />
 
                 <Modal show={this.state.showZoomModal} bsSize="large">
                     <Modal.Body>

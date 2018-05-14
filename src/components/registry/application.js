@@ -111,11 +111,6 @@ export class RegistryApplication extends React.Component {
         }.bind(this));
     }
 
-    handleErrorOKClickModal = (e) => {
-        e.preventDefault();
-        this.setState({showErrorModal: false});
-    }
-
     handleWhitelistedClickModal = (e) => {
         e.preventDefault();
         this.setState({showWhitelistedModal: false});
@@ -222,9 +217,9 @@ export class RegistryApplication extends React.Component {
                     </div>
                 </div>
 
-                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
-                <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
-                <GenericOkModal showModal={this.state.showWhitelistedModal} header={"Status Updated"} content={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
+                <GenericLoadingModal showModal={this.state.showLoadingModal} />
+                <ErrorModal showModal={this.state.showErrorModal} />
+                <GenericOkModal showModal={this.state.showWhitelistedModal} headerText={"Status Updated"} contentText={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
             </div>
         );
     }

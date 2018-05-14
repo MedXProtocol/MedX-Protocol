@@ -676,11 +676,11 @@ class Apply extends Component {
                     </Modal.Footer>
                 </Modal>
 
-                <GenericOkModal showModal={this.state.showThankYouModal} header={"Thank you for your application"} content={"Your application will be reviewed within 3 days."} closeHandler={this.handleCloseThankYouModal}/>
-                <GenericOkModal showModal={this.state.showAlreadyRegistered} header={"Welcome " + this.state.physicianName} content={"You have already applied to be part of the registry. You can view your application by using the menu links on the left."} closeHandler={this.handleCloseAlreadyRegisteredModal}/>
-                <GenericOkModal showModal={this.state.showNoCivicDocuments} header={"Required Civic Data Not Received"} content={"Looks like you have not uploaded to the required identity documentation to Civic, please do so before continuing."} closeHandler={this.handleCloseNoCivicDataModal}/>
+                <GenericOkModal showModal={this.state.showThankYouModal} headerText={"Thank you for your application"} contentText={"Your application will be reviewed within 3 days."} closeHandler={this.handleCloseThankYouModal}/>
+                <GenericOkModal showModal={this.state.showAlreadyRegistered} headerText={"Welcome " + this.state.physicianName} contentText={"You have already applied to be part of the registry. You can view your application by using the menu links on the left."} closeHandler={this.handleCloseAlreadyRegisteredModal}/>
+                <GenericOkModal showModal={this.state.showNoCivicDocuments} headerText={"Required Civic Data Not Received"} contentText={"Looks like you have not uploaded to the required identity documentation to Civic, please do so before continuing."} closeHandler={this.handleCloseNoCivicDataModal}/>
                 <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleCloseErrorModal}/>
-                <GenericLoadingModal showModal={this.state.civicLoading} contentText={"Loading Data from Civic..."}/>
+                <GenericLoadingModal showModal={this.state.civicLoading} headerText={"Loading Data from Civic..."}/>
                 <DoubleTxMiningModal
                     showModal={this.state.submitInProgress}
                     processingTx1={this.state.processTx1}
