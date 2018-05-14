@@ -5,6 +5,7 @@ import {getSelectedAccount, commitVote, waitForTxComplete, getListingbyHash} fro
 import {getFileUrl} from '../../utils/storage-util';
 import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
+import GenericOkModal from "../modals/GenericOkModal";
 
 export class VotingView extends React.Component {
     constructor(props) {
@@ -109,11 +110,6 @@ export class VotingView extends React.Component {
         e.preventDefault();
         this.setState({showThankYouModal: false});
         this.props.history.push("/registry-voting");
-    }
-
-    handleErrorOKClickModal = (e) => {
-        e.preventDefault();
-        this.setState({showErrorModal: false});
     }
 
     handleVoteClick = (e) => {
@@ -291,18 +287,39 @@ export class VotingView extends React.Component {
                 </Modal>
 
                 <Modal show={this.state.showThankYouModal}>
+
+                    <Modal.Header>
+                        <h3 className="text-center">Thank you for voting!</h3>
+                    </Modal.Header>
                     <Modal.Body>
                         <div className="row">
-                            <div className="col text-center">
-                                <h4>Thank you for voting!</h4>
-                                <p>Please don't forget to reveal your vote in 3 days.</p>
-                                <p><a id="downloadSaltThankYou" style={{cursor: 'pointer'}} onClick={() => this.persistAndDownloadJSONPollData(null)}>[IMPORTANT!] Download Your Vote
-                                    Salt/Information</a></p>
+                            <div className="col-lg-12 col-md-12">
+                                <div className="row">
+                                    <div className="col-xs-12 text-center">
+                                        <span className="ti-announcement text-info" style={{fontSize: '46pt'}}>&nbsp;</span>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-1">&nbsp;</div>
+                                    <div className="col-xs-10 text-center">
+                                        <h5 className="card-title">
+                                            <p>Please don't forget to reveal your vote in 3 days.</p>
+                                            <p><a id="downloadSaltThankYou" style={{cursor: 'pointer'}} onClick={() => this.persistAndDownloadJSONPollData(null)}>[IMPORTANT!] Download Your Vote Salt/Information</a></p>
+                                        </h5>
+                                    </div>
+                                    <div className="col-xs-1">&nbsp;</div>
+                                </div>
                             </div>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button onClick={this.handleThankYouOKClickModal} type="button" className="btn btn-default">OK</button>
+                        <div className="row">
+                            <div className="col-lg-8">&nbsp;</div>
+                            <div className="col-lg-3">
+                                <button onClick={this.handleThankYouOKClickModal} type="button" className="btn btn-default btn-sm btn-block">OK</button>
+                            </div>
+                            <div className="col-lg-1">&nbsp;</div>
+                        </div>
                     </Modal.Footer>
                 </Modal>
 
@@ -320,8 +337,8 @@ export class VotingView extends React.Component {
                     </Modal.Footer>
                 </Modal>
 
-                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
-                <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
+                <GenericLoadingModal showModal={this.state.showLoadingModal} />
+                <ErrorModal showModal={this.state.showErrorModal} />
 
                 <div><a id="downloadSaltAnchorElem" style={{display: 'none'}}></a></div>
             </div>
