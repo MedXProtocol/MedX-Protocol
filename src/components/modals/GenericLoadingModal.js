@@ -9,16 +9,18 @@ class GenericLoadingModal extends Component {
 
     render() {
         return (
-            <Modal show={this.props.showModal}>
 
+
+            <Modal show={this.props.showModal}>
                 <Modal.Header>
-                    <h3 className="text-center">{this.props.contentText}</h3>
+                    <h3 className="text-center">{this.props.headerText === undefined ? "Waiting for transaction to be mined..." : this.props.headerText}</h3>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
                         <div className="col-lg-12 col-md-12">
                             <div className="row">
                                 <div className="col-xs-12 text-center">
+                                    {this.props.contentText === undefined ? null : <div>{this.props.contentText}</div>}
                                     <img style={{maxWidth: '100px'}} src={spinner}/>
                                 </div>
                             </div>

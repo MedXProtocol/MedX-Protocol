@@ -152,7 +152,7 @@ class App extends Component {
                                     <NavLink to="/apply">
                                         <i className="ti-pencil-alt"></i>
                                         <p>
-                                            APPLY (With Civic)
+                                            APPLY
                                         </p>
                                     </NavLink>
                                 </li>
