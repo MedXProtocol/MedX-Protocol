@@ -1,8 +1,7 @@
 import React from 'react'
 import { Column, Table, AutoSizer } from 'react-virtualized';
-import { Modal } from 'react-bootstrap';
 import 'react-virtualized/styles.css';
-import { getPoll, claimVoterReward, updateStatus, waitForTxComplete, revealVote, getAllPolls, getAllListings } from '../../utils/web3-util';
+import { getPoll, claimVoterReward, updateStatus, revealVote, getAllPolls, getAllListings } from '../../utils/web3-util';
 import { msToTime } from '../../utils/common-util';
 import spinner from '../../img/spinner.gif';
 import VoteUpload from './vote-upload'
@@ -10,56 +9,42 @@ import GenericLoadingModal from "../modals/GenericLoadingModal";
 import ErrorModal from "../modals/ErrorModal";
 import GenericOkModal from "../modals/GenericOkModal";
 
-function timeCellRenderer({
-                              cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                          }) {
-    //const currentTimeUTC = new Date() / 1000;
+function timeCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
+    let timeRemaining = "Ended";
 
     if (rowData.revealPeriodActive) {
-        return (
-            <div>{msToTime(rowData.revealEndDate * 1000 - rowData.timeCalled * 1000)}</div>
-        );
+        timeRemaining = msToTime(rowData.revealEndDate * 1000 - rowData.timeCalled * 1000);
     }
 
     if (rowData.commitPeriodActive) {
-        return (
-            <div>{msToTime(rowData.commitEndDate * 1000 - rowData.timeCalled * 1000)}</div>
-        );
+        timeRemaining = msToTime(rowData.commitEndDate * 1000 - rowData.timeCalled * 1000);
     }
 
     return (
-        <div>Ended</div>
+        <div>{timeRemaining}</div>
     );
 }
 
 
-function statusCellRenderer({
-                                cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                            }) {
+function statusCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
 
+    let status = "Unknown";
     if (rowData.revealPeriodActive) {
-        return (
-            <div>Revealing</div>
-        );
+        status = "Revealing";
     }
 
     if (rowData.commitPeriodActive) {
-        return (
-            <div>Voting</div>
-        );
+        status = "Voting"
     }
 
     if (rowData.pollEnded) {
-        return (
-            <div>Poll Ended</div>
-        );
+        status = "Poll Ended"
     }
 
     return (
-        <div>Unknown</div>
+        <div>{status}</div>
     );
 }
-
 
 export default class RegistryRevealing extends React.Component {
     constructor(props) {
@@ -70,7 +55,13 @@ export default class RegistryRevealing extends React.Component {
             noneDisplayString: 'none',
             spinnerDisplayString: 'block',
             tableDisplayString: 'none',
-            showVoteUploadModal : false
+            showVoteUploadModal : false,
+            showClaimLoadingModal: false,
+            showChallengeLoadingModal: false,
+            showLoadingModal: false,
+            showThankYouModal: false,
+            showErrorModal: false,
+            updated: "N/A"
         };
 
         this._rowClassName = this._rowClassName.bind(this);
@@ -78,30 +69,40 @@ export default class RegistryRevealing extends React.Component {
 
     componentDidMount() {
         this.getPolls();
+        getAllListings().then((result) => {
+            this.setState({allListings: result});
+        });
+
         this.props.parentCallback("My Votes");
     }
 
     getPolls = async (event) => {
 
-        this.setState({noneDisplayString: 'none'});
-        this.setState({spinnerDisplayString: 'block'});
-        this.setState({tableDisplayString: 'none'});
+        this.setState({
+            noneDisplayString: 'none',
+            spinnerDisplayString: 'block',
+            tableDisplayString: 'none'
+        });
 
-        getAllPolls(function (result) {
+        await getAllPolls(function (result) {
 
             //filter out only the polls that this user has voted on
             //(listing.poll.pollEnded && (100 * parseInt(listing.poll.votesFor) > parseInt(listing.poll.voteQuorum) * ( parseInt(listing.poll.votesFor) + parseInt(listing.poll.votesAgainst) ))
             let filteredResult = result.filter(poll => poll.numTokens > 0);
 
             if (filteredResult.length == 0) {
-                this.setState({noneDisplayString: 'block'});
-                this.setState({spinnerDisplayString: 'none'});
-                this.setState({tableDisplayString: 'none'});
+                this.setState({
+                    noneDisplayString: 'block',
+                    spinnerDisplayString: 'none',
+                    tableDisplayString: 'none'
+                });
             }
             else {
-                this.setState({noneDisplayString: 'none'});
-                this.setState({spinnerDisplayString: 'none'});
-                this.setState({tableDisplayString: 'block'});
+                this.setState({
+                    noneDisplayString: 'none',
+                    spinnerDisplayString: 'none',
+                    tableDisplayString: 'block'
+                });
             }
 
             this.setState({polls: filteredResult});
@@ -112,11 +113,6 @@ export default class RegistryRevealing extends React.Component {
         e.preventDefault();
         this.setState({showThankYouModal: false});
         this.getPolls();
-    }
-
-    handleErrorOKClickModal = (e) => {
-        e.preventDefault();
-        this.setState({showErrorModal: false});
     }
 
     handleThankYouClaimOKClickModal = (e) => {
@@ -155,6 +151,19 @@ export default class RegistryRevealing extends React.Component {
         //TODO: Show error?
       }
     }
+
+    rewardEarnedCellRenderer = ({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) => {
+        let text = "N/A";
+        if (rowData.pollEnded && rowData.voterCanClaimReward && rowData.hasBeenRevealed && rowData.voterHasReward) {
+            let filteredResult = this.state.allListings.filter(listing => listing.challengeID == rowData.pollID && !listing.challenge.resolved);
+            if (filteredResult.length == 1) {
+                text = <a className="text-warning" style={{cursor: 'pointer'}} onClick={() => this.sendUpdateStatusTransaction(filteredResult[0].listingHash, rowData.pollID, false)}><span className="ti-reload"/></a>;
+            } else if (rowData.voterReward !== "N/A") {
+                text = (rowData.voterReward / 10 ** 18).toFixed(3) + " MEDX";
+            }
+        }
+        return <div>{text}</div>
+    };
 
 
     handleRevealClick = async (pollID) => {
@@ -203,27 +212,30 @@ export default class RegistryRevealing extends React.Component {
     };
 
     sendClaimVoterRewardTransaction = (pollID) => {
-        this.setState({showErrorModal: false});
-        this.setState({showClaimLoadingModal: true});
-        this.setState({showChallengeLoadingModal: false});
+        this.setState({
+            showErrorModal: false,
+            showClaimLoadingModal: true,
+            showChallengeLoadingModal: false});
         let persistedPoll = JSON.parse(localStorage.getItem("vote" + pollID));
         claimVoterReward(pollID, persistedPoll.salt, function (error, result) {
             if (error) {
                 console.log(error);
-                this.setState({showErrorModal: true});
-                this.setState({showClaimLoadingModal: false});
-                this.setState({showChallengeLoadingModal: false});
+                this.setState({
+                    showErrorModal: true,
+                    showClaimLoadingModal: false,
+                    showChallengeLoadingModal: false});
             }
             else {
-                this.setState({showErrorModal: false});
-                this.setState({showClaimLoadingModal: false});
-                this.setState({showChallengeLoadingModal: false});
-                this.setState({showThankYouClaimModal: true});
+                this.setState({
+                    showErrorModal: false,
+                    showClaimLoadingModal: false,
+                    showChallengeLoadingModal: false,
+                    showThankYouClaimModal: true});
             }
         }.bind(this));
     }
 
-    sendUpdateStatusTransaction = (listingHash, pollID) => {
+    sendUpdateStatusTransaction = (listingHash, pollID, doSecondTransaction) => {
         this.setState({showErrorModal: false});
         this.setState({showClaimLoadingModal: false});
         this.setState({showChallengeLoadingModal: true});
@@ -235,7 +247,11 @@ export default class RegistryRevealing extends React.Component {
                 this.setState({showChallengeLoadingModal: false});
             }
             else {
-                this.sendClaimVoterRewardTransaction(pollID);
+                if (doSecondTransaction) {
+                    this.sendClaimVoterRewardTransaction(pollID);
+                } else {
+                    this.setState({showChallengeLoadingModal: false});
+                }
             }
         }.bind(this));
     }
@@ -248,7 +264,7 @@ export default class RegistryRevealing extends React.Component {
             let filteredResult = result.filter(listing => listing.challengeID == pollID && !listing.challenge.resolved);
             if (filteredResult.length == 1) {
                 //Then we need to call updateStatus(bytes32 _listingHash)
-                this.sendUpdateStatusTransaction(filteredResult[0].listingHash, pollID);
+                this.sendUpdateStatusTransaction(filteredResult[0].listingHash, pollID, true);
             }
             else {
                 //else we need to jump right to the claiming claimVoterReward(uint _challengeID, uint _salt)
@@ -313,9 +329,7 @@ export default class RegistryRevealing extends React.Component {
                                         width={500}
                                         className={"text-center"}
                                         headerClassName={"text-center"}
-                                        cellRenderer={({rowData}) => {
-                                            return rowData.voterReward === "N/A" ? rowData.voterReward : (rowData.voterReward / 10 ** 18).toFixed(3) + " MEDX";
-                                        }}
+                                        cellRenderer={this.rewardEarnedCellRenderer}
                                     />
                                     <Column
                                         dataKey="action"
@@ -323,9 +337,7 @@ export default class RegistryRevealing extends React.Component {
                                         width={500}
                                         className={"text-center"}
                                         headerClassName={"text-center"}
-                                        cellRenderer={({
-                                                           cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                                                       }) => {
+                                        cellRenderer={({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) => {
 
                                             if (rowData.revealPeriodActive) {
 
@@ -349,8 +361,7 @@ export default class RegistryRevealing extends React.Component {
 
                                             if (rowData.pollEnded && rowData.voterCanClaimReward && rowData.hasBeenRevealed && rowData.voterHasReward) {
                                                 return (
-                                                    <button className="btn btn-block btn-primary btn-sm btn-fill" onClick={() => this.handleClaimRewardClick(rowData.pollID)}>Claim
-                                                        Reward</button>
+                                                    <button className="btn btn-block btn-primary btn-sm btn-fill" onClick={() => this.handleClaimRewardClick(rowData.pollID)}>Claim Reward</button>
                                                 );
                                             }
 
@@ -370,33 +381,16 @@ export default class RegistryRevealing extends React.Component {
 
                 </div>
 
-                <Modal show={this.state.showChallengeLoadingModal}>
-                    <Modal.Body>
-                        <div className="row">
-                            <div className="col text-center">
-                                <h4>Please Update this Challenge</h4>
-                                <p>This challenge needs to be updated before you can claim your tokens Please sign the transaction required to update this challenge.</p>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                </Modal>
-
-                <Modal show={this.state.showClaimLoadingModal}>
-                    <Modal.Body>
-                        <div className="row">
-                            <div className="col text-center">
-                                <h4>Claim your tokens</h4>
-                                <p>Please sign the transaction required to claim your tokens.</p>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                </Modal>
+                <GenericLoadingModal showModal={this.state.showLoadingModal} />
+                <GenericLoadingModal showModal={this.state.showChallengeLoadingModal} headerText={"Updating challenge state..."} />
+                <GenericLoadingModal showModal={this.state.showClaimLoadingModal} headerText={"Claiming your tokens..."}/>
 
                 <VoteUpload show={this.state.showVoteUploadModal} callback={this.state.voteUploadCallbackFunction} />
-                <GenericOkModal showModal={this.state.showThankYouModal} header={"Vote Successfully Revealed"} content={"Thank you for revealing your vote, it has been recorded."} closeHandler={this.handleThankYouOKClickModal}/>
-                <GenericOkModal showModal={this.state.showThankYouClaimModal} header={"Claim Successful"} content={"Thank you. Your MEDX tokens have been claimed"} closeHandler={this.handleThankYouClaimOKClickModal}/>
-                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
-                <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
+
+                <GenericOkModal showModal={this.state.showThankYouModal} headerText={"Vote Successfully Revealed"} contentText={"Thank you for revealing your vote, it has been recorded."} closeHandler={this.handleThankYouOKClickModal}/>
+                <GenericOkModal showModal={this.state.showThankYouClaimModal} headerText={"Claim Successful"} contentText={"Thank you. Your MEDX tokens have been claimed"} closeHandler={this.handleThankYouClaimOKClickModal}/>
+
+                <ErrorModal showModal={this.state.showErrorModal} />
             </div>
         );
     }

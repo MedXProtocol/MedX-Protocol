@@ -94,11 +94,6 @@ export class Wallet extends Component {
         this.setState({withdrawVotingTokens: event.target.value});
     };
 
-    handleErrorOkClickModal = (event) => {
-        event.preventDefault();
-        this.setState({showErrorModal: false});
-    };
-
     onSuccess = () => {
         getSelectedAccountBalance().then((_balance) => {
             this.setState({balance: _balance.toFixed(3)});
@@ -282,8 +277,8 @@ export class Wallet extends Component {
                     </Modal.Footer>
                 </Modal>
 
-                <GenericLoadingModal showModal={this.state.submitInProgress} contentText={"Waiting for transaction to be mined..."}/>
-                <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOkClickModal}/>
+                <GenericLoadingModal showModal={this.state.submitInProgress} />
+                <ErrorModal showModal={this.state.showErrorModal} />
             </div>
         );
     }

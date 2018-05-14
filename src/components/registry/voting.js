@@ -122,11 +122,6 @@ export default class RegistryVoting extends React.Component {
         }.bind(this));
     }
 
-    handleErrorOKClickModal = (e) => {
-        e.preventDefault();
-        this.setState({showErrorModal: false});
-    }
-
     handleWhitelistedClickModal = (e) => {
         e.preventDefault();
         this.setState({showWhitelistedModal: false});
@@ -248,9 +243,9 @@ export default class RegistryVoting extends React.Component {
                     </div>
                 </div>
 
-                <GenericOkModal showModal={this.state.showWhitelistedModal} header={"Status Updated"} content={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
-                <ErrorModal showModal={this.state.showErrorModal} closeHandler={this.handleErrorOKClickModal}/>
-                <GenericLoadingModal showModal={this.state.showLoadingModal} contentText={"Waiting for transaction to be mined..."}/>
+                <GenericOkModal showModal={this.state.showWhitelistedModal} headerText={"Status Updated"} contentText={"The status of this application has been updated."} closeHandler={this.handleWhitelistedClickModal}/>
+                <ErrorModal showModal={this.state.showErrorModal} />
+                <GenericLoadingModal showModal={this.state.showLoadingModal} />
             </div>
         );
     }

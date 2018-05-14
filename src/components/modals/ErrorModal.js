@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Modal } from 'react-bootstrap';
+import GenericOkModal from "./GenericOkModal";
 
 class ErrorModal extends Component {
     constructor(props) {
@@ -8,39 +8,13 @@ class ErrorModal extends Component {
 
     render() {
         return (
-            <Modal show={this.props.showModal}>
-
-                <Modal.Header>
-                    <h3 className="text-center">Something went wrong</h3>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="row">
-                        <div className="col-lg-12 col-md-12">
-                            <div className="row">
-                                <div className="col-xs-12 text-center">
-                                    <span className="ti-support text-danger" style={{fontSize: '46pt'}}>&nbsp;</span>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xs-1">&nbsp;</div>
-                                <div className="col-xs-10 text-center">
-                                    <h5 className="card-title">An error occured. Please try again later.</h5>
-                                </div>
-                                <div className="col-xs-1">&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <div className="row">
-                        <div className="col-lg-8">&nbsp;</div>
-                        <div className="col-lg-3">
-                            <button onClick={this.props.closeHandler} type="button" className="btn btn-default btn-sm btn-block">OK</button>
-                        </div>
-                        <div className="col-lg-1">&nbsp;</div>
-                    </div>
-                </Modal.Footer>
-            </Modal>
+            <GenericOkModal
+                showModal={this.props.showModal}
+                icon={this.props.icon === undefined ? "ti-support text-danger" : this.props.icon}
+                headerText={this.props.headerText === undefined ? "Something went wrong" : this.props.headerText}
+                contentText={this.props.contentText === undefined ? "An error occured. Please try again later." : this.props.contentText}
+                closeHandler={this.props.closeHandler}
+            />
         );
     }
 }
