@@ -100,8 +100,8 @@
     .sidebar{
         .sidebar-wrapper{
 
-            li.active{
-                > a:not([data-toggle="collapse"]){
+            li{
+                > a.active:not([data-toggle="collapse"]){
                     &:before{
                         border-right: 17px solid $medium-gray;
                         border-top: 17px solid transparent;
