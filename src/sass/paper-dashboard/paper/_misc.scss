@@ -14,7 +14,8 @@ body{
         }
     }
 }
-a{
+a,
+#wallet-link {
   color: $info-color;
 
   &:hover, &:focus{
