@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import civic from 'civic';
+import axios from 'axios';
+import { apply, getSelectedAccountBalance, approveRegistryAllowance, getListingbyId } from '../../utils/web3-util';
+
 import Spinner from '../spinner/Spinner';
 import { uploadJson, uploadFile } from '../../utils/storage-util';
-import { apply, getSelectedAccountBalance, approveRegistryAllowance, getListingbyId } from '../../utils/web3-util';
 import ErrorModal from '../modals/ErrorModal';
 import DoubleTxMiningModal from '../modals/DoubleTxMiningModal';
 import GenericLoadingModal from '../modals/GenericLoadingModal';
@@ -12,8 +15,6 @@ import ApplyForm from './components/ApplyForm';
 import InsufficientFundsModal from './components/InsufficientFundsModal';
 import ConfirmSubmissionModal from './components/ConfirmSubmissionModal';
 
-const civic = require('civic');
-const axios = require('axios');
 
 class Apply extends Component {
 
@@ -21,7 +22,6 @@ class Apply extends Component {
     super();
 
     this.state = {
-      testMode: false,
       form: {
         userId: null,
 
@@ -86,7 +86,6 @@ class Apply extends Component {
       civicSip.login({ style: 'popup', scopeRequest: civicSip.ScopeRequests.BASIC_SIGNUP });
     } else {
       this.setState(prevState => ({
-        testMode: true,
         form: {
           ...prevState.form,
           physicianName: null,
@@ -248,12 +247,11 @@ class Apply extends Component {
       <div className="card">
         <ApplyForm
           form={this.state.form}
-          isTestMode={this.state.testMode}
+          isTestMode={this.props.noCivic}
           isSubmitDisabled={this.isSubmitDisabled()}
           onSubmit={this.handleSubmit}
           onFileInputChange={this.handleFileInputChange}
           onTextInputChange={this.handleTextInputChange}/>
-
 
         <InsufficientFundsModal
           show={this.state.showBalanceTooLowModal}
