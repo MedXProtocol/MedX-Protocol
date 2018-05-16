@@ -1,12 +1,12 @@
-import {Registry} from '../components/registry/registry';
-import {Wallet} from '../components/wallet/wallet';
-import {RegistryApplication} from '../components/registry/application';
-import RegistryVoting from '../components/registry/voting';
-import RegistryRevealing from '../components/registry/revealing';
-import { RegistryView } from '../components/registry/registry-view';
-import { VotingView } from '../components/registry/voting-view';
-import { ChallengeView } from '../components/registry/challenge-view';
-import Apply from '../components/Apply';
+import {Registry} from '../views/registry/registry';
+import Wallet from '../views/Wallet';
+import {RegistryApplication} from '../views/registry/application';
+import RegistryVoting from '../views/registry/voting';
+import RegistryRevealing from '../views/registry/revealing';
+import { RegistryView } from '../views/registry/registry-view';
+import { VotingView } from '../views/registry/voting-view';
+import { ChallengeView } from '../views/registry/challenge-view';
+import Apply from '../views/Apply';
 import Search from '../components/search/search';
 
 export const sideNavRoutes = [

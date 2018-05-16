@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { sideNavRoutes } from '../../router';
+import { sideNavRoutes } from '../../router/index';
 import logo from '../../img/logo.png';
 
 const SideNav = () => (

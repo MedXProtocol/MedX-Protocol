@@ -4,12 +4,12 @@ import civic from 'civic';
 import axios from 'axios';
 import { apply, getSelectedAccountBalance, approveRegistryAllowance, getListingbyId } from '../../utils/web3-util';
 
-import Spinner from '../spinner/Spinner';
+import Spinner from '../../components/spinner/Spinner';
 import { uploadJson, uploadFile } from '../../utils/storage-util';
-import ErrorModal from '../modals/ErrorModal';
-import DoubleTxMiningModal from '../modals/DoubleTxMiningModal';
-import GenericLoadingModal from '../modals/GenericLoadingModal';
-import GenericOkModal from '../modals/GenericOkModal';
+import ErrorModal from '../../components/modals/ErrorModal';
+import DoubleTxMiningModal from '../../components/modals/DoubleTxMiningModal';
+import GenericLoadingModal from '../../components/modals/GenericLoadingModal';
+import GenericOkModal from '../../components/modals/GenericOkModal';
 
 import ApplyForm from './components/ApplyForm';
 import InsufficientFundsModal from './components/InsufficientFundsModal';
