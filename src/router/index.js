@@ -1,13 +1,13 @@
-import {Registry} from '../components/registry/registry.js'
-import {Wallet} from '../components/wallet/wallet.js'
-import {RegistryApplication} from '../components/registry/application.js'
-import RegistryVoting from '../components/registry/voting.js'
-import RegistryRevealing from '../components/registry/revealing.js'
-import { RegistryView } from '../components/registry/registry-view.jsx'
-import { VotingView } from '../components/registry/voting-view.jsx'
-import { ChallengeView } from '../components/registry/challenge-view.jsx'
-import Apply from '../components/apply/apply.js'
-import Search from '../components/search/search.js'
+import {Registry} from '../components/registry/registry';
+import {Wallet} from '../components/wallet/wallet';
+import {RegistryApplication} from '../components/registry/application';
+import RegistryVoting from '../components/registry/voting';
+import RegistryRevealing from '../components/registry/revealing';
+import { RegistryView } from '../components/registry/registry-view';
+import { VotingView } from '../components/registry/voting-view';
+import { ChallengeView } from '../components/registry/challenge-view';
+import Apply from '../components/Apply';
+import Search from '../components/search/search';
 
 export const sideNavRoutes = [
   {

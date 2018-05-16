@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route, Switch, HashRouter } from 'react-router-dom';
 
 import SideNav from './components/navigation/SideNav';
 import MainPanel from './components/navigation/MainPanel';
@@ -83,9 +83,11 @@ class App extends Component {
             networkName={this.state.networkName}
             networkId={this.state.networkId}
             pageTitle={this.state.pageTitle}>
-            {
-              this.buildAppRoutes()
-            }
+            <Switch>
+              {
+                this.buildAppRoutes()
+              }
+            </Switch>
           </MainPanel>
 
           <Modal show={this.state.showNoAccountModal}>
