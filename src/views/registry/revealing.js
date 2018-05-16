@@ -5,9 +5,9 @@ import { getPoll, claimVoterReward, updateStatus, revealVote, getAllPolls, getAl
 import { msToTime } from '../../utils/common-util';
 import spinner from '../../img/spinner.gif';
 import VoteUpload from './vote-upload'
-import GenericLoadingModal from "../modals/GenericLoadingModal";
-import ErrorModal from "../modals/ErrorModal";
-import GenericOkModal from "../modals/GenericOkModal";
+import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
+import ErrorModal from "../../components/modals/ErrorModal";
+import GenericOkModal from "../../components/modals/GenericOkModal";
 
 function timeCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     let timeRemaining = "Ended";

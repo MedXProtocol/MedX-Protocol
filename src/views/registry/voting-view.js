@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import {getSelectedAccount, commitVote, waitForTxComplete, getListingbyHash} from '../../utils/web3-util';
 import {getFileUrl} from '../../utils/storage-util';
-import GenericLoadingModal from "../modals/GenericLoadingModal";
-import ErrorModal from "../modals/ErrorModal";
-import GenericOkModal from "../modals/GenericOkModal";
+import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
+import ErrorModal from "../../components/modals/ErrorModal";
+import GenericOkModal from "../../components/modals/GenericOkModal";
 
 export class VotingView extends React.Component {
     constructor(props) {

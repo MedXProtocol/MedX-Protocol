@@ -6,9 +6,9 @@ import {
     approveRegistryAllowance
 } from '../../utils/web3-util';
 import {getFileUrl, uploadJson} from '../../utils/storage-util';
-import ErrorModal from "../modals/ErrorModal";
-import GenericOkModal from "../modals/GenericOkModal";
-import DoubleTxMiningModal from "../modals/DoubleTxMiningModal";
+import ErrorModal from "../../components/modals/ErrorModal";
+import GenericOkModal from "../../components/modals/GenericOkModal";
+import DoubleTxMiningModal from "../../components/modals/DoubleTxMiningModal";
 
 export class ChallengeView extends React.Component {
     constructor(props) {

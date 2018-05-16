@@ -8,13 +8,13 @@ import {
 } from '../../utils/web3-util';
 import { Modal } from 'react-bootstrap';
 
-import WalletCard from './WalletCard';
+import WalletCard from './components/WalletCard';
 
-import GenericLoadingModal from '../modals/GenericLoadingModal';
-import ErrorModal from '../modals/ErrorModal';
+import GenericLoadingModal from '../../components/modals/GenericLoadingModal';
+import ErrorModal from '../../components/modals/ErrorModal';
 import './wallet.css';
 
-export class Wallet extends Component {
+class Wallet extends Component {
   constructor () {
     super();
 
