@@ -24,18 +24,16 @@ let tableData = [
   }
 ];
 
-function actionCellRenderer({
-  cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-}) {
-  let routeLink = "/registry-view/" + rowData.id;
-  return (
-    <Link to={routeLink}>View</Link>
-  );
-}
-
-export class Registry extends React.Component {
+class Registry extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  actionCellRenderer({ rowData }) {
+    const routeLink = "/registry-view/" + rowData.id;
+    return (
+      <Link to={routeLink}>View</Link>
+    );
   }
 
   render() {
@@ -68,7 +66,7 @@ export class Registry extends React.Component {
               dataKey="action"
               label="Action"
               width={4000}
-              cellRenderer={actionCellRenderer}
+              cellRenderer={this.actionCellRenderer}
             />
           </Table>
         </div>
@@ -76,3 +74,5 @@ export class Registry extends React.Component {
     );
   }
 }
+
+export default Registry;

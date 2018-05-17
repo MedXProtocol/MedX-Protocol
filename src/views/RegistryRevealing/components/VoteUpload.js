@@ -1,11 +1,11 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap';
 import 'react-virtualized/styles.css';
-import { claimVoterReward, updateStatus, waitForTxComplete, revealVote, getAllPolls, getAllListings } from '../../utils/web3-util';
-import spinner from '../../img/spinner.gif';
+import { claimVoterReward, updateStatus, waitForTxComplete, revealVote, getAllPolls, getAllListings } from '../../../utils/web3-util';
+import spinner from '../../../img/spinner.gif';
 
 
-export default class VoteUpload extends React.Component {
+class VoteUpload extends React.Component {
   constructor(props) {
     super(props);
 
@@ -89,3 +89,5 @@ export default class VoteUpload extends React.Component {
     );
   }
 }
+
+export default VoteUpload;

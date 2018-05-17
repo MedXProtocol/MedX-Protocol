@@ -51,7 +51,7 @@ function nameCellRenderer({
 }
 
 
-export default class RegistryVoting extends React.Component {
+class RegistryVoting extends React.Component {
     constructor(props) {
         super(props);
 
@@ -250,3 +250,5 @@ export default class RegistryVoting extends React.Component {
         );
     }
 }
+
+export default RegistryVoting;

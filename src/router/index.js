@@ -1,11 +1,11 @@
-import {Registry} from '../views/registry/registry';
+import Registry from '../views/Registry';
 import Wallet from '../views/Wallet';
-import {RegistryApplication} from '../views/registry/application';
-import RegistryVoting from '../views/registry/voting';
-import RegistryRevealing from '../views/registry/revealing';
-import { RegistryView } from '../views/registry/registry-view';
-import { VotingView } from '../views/registry/voting-view';
-import { ChallengeView } from '../views/registry/challenge-view';
+import RegistryApplication from '../views/RegistryApplication';
+import RegistryVoting from '../views/RegistryVoting';
+import RegistryRevealing from '../views/RegistryRevealing';
+import RegistryView from '../views/RegistryView';
+import VotingView from '../views/VotingView';
+import ChallengeView from '../views/ChallengeView';
 import Apply from '../views/Apply';
 import Search from '../components/search/search';
 
