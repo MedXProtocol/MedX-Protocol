@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class RegistryView extends React.Component {
+class RegistryView extends React.Component {
   constructor(props) {
     super(props);
     this.status = "Registered";
@@ -32,3 +32,5 @@ export class RegistryView extends React.Component {
     );
   }
 }
+
+export default RegistryView;

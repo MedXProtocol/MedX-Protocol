@@ -7,7 +7,7 @@ import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import GenericOkModal from "../../components/modals/GenericOkModal";
 
-export class VotingView extends React.Component {
+class VotingView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -345,3 +345,5 @@ export class VotingView extends React.Component {
         );
     }
 }
+
+export default VotingView;

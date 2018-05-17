@@ -4,7 +4,7 @@ import 'react-virtualized/styles.css';
 import { getPoll, claimVoterReward, updateStatus, revealVote, getAllPolls, getAllListings } from '../../utils/web3-util';
 import { msToTime } from '../../utils/common-util';
 import spinner from '../../img/spinner.gif';
-import VoteUpload from './vote-upload'
+import VoteUpload from './components/VoteUpload'
 import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import GenericOkModal from "../../components/modals/GenericOkModal";
@@ -46,7 +46,7 @@ function statusCellRenderer({cellData, columnData, columnIndex, dataKey, isScrol
     );
 }
 
-export default class RegistryRevealing extends React.Component {
+class RegistryRevealing extends React.Component {
     constructor(props) {
         super(props);
 
@@ -395,3 +395,5 @@ export default class RegistryRevealing extends React.Component {
         );
     }
 }
+
+export default RegistryRevealing;
