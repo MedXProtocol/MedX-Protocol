@@ -90,7 +90,7 @@ class RegistryRevealing extends React.Component {
             //(listing.poll.pollEnded && (100 * parseInt(listing.poll.votesFor) > parseInt(listing.poll.voteQuorum) * ( parseInt(listing.poll.votesFor) + parseInt(listing.poll.votesAgainst) ))
             let filteredResult = result.filter(poll => poll.numTokens > 0);
 
-            if (filteredResult.length == 0) {
+            if (filteredResult.length === 0) {
                 this.setState({
                     noneDisplayString: 'block',
                     spinnerDisplayString: 'none',
@@ -155,8 +155,8 @@ class RegistryRevealing extends React.Component {
     rewardEarnedCellRenderer = ({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) => {
         let text = "N/A";
         if (rowData.pollEnded && rowData.voterCanClaimReward && rowData.hasBeenRevealed && rowData.voterHasReward) {
-            let filteredResult = this.state.allListings.filter(listing => listing.challengeID == rowData.pollID && !listing.challenge.resolved);
-            if (filteredResult.length == 1) {
+            let filteredResult = this.state.allListings.filter(listing => listing.challengeID === rowData.pollID && !listing.challenge.resolved);
+            if (filteredResult.length === 1) {
                 text = <a className="text-warning" style={{cursor: 'pointer'}} onClick={() => this.sendUpdateStatusTransaction(filteredResult[0].listingHash, rowData.pollID, false)}><span className="ti-reload"/></a>;
             } else if (rowData.voterReward !== "N/A") {
                 text = (rowData.voterReward / 10 ** 18).toFixed(3) + " MEDX";
@@ -226,6 +226,7 @@ class RegistryRevealing extends React.Component {
                     showChallengeLoadingModal: false});
             }
             else {
+                this.getPolls();
                 this.setState({
                     showErrorModal: false,
                     showClaimLoadingModal: false,
@@ -250,6 +251,7 @@ class RegistryRevealing extends React.Component {
                 if (doSecondTransaction) {
                     this.sendClaimVoterRewardTransaction(pollID);
                 } else {
+                    this.getPolls();
                     this.setState({showChallengeLoadingModal: false});
                 }
             }
@@ -261,8 +263,8 @@ class RegistryRevealing extends React.Component {
 
         getAllListings(function (result) {
             //See if there is a challenge that isn't yet resolved for this poll
-            let filteredResult = result.filter(listing => listing.challengeID == pollID && !listing.challenge.resolved);
-            if (filteredResult.length == 1) {
+            let filteredResult = result.filter(listing => listing.challengeID === pollID && !listing.challenge.resolved);
+            if (filteredResult.length === 1) {
                 //Then we need to call updateStatus(bytes32 _listingHash)
                 this.sendUpdateStatusTransaction(filteredResult[0].listingHash, pollID, true);
             }
@@ -365,6 +367,7 @@ class RegistryRevealing extends React.Component {
                                                 );
                                             }
 
+                                            // eslint-disable-next-line no-mixed-operators
                                             if (rowData.pollEnded && !rowData.voterCanClaimReward || !rowData.voterHasReward) {
                                                 return (
                                                     <button disabled className="btn btn-default btn-sm btn-block btn-fill">Claim Reward</button>

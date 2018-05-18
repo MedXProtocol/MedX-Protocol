@@ -14,8 +14,8 @@
     "pVoteQuorum": 50
 	},
   "token": {
-    "address": "0x7798e0ffbb42af92fcbfc58e14840e7d5bf16c05",
-    "deployToken": true,
+    "address": "0xe85abf7cec5bb9fa7c31807b757c548cec3e19b2",
+    "deployToken": false,
     "decimals": "18",
     "name": "TestCoin",
     "symbol": "TEST",

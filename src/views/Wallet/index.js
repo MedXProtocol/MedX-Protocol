@@ -67,7 +67,7 @@ class Wallet extends Component {
     this.setState({ submitInProgress: true, showManageVotingTokensModal: false });
     await requestVotingRights(this.state.addVotingTokens, (error, result) => {
       if (!error) {
-        const newVoteTokenBalance = parseInt(this.state.votingTokens) + parseInt(this.state.addVotingTokens);
+        const newVoteTokenBalance = parseInt(this.state.votingTokens, 10) + parseInt(this.state.addVotingTokens, 10);
         this.onSuccess(newVoteTokenBalance);
       } else {
         this.onError();
@@ -79,7 +79,7 @@ class Wallet extends Component {
     this.setState({ submitInProgress: true, showManageVotingTokensModal: false });
     await withdrawVotingRights(this.state.withdrawVotingTokens, (error, result) => {
       if (!error) {
-        const newVoteTokenBalance = parseInt(this.state.votingTokens) - parseInt(this.state.withdrawVotingTokens);
+        const newVoteTokenBalance = parseInt(this.state.votingTokens, 10) - parseInt(this.state.withdrawVotingTokens, 10);
         this.onSuccess(newVoteTokenBalance);
       } else {
         this.onError();

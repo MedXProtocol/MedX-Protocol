@@ -7,7 +7,6 @@ import RegistryView from '../views/RegistryView';
 import VotingView from '../views/VotingView';
 import ChallengeView from '../views/ChallengeView';
 import Apply from '../views/Apply';
-import Search from '../components/search/search';
 
 export const sideNavRoutes = [
   {
@@ -49,10 +48,6 @@ export const appRoutes = [
   {
     path: '/applynocivic',
     component: Apply,
-  },
-  {
-    path: '/search',
-    component: Search,
   },
   {
     path: '/registry-application',

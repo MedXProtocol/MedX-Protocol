@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column, Table, AutoSizer } from 'react-virtualized';
+import { Column, Table } from 'react-virtualized';
 import { Link } from 'react-router-dom';
 import 'react-virtualized/styles.css';
 
@@ -25,10 +25,6 @@ let tableData = [
 ];
 
 class Registry extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   actionCellRenderer({ rowData }) {
     const routeLink = "/registry-view/" + rowData.id;
     return (

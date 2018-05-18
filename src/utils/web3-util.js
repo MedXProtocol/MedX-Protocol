@@ -102,7 +102,7 @@ export async function apply(userId, documentHash, callback) {
 export async function revealVote(pollID, voteOption, salt, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.PLCRVotingInstance.revealVote(parseInt(pollID), parseInt(voteOption), parseInt(salt), {from: ethConfig.selectedAccount, gas: 120000});
+        const result = await ethConfig.PLCRVotingInstance.revealVote(parseInt(pollID, 10), parseInt(voteOption, 10), parseInt(salt, 10), {from: ethConfig.selectedAccount, gas: 120000});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -112,7 +112,7 @@ export async function revealVote(pollID, voteOption, salt, callback) {
 export async function claimVoterReward(pollID, salt, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.claimVoterReward(parseInt(pollID), parseInt(salt), {from: ethConfig.selectedAccount});
+        const result = await ethConfig.registryInstance.claimVoterReward(parseInt(pollID, 10), parseInt(salt, 10), {from: ethConfig.selectedAccount});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -138,7 +138,7 @@ export async function commitVote(pollID, voteChoice, salt, numTokens, callback) 
         //let packedHashValue = web3.sha3(web3.toHex(voteChoice) + web3.toHex(salt), { encoding: "hex" });
         //let packedHashValue = web3.utils.soliditySha3(voteChoice, salt);
         //let packedHashValue = keccak256(voteChoice, salt);
-        let packedHashValue = ethConfig.web3.utils.soliditySha3(parseInt(voteChoice), parseInt(salt));
+        let packedHashValue = ethConfig.web3.utils.soliditySha3(parseInt(voteChoice, 10), parseInt(salt, 10));
 
 
         const result = await ethConfig.PLCRVotingInstance.commitVote(pollID, packedHashValue, fromTokenDecimal(numTokens), previousPollID, {from: ethConfig.selectedAccount});
@@ -253,8 +253,8 @@ export async function getPoll(counter) {
     let persistedPoll = JSON.parse(localStorage.getItem("vote" + poll.pollID));
     if (persistedPoll && poll.pollEnded && poll.hasBeenRevealed && poll.numTokens > 0) {
         //Do a calculation to determine the number of tokens due based on localStorage data
-        let isPassed = (100 * parseInt(poll.votesFor) > parseInt(poll.voteQuorum) * (parseInt(poll.votesFor) + parseInt(poll.votesAgainst)));
-        if ((isPassed && persistedPoll.voteChoice == 1) || (!isPassed && persistedPoll.voteChoice == 0))
+        let isPassed = (100 * parseInt(poll.votesFor, 10) > parseInt(poll.voteQuorum, 10) * (parseInt(poll.votesFor, 10) + parseInt(poll.votesAgainst, 10)));
+        if ((isPassed && persistedPoll.voteChoice === 1) || (!isPassed && persistedPoll.voteChoice === 0))
             poll.voterHasReward = true;
         else
             poll.voterHasReward = false;

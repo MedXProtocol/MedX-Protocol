@@ -3,10 +3,6 @@ import {Modal} from "react-bootstrap";
 import spinner from '../../img/spinner.gif';
 
 class GenericLoadingModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
 
@@ -21,7 +17,7 @@ class GenericLoadingModal extends Component {
                             <div className="row">
                                 <div className="col-xs-12 text-center">
                                     {this.props.contentText === undefined ? null : <div>{this.props.contentText}</div>}
-                                    <img style={{maxWidth: '100px'}} src={spinner}/>
+                                    <img role="presentation" style={{maxWidth: '100px'}} src={spinner}/>
                                 </div>
                             </div>
                             <div className="row">

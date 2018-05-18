@@ -1,11 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
-import {getSelectedAccount, commitVote, waitForTxComplete, getListingbyHash} from '../../utils/web3-util';
+import {getSelectedAccount, commitVote, getListingbyHash} from '../../utils/web3-util';
 import {getFileUrl} from '../../utils/storage-util';
 import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
 import ErrorModal from "../../components/modals/ErrorModal";
-import GenericOkModal from "../../components/modals/GenericOkModal";
 
 class VotingView extends React.Component {
     constructor(props) {
@@ -161,7 +160,7 @@ class VotingView extends React.Component {
                                     <tbody>
                                     <tr>
                                         <td scope="row">Graduated from <strong>{this.state.listing.application.medSchoolName}</strong></td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash))}><img
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash))}><img role="presentation"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash)}/></a>
                                         </td>
                                         <td>
@@ -171,7 +170,7 @@ class VotingView extends React.Component {
                                     <tr>
                                         <td scope="row">Completed <strong>{this.state.listing.application.specialty}</strong> at <strong>{this.state.listing.application.residencyProgram}</strong>
                                         </td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}><img
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}><img role="presentation"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.residencyDiplomaDocHash)}/></a>
                                         </td>
                                         <td>
@@ -182,7 +181,7 @@ class VotingView extends React.Component {
                                         <td scope="row">Is licensed to practice medicine
                                             in <strong>{this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
                                         </td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img role="presentation"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medLicenseDocHash)}/></a></td>
                                         <td>
                                             { (this.state.reasonIndexes).includes("2") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
@@ -190,7 +189,7 @@ class VotingView extends React.Component {
                                     </tr>
                                     <tr>
                                         <td scope="row">Is a certified <strong>{this.state.listing.application.specialty}</strong></td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}><img
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}><img role="presentation"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}}
                                             src={getFileUrl(this.state.listing.application.specialtyCertificateDocHash)}/></a></td>
                                         <td>
@@ -328,7 +327,7 @@ class VotingView extends React.Component {
                         <div className="row">
                             <div className="col text-center">
                                 <br/>
-                                <img id="zoomedImage" style={{width: 100 + '%'}} src={this.state.zoomedImageURL}/>
+                                <img role="presentation" id="zoomedImage" style={{width: 100 + '%'}} src={this.state.zoomedImageURL}/>
                             </div>
                         </div>
                     </Modal.Body>

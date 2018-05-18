@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import GenericOkModal from "./GenericOkModal";
 
 class ErrorModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <GenericOkModal
