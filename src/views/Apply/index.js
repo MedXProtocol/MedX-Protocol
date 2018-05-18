@@ -24,6 +24,7 @@ class Apply extends Component {
     this.state = {
       form: {
         userId: null,
+        physicianName: null,
 
         medSchoolDiplomaDocHash: null,
         medSchoolDiplomaDocFileName: null,
@@ -47,6 +48,7 @@ class Apply extends Component {
         officeAddress: null,
         languagesSpoken: null,
       },
+      testMode: false,
       submitInProgress: false,
       fileUploadInProgress: false,
       showConfirmSubmissionModal: false,
@@ -77,8 +79,9 @@ class Apply extends Component {
 
   componentDidMount () {
     this.props.parentCallback('Apply to MedCredits Physician Registry');
+    this.setState({testMode: this.props.match.url !== '/apply'});
 
-    if (!this.props.noCivic) {
+    if (this.props.match.url === '/apply') {
       const civicSip = new civic.sip({ appId: 'HJZgzIcTM' });
       civicSip.on('auth-code-received', this.handleAuthCodeReceived);
       civicSip.on('civic-sip-error', this.handCivicError);
@@ -88,7 +91,6 @@ class Apply extends Component {
       this.setState(prevState => ({
         form: {
           ...prevState.form,
-          physicianName: null,
           userId: Date.now(),
         }
       }));
@@ -97,8 +99,8 @@ class Apply extends Component {
 
   async handleFileInputChange (e) {
     const fileName = e.target.files[0].name;
-    const imageHash = await this.captureFile(e);
     const { name } = e.target;
+    const imageHash = await this.captureFile(e);
     this.setState(prevState => ({
       form: {
         ...prevState.form,
@@ -134,7 +136,8 @@ class Apply extends Component {
       .some(key => !this.state.form[key]);
   }
 
-  async handleSubmit () {
+  async handleSubmit (e) {
+    e.preventDefault();
     const accountBalance = await getSelectedAccountBalance();
     if (accountBalance < 20) {
       this.setState({ showBalanceTooLowModal: true });
@@ -176,17 +179,21 @@ class Apply extends Component {
       header: { 'x-api-key': apiKey },
       data: { 'jwtToken': jwtToken }
     }).then((userObject) => {
-      console.log(userObject);
-      this.setState({ civicLoading: false, civicUserId: userObject.data.userId });
-
       getListingbyId(userObject.data.userId).then((listingData) => {
+        this.setState({ civicLoading: false });
         let _physicianName = null;
         userObject.data.data.forEach((item) => {
           //TODO: Change this to save physician name
           //if (item.label === 'documents.genericId.name') {
           if (item.label === 'contact.personal.email') {
             _physicianName = item.value;
-            this.setState({ physicianName: _physicianName });
+            this.setState(prevState => ({
+                form: {
+                    ...prevState.form,
+                    userId: userObject.data.userId,
+                    physicianName: _physicianName,
+                }
+            }));
           }
         });
 
@@ -247,7 +254,7 @@ class Apply extends Component {
       <div className="card">
         <ApplyForm
           form={this.state.form}
-          isTestMode={this.props.noCivic}
+          isTestMode={this.state.testMode}
           isSubmitDisabled={this.isSubmitDisabled()}
           onSubmit={this.handleSubmit}
           onFileInputChange={this.handleFileInputChange}
@@ -267,7 +274,7 @@ class Apply extends Component {
           closeHandler={this.navigateToRegistry}/>
         <GenericOkModal
           showModal={this.state.showAlreadyRegistered}
-          headerText={'Welcome ' + this.state.physicianName}
+          headerText={'Welcome ' + this.state.form.physicianName}
           contentText={'You have already applied to be part of the registry. You can view your application by using the menu links on the left.'}
           closeHandler={this.navigateToRegistry}/>
         <GenericOkModal

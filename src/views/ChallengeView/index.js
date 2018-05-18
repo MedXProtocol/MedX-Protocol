@@ -112,10 +112,11 @@ class ChallengeView extends React.Component {
   };
 
   handleCheckboxChange = (e) => {
+    const targetId = e.target.id;
     this.setState(prevState => ({
       form: {
         ...prevState.form,
-        [e.target.id]: !prevState.form[e.target.id]
+        [targetId]: !prevState.form[targetId]
       }
     }));
   };

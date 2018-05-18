@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
 import { Route, Switch, HashRouter } from 'react-router-dom';
 
 import SideNav from './components/navigation/SideNav';
@@ -14,6 +13,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/themify-icons.css';
 import './sass/paper-dashboard/paper-dashboard.css';
 import './App.css';
+import GenericOkModal from "./components/modals/GenericOkModal";
 
 class App extends Component {
   constructor (props) {
@@ -69,7 +69,7 @@ class App extends Component {
         <Route
           key={route.path}
           path={route.path}
-          render={() => <Component {...route.props} parentCallback={this.handlePageTitleChange}/>}/>
+          render={(props) => <Component {...props} parentCallback={this.handlePageTitleChange} /> }/>
       );
     });
   }
@@ -90,20 +90,12 @@ class App extends Component {
             </Switch>
           </MainPanel>
 
-          <Modal show={this.state.showNoAccountModal}>
-            <Modal.Body>
-              <div className="row">
-                <div className="col text-center">
-                  <h4>Please select an account</h4>
-                  <p>It seems that you don't have an ETH account selected. If using MetaMask, please make sure that your
-                    wallet is unlocked and that you have at least one account in your accounts list.</p>
-                </div>
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <button onClick={this.handleCloseNoAccountModal} type="button" className="btn btn-default">Close</button>
-            </Modal.Footer>
-          </Modal>
+          <GenericOkModal
+              showModal={this.state.showNoAccountModal}
+              headerText={"No Account Selected!"}
+              contentText={"It seems that you don't have an ETH account selected. If using MetaMask, please make sure that your wallet is unlocked and that you have at least one account in your accounts list."}
+              icon={"ti-lock text-warning"}
+          />
 
         </div>
       </HashRouter>
