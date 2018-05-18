@@ -19,10 +19,6 @@ const networkBg = {
 };
 
 class MainPanel extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   getNetworkStyle(networkId) {
     return {
       textAlign: 'center',
