@@ -131,11 +131,11 @@ class RegistryApplication extends React.Component {
     return (
       <div className="card">
 
-        <div className="text-center" style={{ display: this.state.spinnerDisplayString }}><br/><img
+        <div className="text-center" style={{ display: this.state.spinnerDisplayString }}><br/><img role="presentation"
           style={{ maxWidth: '100px' }} src={spinner}/><br/>Loading...
         </div>
-        <div className="text-center" style={{ display: this.state.noneDisplayString }}><br/>There are no entries in the
-          registry.<br/></div>
+        <div className="text-center" style={{ display: this.state.noneDisplayString }}><br/><h5>There are no entries in the
+            registry.</h5><br/></div>
 
 
         <div className="card-content table-responsive table-full-width">

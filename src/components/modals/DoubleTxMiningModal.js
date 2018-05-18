@@ -3,10 +3,6 @@ import {Modal} from 'react-bootstrap';
 import spinner from '../../img/spinner.gif';
 
 class DoubleTxMiningModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <Modal show={this.props.showModal}>
@@ -23,7 +19,7 @@ class DoubleTxMiningModal extends Component {
                                     <p className="card-title"><b>Step 1:</b> {this.props.tx1Desc}</p>
                                 </div>
                                 <div className="col-xs-1 text-center">
-                                    { this.props.processingTx1 ? <img style={{maxWidth: '30px'}} src={spinner}/> : null }
+                                    { this.props.processingTx1 ? <img role="presentation" style={{maxWidth: '30px'}} src={spinner}/> : null }
                                     { !this.props.processingTx1 ? <i className="ti-check text-success" /> : null }
                                 </div>
                                 <div className="col-xs-2">&nbsp;</div>
@@ -35,7 +31,7 @@ class DoubleTxMiningModal extends Component {
                                     <p className="card-title"><b>Step 2:</b> {this.props.tx2Desc}</p>
                                 </div>
                                 <div className="col-xs-1 text-center">
-                                    {this.props.processingTx2 ? <img style={{maxWidth: '30px'}} src={spinner}/> : null }
+                                    {this.props.processingTx2 ? <img role="presentation" style={{maxWidth: '30px'}} src={spinner}/> : null }
                                 </div>
                                 <div className="col-xs-2">&nbsp;</div>
                             </div>

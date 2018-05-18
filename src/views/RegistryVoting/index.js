@@ -1,6 +1,5 @@
 import React from 'react'
 import {Column, Table, AutoSizer} from 'react-virtualized';
-import {Modal} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import 'react-virtualized/styles.css';
 import {updateStatus, getAllListings} from '../../utils/web3-util';
@@ -10,11 +9,7 @@ import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
 import ErrorModal from "../../components/modals/ErrorModal";
 import GenericOkModal from "../../components/modals/GenericOkModal";
 
-function actionCellRenderer({
-                                cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                            }) {
-    let routeLink = "/voting-view/" + rowData.listingHash;
-
+function actionCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     const newTo = {
         pathname: "/voting-view/" + rowData.listingHash,
         state: {message: rowData.listingHash}
@@ -30,26 +25,20 @@ function actionCellRenderer({
             <a disabled className={"btn btn-sm btn-primary btn-fill btn-block"}>Vote</a>
         );
     }
-
 }
 
 
-function locationCellRenderer({
-                                  cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                              }) {
+function locationCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     return (
         <div>{rowData.application.medLicenseLocation}</div>
     );
 }
 
-function nameCellRenderer({
-                              cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
-                          }) {
+function nameCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
     return (
         <div>{rowData.application.physicianName}</div>
     );
 }
-
 
 class RegistryVoting extends React.Component {
     constructor(props) {
@@ -82,7 +71,7 @@ class RegistryVoting extends React.Component {
             //filter out only the listings that are currently challenged
             let filteredResult = result.filter(listing => listing.challengeID !== undefined && listing.challengeID > 0 && !listing.challenge.resolved);
 
-            if (filteredResult.length == 0) {
+            if (filteredResult.length === 0) {
                 this.setState({noneDisplayString: 'block'});
                 this.setState({spinnerDisplayString: 'none'});
                 this.setState({tableDisplayString: 'none'});
@@ -139,7 +128,7 @@ class RegistryVoting extends React.Component {
     render() {
         return (
             <div className="card">
-                <div className="text-center" style={{display: this.state.spinnerDisplayString}}><br/><img style={{maxWidth: '100px'}} src={spinner}/><br/>Loading...</div>
+                <div className="text-center" style={{display: this.state.spinnerDisplayString}}><br/><img role="presentation" style={{maxWidth: '100px'}} src={spinner}/><br/>Loading...</div>
                 <div className="text-center" style={{display: this.state.noneDisplayString}}><br/><h5>There are no challenged applications.</h5><br/></div>
 
                 <div className="card-content table-responsive table-full-width">

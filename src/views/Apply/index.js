@@ -38,7 +38,7 @@ class Apply extends Component {
         medLicenseExpirationDate: null,
         medLicenseNumber: null,
         medLicenseLocation: null,
-        specialtyCertificteLocation: null,
+        specialtyCertificteLocation: "N/A",
         medSchoolName: null,
         residencyProgram: null,
         specialty: null,
@@ -72,7 +72,7 @@ class Apply extends Component {
     this.submitApplication = this.submitApplication.bind(this);
     this.navigateToRegistry = this.navigateToRegistry.bind(this);
     this.handleFileInputChange = this.handleFileInputChange.bind(this);
-    this.handleTextInputChange = this.handleTextInputChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAuthCodeReceived = this.handleAuthCodeReceived.bind(this);
     this.handleAcceptConfirmSubmissionModal = this.handleAcceptConfirmSubmissionModal.bind(this);
   }
@@ -112,7 +112,7 @@ class Apply extends Component {
     }));
   }
 
-  handleTextInputChange (e) {
+  handleInputChange (e) {
     const { name, value } = e.target;
     this.setState(prevState => ({
       form: {
@@ -258,7 +258,8 @@ class Apply extends Component {
           isSubmitDisabled={this.isSubmitDisabled()}
           onSubmit={this.handleSubmit}
           onFileInputChange={this.handleFileInputChange}
-          onTextInputChange={this.handleTextInputChange}/>
+          onTextInputChange={this.handleInputChange}
+          onDropdownSelectChange={this.handleInputChange}/>
 
         <InsufficientFundsModal
           show={this.state.showBalanceTooLowModal}
