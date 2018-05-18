@@ -49,7 +49,6 @@ export const appRoutes = [
   {
     path: '/applynocivic',
     component: Apply,
-    props: { noCivic: true },
   },
   {
     path: '/search',
