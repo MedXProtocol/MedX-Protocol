@@ -5,3 +5,20 @@
 .manage-wallet-modal .modal-body {
     background-color: #e2e2e2;
 }
+
+.badge-success {
+    background-color: #008000 !important;
+    width: 25% !important;
+}
+
+.badge-challenge {
+    background-color: #e38300 !important;
+    width: 25% !important;
+}
+
+.badge-warning {
+    background-color: #0082e3 !important;
+    width: 25% !important;
+}
+
+

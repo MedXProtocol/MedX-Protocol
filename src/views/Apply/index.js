@@ -38,6 +38,7 @@ class Apply extends Component {
         medLicenseExpirationDate: null,
         medLicenseNumber: null,
         medLicenseLocation: null,
+        medLicenseStateLocation: null,
         specialtyCertificteLocation: "N/A",
         medSchoolName: null,
         residencyProgram: null,
@@ -56,6 +57,7 @@ class Apply extends Component {
       showThankYouModal: false,
       showErrorModal: false,
       showLoadingModal: false,
+      showFileSizeTooBig: false,
       civicLoading: false,
       showAlreadyRegistered: false,
       showNoCivicDocuments: false,
@@ -98,18 +100,22 @@ class Apply extends Component {
   }
 
   async handleFileInputChange (e) {
-    const fileName = e.target.files[0].name;
-    const { name } = e.target;
-    const imageHash = await this.captureFile(e);
-    this.setState(prevState => ({
-      form: {
-        ...prevState.form,
-        ...{
-          [`${name}DocHash`]: imageHash,
-          [`${name}DocFileName`]: fileName,
+    if (e.target.files[0].size < 3000000) {
+      const fileName = e.target.files[0].name;
+      const {name} = e.target;
+      const imageHash = await this.captureFile(e);
+      this.setState(prevState => ({
+        form: {
+          ...prevState.form,
+          ...{
+            [`${name}DocHash`]: imageHash,
+            [`${name}DocFileName`]: fileName,
+          }
         }
-      }
-    }));
+      }));
+    } else {
+      this.setState({showFileSizeTooBig: true});
+    }
   }
 
   handleInputChange (e) {
@@ -273,6 +279,10 @@ class Apply extends Component {
           headerText={'Thank you for your application'}
           contentText={'Your application will be reviewed within 3 days.'}
           closeHandler={this.navigateToRegistry}/>
+        <GenericOkModal
+          showModal={this.state.showFileSizeTooBig}
+          headerText={'Attachment exceeds 3mb size limit'}
+          contentText={'The attachment you want to upload is too big, please use a smaller one'} />
         <GenericOkModal
           showModal={this.state.showAlreadyRegistered}
           headerText={'Welcome ' + this.state.form.physicianName}

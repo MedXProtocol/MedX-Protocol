@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { languageOptions, countryOptions, residencyProgramOptions, specialtyOptions } from './FormOptions'
+import {languageOptions, countryOptions, residencyProgramOptions, specialtyOptions, usStates} from './FormOptions'
 
 import FileInputGroup from './FileInputGroup';
 import TextInputGroup from './TextInputGroup';
@@ -94,15 +94,15 @@ const ApplyForm = ({
         <DropdownInputGroup
             className="col-lg-6 col-md-6 top15"
             name="medLicenseLocation"
-            label="License Location:"
+            label="Licensed in which country:"
             options={countryOptions}
             required
             onChange={onDropdownSelectChange}/>
         <DropdownInputGroup
             className="col-lg-6 col-md-6 top15"
-            name="residencyProgram"
-            label="Residency Program:"
-            options={residencyProgramOptions}
+            name="medLicenseStateLocation"
+            label="If USA, licensed in which state:"
+            options={usStates}
             required
             onChange={onDropdownSelectChange}/>
       </div>
@@ -113,12 +113,13 @@ const ApplyForm = ({
           label="Expiration Date:"
           required
           onChange={onTextInputChange}/>
-        <TextInputGroup
-          className="col-lg-6 col-md-6 top15"
-          name="officePhone"
-          label="Office Phone:"
-          required
-          onChange={onTextInputChange}/>
+        <DropdownInputGroup
+            className="col-lg-6 col-md-6 top15"
+            name="residencyProgram"
+            label="Post-medical school speciality training:"
+            options={residencyProgramOptions}
+            required
+            onChange={onDropdownSelectChange}/>
       </div>
       <div className="row">
         <TextInputGroup
@@ -141,13 +142,22 @@ const ApplyForm = ({
           label="Prescriber #:"
           required
           onChange={onTextInputChange}/>
+        <TextInputGroup
+            className="col-lg-6 col-md-6 top15"
+            name="officePhone"
+            label="Office Phone:"
+            required
+            onChange={onTextInputChange}/>
+      </div>
+
+      <div className="row">
         <DropdownInputGroup
-          className="col-lg-6 col-md-6 top15"
-          name="languagesSpoken"
-          label="Languages Spoken:"
-          options={languageOptions}
-          required
-          onChange={onDropdownSelectChange}/>
+            className="col-lg-6 col-md-6 top15"
+            name="languagesSpoken"
+            label="Languages Spoken:"
+            options={languageOptions}
+            required
+            onChange={onDropdownSelectChange}/>
       </div>
 
       <hr/>

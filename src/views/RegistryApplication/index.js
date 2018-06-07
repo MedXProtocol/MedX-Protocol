@@ -7,6 +7,7 @@ import spinner from '../../img/spinner.gif';
 import ErrorModal from '../../components/modals/ErrorModal';
 import GenericOkModal from '../../components/modals/GenericOkModal';
 import GenericLoadingModal from '../../components/modals/GenericLoadingModal';
+import {msToTime} from "../../utils/common-util";
 
 class RegistryApplication extends React.Component {
   constructor (props) {
@@ -198,6 +199,22 @@ class RegistryApplication extends React.Component {
                         );
 
                       }
+                    }
+                  />
+                  <Column
+                    dataKey="timeRemaining"
+                    label="Time Remaining"
+                    width={500}
+                    className={'text-center'}
+                    headerClassName={'text-center'}
+                    cellRenderer={
+                        ({ rowData }) => {
+                          if (rowData.timeCalled <= rowData.applicationExpiry) {
+                                return <div>{msToTime(rowData.applicationExpiry * 1000 - rowData.timeCalled * 1000)}</div>;
+                          } else {
+                              return <div>-</div>
+                          }
+                        }
                     }
                   />
                   <Column

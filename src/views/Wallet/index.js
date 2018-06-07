@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
-  getSelectedAccountBalance,
-  getSelectedAccount,
-  getVotingTokensBalance,
-  requestVotingRights,
-  withdrawVotingRights
+    getSelectedAccountBalance,
+    getSelectedAccount,
+    getVotingTokensBalance,
+    requestVotingRights,
+    withdrawVotingRights, getAllListings, exitRegistry, withdrawUnstakedDeposit, getSelectedAccountEthBalance
 } from '../../utils/web3-util';
 import { Modal } from 'react-bootstrap';
 
@@ -20,13 +20,17 @@ class Wallet extends Component {
 
     this.state = {
       balance: '0',
+      accountEthBalance: '0',
       selectedAccount: '0',
       votingTokens: '0',
       addVotingTokens: '0',
       withdrawVotingTokens: '0',
+      listingStatus: "N/A",
       submitInProgress: false,
       showManageVotingTokensModal: false,
-      showErrorModal: false
+      showErrorModal: false,
+      ownerListings: [],
+      tableDisplayString: "none"
     };
   }
 
@@ -34,15 +38,46 @@ class Wallet extends Component {
     this.props.parentCallback('My Account');
 
     const accountBalance = await getSelectedAccountBalance();
+    const accountEthBalance = await getSelectedAccountEthBalance();
     const selectedAccount = await getSelectedAccount();
     const votingTokens = await getVotingTokensBalance();
-
+    this.getOwnerListing(selectedAccount);
 
     this.setState({
       balance: accountBalance.toFixed(3),
+      ethBalance: accountEthBalance.toFixed(3),
       account: selectedAccount,
       votingTokens: votingTokens.toFixed(3)
     });
+  };
+
+  getOwnerListing = (selectedAccount) => {
+      getAllListings((result) => {
+          const isListed = result.filter(listing => listing.owner.toLowerCase() === selectedAccount.toLowerCase());
+          if (isListed.length > 0) {
+            isListed.forEach(listing => {
+              console.log("Listing", listing);
+                const challenged = !(listing.challengeID <= 0 || listing.challenge.resolved);
+                const newApp = !listing.whitelisted;
+
+                let status = "Active";
+                if (newApp)
+                  status = "New Application";
+                else if (challenged)
+                  status = "Challenged";
+
+                this.setState({
+                    [`${listing.listingHash}ListingStatus`]: status,
+                });
+            });
+          } else {
+            console.log("Account does not have an application");
+          }
+          this.setState({
+              ownerListings: isListed,
+              tableDisplayString: "block"
+          });
+      });
   };
 
   handleAddVotingTokensSubmit = (event) => {
@@ -87,6 +122,37 @@ class Wallet extends Component {
     });
   };
 
+  handleExitClick = async (e) => {
+    e.preventDefault();
+    this.setState({ submitInProgress: true });
+    console.log("event", e);
+    console.log("event target", e.target);
+    await exitRegistry(e.target.id, (error, result) => {
+        if (!error) {
+          this.setState({ submitInProgress: false });
+          console.log("Successfully exited the registry");
+        } else {
+          console.log("Error while exiting the registry");
+          this.onError();
+        }
+    });
+  }
+
+    handleWithdrawUnstakedClick = async (e) => {
+    e.preventDefault();
+    this.setState({ submitInProgress: true });
+
+    await withdrawUnstakedDeposit(e.target.id, (error, result) => {
+        if (!error) {
+          this.setState({ submitInProgress: false });
+          console.log("Successfully exited the registry");
+        } else {
+          console.log("Error while exiting the registry");
+          this.onError();
+        }
+    });
+  }
+
   updatedAddVotingTokens = (event) => {
     this.setState({ addVotingTokens: event.target.value });
   };
@@ -112,26 +178,88 @@ class Wallet extends Component {
   render () {
     return (
       <div className="container-fluid">
+
         <div className="row">
-          <WalletCard
-            title="Wallet Address"
-            category="Address selected in your wallet or MetaMask"
-            color="danger"
-            icon="ti-wallet"
-          >
-            <p className="text-right">
-              {this.state.account}
-            </p>
-          </WalletCard>
+          {this.state.ownerListings.map((listing, index) => {
+              return (
+
+                  <div className="col-lg-6 col-md-12">
+                      <div className="card card-wallet card-account-address" style={{minHeight: 245}}>
+                          <div className="card-header">
+                              <div className="row">
+                                  <div className="col-xs-2">
+                                      <div className={`icon-big icon-success text-center`}>
+                                          <i className="ti-user"/>
+                                      </div>
+                                  </div>
+                                  <div className="col-xs-10 text-right">
+                                      <h4 className="card-title"><b>{listing.application.physicianName}</b></h4>
+                                      <div>
+                                          <p className="category">Current Listing Status:</p>
+                                          <p className={this.state[`${listing.listingHash}ListingStatus`] === 'Active' ? "badge badge-success" : this.state[`${listing.listingHash}ListingStatus`] === 'New Application' ? "badge badge-warning": "badge badge-challenge"}>{this.state[`${listing.listingHash}ListingStatus`]}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div className="card-content">
+                              <div className="row">
+                                  <div className="col-xs-12">
+                                      <div className="row numbers">
+                                          <div className="col-lg-6">
+                                              <div className="text-left text-muted">Unstaked Deposit:</div>
+                                          </div>
+                                          <div className="col-lg-6">
+                                              <div className="text-right ">{(listing.unstakedDeposit / 10 ** 18).toFixed(3) + " MEDX"} <a href="#" className="btn btn-block btn-primary"  onClick={this.handleWithdrawUnstakedClick}><span className="ti-wallet" id={listing.listingHash}/>&nbsp;&nbsp;&nbsp;&nbsp;Withdraw</a></div>
+                                          </div>
+                                      </div>
+                                      <br />
+                                      <br />
+                                      <div className="row">
+                                          <div className="col-lg-6">
+                                              {
+                                                  listing.whitelisted &&
+                                                  this.state[`${listing.listingHash}ListingStatus`] === 'Active' &&
+                                                  <div className="text-right">
+                                                      <a href="#" className="btn btn-block btn-danger" onClick={this.handleExitClick} id={listing.listingHash}><span className="ti-export"/> &nbsp;&nbsp;&nbsp;&nbsp;Exit Registry</a>
+                                                  </div>
+                                              }
+                                          </div>
+                                          {/*<div className="col-lg-6">
+                                              <div><a href="#" className="btn btn-block btn-primary"  onClick={this.handleWithdrawUnstakedClick}><span className="ti-wallet" id={listing.listingHash}/>&nbsp;&nbsp;&nbsp;&nbsp;Withdraw</a></div>
+                                          </div>*/}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              )
+          })}
+
 
           <WalletCard
             title="Wallet Balance"
-            category="MEDX token balance"
+            category="Account balances"
             color="warning"
             icon="ti-server"
           >
-            <div className="numbers">
-              {this.state.balance} MEDX
+            <div className="numbers ">
+              <div className="row text-muted">
+                  <div className="col-lg-10">
+                      {this.state.ethBalance}
+                  </div>
+                  <div className="col-lg-2">
+                      ETH
+                  </div>
+              </div>
+              <div className="row">
+                  <div className="col-lg-10">
+                      {this.state.balance}
+                  </div>
+                  <div className="col-lg-2">
+                      MEDX
+                  </div>
+              </div>
             </div>
           </WalletCard>
 
@@ -149,6 +277,18 @@ class Wallet extends Component {
               </span>
             </div>
           </WalletCard>
+
+          <WalletCard
+              title="Wallet Address"
+              category="Address selected in your wallet or MetaMask"
+              color="danger"
+              icon="ti-wallet"
+          >
+              <p className="text-right">
+                  {this.state.account}
+              </p>
+          </WalletCard>
+
         </div>
 
         <Modal

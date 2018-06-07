@@ -1,7 +1,6 @@
 import RegistryContract from '../../build/contracts/Registry.json';
 import PLCRVotingContract from '../../build/contracts/PLCRVoting.json';
 import TokenContract from '../../build/contracts/MedXToken.json';
-import ListingVerifierContract from '../../build/contracts/ListingVerifier.json';
 import contract from 'truffle-contract';
 import getWeb3 from './getWeb3';
 import { downloadJson } from './storage-util';
@@ -57,17 +56,6 @@ let ethConfig = {
             return this.MEDXTokenInstance;
     },
 
-    getVerifierInstance: async function () {
-        if (!this.verifierInstance) {
-            const verifier = contract(ListingVerifierContract);
-            verifier.setProvider((await this.getWeb3Instance()).currentProvider);
-            this.verifierInstance = await verifier.deployed();
-            return this.verifierInstance;
-        }
-        else
-            return this.verifierInstance;
-    },
-
     getAccountInstance: async function () {
         if (!this.web3)
             await this.getWeb3Instance();
@@ -82,7 +70,6 @@ let ethConfig = {
         await this.getRegistryInstance();
         await this.getPLCRVotingInstance();
         await this.getMEDXTokenInstance();
-        await this.getVerifierInstance();
         await this.getAccountInstance();
         return;
     }
@@ -182,6 +169,26 @@ export async function withdrawVotingRights(_numTokens, callback) {
     await ethConfig.ready();
     try {
         const result = await ethConfig.PLCRVotingInstance.withdrawVotingRights(fromTokenDecimal(_numTokens), {from: ethConfig.selectedAccount});
+        await waitForTxComplete(result.tx, callback);
+    } catch (error) {
+        callback(error, "");
+    }
+}
+
+export async function exitRegistry(_listingHash, callback) {
+    await ethConfig.ready();
+    try {
+        const result = await ethConfig.registryInstance.exit(_listingHash, {from: ethConfig.selectedAccount});
+        await waitForTxComplete(result.tx, callback);
+    } catch (error) {
+        callback(error, "");
+    }
+}
+
+export async function withdrawUnstakedDeposit(_listingHash, _amount, callback) {
+    await ethConfig.ready();
+    try {
+        const result = await ethConfig.registryInstance.withdraw(_listingHash, _amount, {from: ethConfig.selectedAccount});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -344,6 +351,7 @@ export async function getListingbyHash(listingHash, callback) {
         medLicenseExpirationDate: hashedData.medLicenseExpirationDate,
         medLicenseNumber: hashedData.medLicenseNumber,
         medLicenseLocation: hashedData.medLicenseLocation,
+        medLicenseStateLocation: hashedData.medLicenseStateLocation,
         specialtyCertificteLocation: hashedData.specialtyCertificteLocation,
         medSchoolName: hashedData.medSchoolName,
         residencyProgram: hashedData.residencyProgram,
@@ -406,6 +414,12 @@ export async function getSelectedAccountBalance() {
     await ethConfig.ready();
     const result = await ethConfig.MEDXTokenInstance.balanceOf.call(ethConfig.selectedAccount);
     return toTokenDecimal(result.toNumber());
+}
+
+export async function getSelectedAccountEthBalance() {
+    await ethConfig.ready();
+    const result = await ethConfig.web3.eth.getBalance(ethConfig.selectedAccount);
+    return toTokenDecimal(result);
 }
 
 export async function getVotingTokensBalance() {

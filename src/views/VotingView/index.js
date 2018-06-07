@@ -322,7 +322,7 @@ class VotingView extends React.Component {
                     </Modal.Footer>
                 </Modal>
 
-                <Modal show={this.state.showZoomModal} bsSize="large">
+                <Modal show={this.state.showZoomModal} bsSize="large" onHide={this.handleZoomCloseModal}>
                     <Modal.Body>
                         <div className="row">
                             <div className="col text-center">

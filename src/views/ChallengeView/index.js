@@ -9,6 +9,7 @@ import { getFileUrl, uploadJson } from '../../utils/storage-util';
 import ErrorModal from '../../components/modals/ErrorModal';
 import GenericOkModal from '../../components/modals/GenericOkModal';
 import DoubleTxMiningModal from '../../components/modals/DoubleTxMiningModal';
+import ConfirmSubmissionModal from "../Apply/components/ConfirmSubmissionModal";
 
 class ChallengeView extends React.Component {
   constructor (props) {
@@ -27,12 +28,14 @@ class ChallengeView extends React.Component {
       showErrorModal: false,
       showLoadingModal: false,
       showZoomModal: false,
+      showConfirmSubmissionModal: false,
       processTx1: false,
       processTx2: false,
       verified: false
     };
 
     this.hasSelectedChallenge = this.hasSelectedChallenge.bind(this);
+    this.handleAcceptConfirmSubmissionModal = this.handleAcceptConfirmSubmissionModal.bind(this);
   }
 
   componentDidMount () {
@@ -67,6 +70,21 @@ class ChallengeView extends React.Component {
   };
 
   handleChallengeClick = async (e) => {
+      this.setState({ showConfirmSubmissionModal: true });
+  };
+
+  handleAcceptConfirmSubmissionModal () {
+      this.setState({ showConfirmSubmissionModal: false });
+      this.submitChallenge();
+  }
+
+  handleModalClose (modalName) {
+      return () => {
+          this.setState({ [modalName]: false });
+      };
+  }
+
+  submitChallenge = async () => {
     this.setState({ showLoadingModal: true, processTx1: true });
     const challengeReasonIndexesObj = {};
     let challengeReasonIndexes = Object.keys(this.state.form).reduce((result, key) => {
@@ -191,7 +209,7 @@ class ChallengeView extends React.Component {
                   </tr>
                   <tr>
                     <td scope="row">Is licensed to practice medicine
-                      in <strong>{this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
+                      in <strong>{this.state.listing.application.medLicenseStateLocation != null && this.state.listing.application.medLicenseStateLocation !== "N/A" && <span>{this.state.listing.application.medLicenseStateLocation}, </span>} {this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
                     </td>
                     <td className="text-center"><a
                       onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img role="presentation"
@@ -274,7 +292,7 @@ class ChallengeView extends React.Component {
                         closeHandler={this.handleThankYouChallengeOKClickModal}/>
         <ErrorModal showModal={this.state.showErrorModal}/>
 
-        <Modal show={this.state.showZoomModal} bsSize="large">
+        <Modal show={this.state.showZoomModal} bsSize="large" onHide={this.handleZoomCloseModal}>
           <Modal.Body>
             <div className="row">
               <div className="col text-center">
@@ -287,6 +305,10 @@ class ChallengeView extends React.Component {
             <button onClick={this.handleZoomCloseModal} type="button" className="btn btn-default">Close</button>
           </Modal.Footer>
         </Modal>
+        <ConfirmSubmissionModal
+            show={this.state.showConfirmSubmissionModal}
+            onSubmit={this.handleAcceptConfirmSubmissionModal}
+            onCancel={this.handleModalClose('showConfirmSubmissionModal')}/>
 
         <DoubleTxMiningModal
           showModal={this.state.showLoadingModal}

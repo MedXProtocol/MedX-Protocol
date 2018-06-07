@@ -1,14 +1,15 @@
 import React from 'react';
 
 const WalletCard = ({
+                        className,
                       title,
                       category,
                       icon,
                       color,
                       children
                     }) => (
-  <div className="col-lg-6 col-md-12">
-    <div className="card card-wallet card-account-address">
+  <div className={className === undefined ? "col-lg-6 col-md-12" : className}>
+    <div className="card card-wallet card-account-address" style={{minHeight: 245}}>
       <div className="card-header">
         <div className="row">
           <div className="col-xs-2">
@@ -25,6 +26,7 @@ const WalletCard = ({
       <div className="card-content">
         <div className="row">
           <div className="col-xs-12">
+              <br />
             {children}
           </div>
         </div>

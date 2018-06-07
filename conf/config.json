@@ -15,7 +15,7 @@
 	},
   "token": {
     "address": "0xe85abf7cec5bb9fa7c31807b757c548cec3e19b2",
-    "deployToken": false,
+    "deployToken": true,
     "decimals": "18",
     "name": "TestCoin",
     "symbol": "TEST",

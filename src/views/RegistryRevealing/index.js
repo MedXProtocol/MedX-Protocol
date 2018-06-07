@@ -25,7 +25,6 @@ function timeCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolli
     );
 }
 
-
 function statusCellRenderer({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) {
 
     let status = "Unknown";
@@ -68,12 +67,15 @@ class RegistryRevealing extends React.Component {
     }
 
     componentDidMount() {
-        this.getPolls();
-        getAllListings().then((result) => {
-            this.setState({allListings: result});
-        });
-
+        this.getListings().then(() => this.getPolls());
         this.props.parentCallback("My Votes");
+    }
+
+
+    getListings = async () => {
+        await getAllListings(function(result) {
+            this.setState({allListings: result});
+        }.bind(this));
     }
 
     getPolls = async (event) => {
@@ -155,7 +157,7 @@ class RegistryRevealing extends React.Component {
     rewardEarnedCellRenderer = ({cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex}) => {
         let text = "N/A";
         if (rowData.pollEnded && rowData.voterCanClaimReward && rowData.hasBeenRevealed && rowData.voterHasReward) {
-            let filteredResult = this.state.allListings.filter(listing => listing.challengeID === rowData.pollID && !listing.challenge.resolved);
+            let filteredResult = this.state.allListings.filter(listing => parseInt(listing.challengeID, 10) === parseInt(rowData.pollID, 10) && !listing.challenge.resolved);
             if (filteredResult.length === 1) {
                 text = <a className="text-warning" style={{cursor: 'pointer'}} onClick={() => this.sendUpdateStatusTransaction(filteredResult[0].listingHash, rowData.pollID, false)}><span className="ti-reload"/></a>;
             } else if (rowData.voterReward !== "N/A") {
@@ -164,7 +166,6 @@ class RegistryRevealing extends React.Component {
         }
         return <div>{text}</div>
     };
-
 
     handleRevealClick = async (pollID) => {
 
@@ -257,7 +258,6 @@ class RegistryRevealing extends React.Component {
             }
         }.bind(this));
     }
-
 
     handleClaimRewardClick = async (pollID) => {
 
