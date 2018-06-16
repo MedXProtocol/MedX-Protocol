@@ -104,8 +104,8 @@ class ChallengeView extends React.Component {
       if (!error) {
         this.setState({ processTx1: false, processTx2: true });
         await challenge(this.state.listing.listingHash, challengeReasonHash.toString(), function (error, result) {
-          console.log('error: ' + error);
-          console.log('result: ' + result);
+          console.log('error: ', error);
+          console.log('result: ', result);
           if (!error)
             this.setState({ showLoadingModal: false, showThankYouChallengeModal: true, processTx2: false });
           else

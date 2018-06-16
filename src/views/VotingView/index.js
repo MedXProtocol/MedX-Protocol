@@ -54,13 +54,13 @@ class VotingView extends React.Component {
             localStorage.setItem("vote" + this.state.listing.challengeID, JSON.stringify(downloadableObject));
         }
 
-        console.log("vote stored: ");
-        console.log(localStorage.getItem("vote" + this.state.listing.challengeID));
+        console.log("vote stored: ", localStorage.getItem("vote" + this.state.listing.challengeID));
 
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(downloadableObject));
         var dlAnchorElem = document.getElementById('downloadSaltAnchorElem');
         dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", "vote_" + downloadableObject.pollID + ".json");
+        let downloadFileName = this.state.listing.challengeID + "_" + (this.state.listing.application.physicianName).replace(" ", "_").toLowerCase();
+        dlAnchorElem.setAttribute("download", "vote_" + downloadFileName + ".json");
         dlAnchorElem.click();
     }
 
@@ -164,7 +164,7 @@ class VotingView extends React.Component {
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash)}/></a>
                                         </td>
                                         <td>
-                                            { (this.state.reasonIndexes).includes("0") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                            { (this.state.reasonIndexes).includes("1") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
@@ -174,17 +174,17 @@ class VotingView extends React.Component {
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.residencyDiplomaDocHash)}/></a>
                                         </td>
                                         <td>
-                                            { (this.state.reasonIndexes).includes("1") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                            { (this.state.reasonIndexes).includes("2") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">Is licensed to practice medicine
-                                            in <strong>{this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
+                                            in <strong>{this.state.listing.application.medLicenseStateLocation != null && this.state.listing.application.medLicenseStateLocation !== "N/A" && <span>{this.state.listing.application.medLicenseStateLocation}, </span>} {this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
                                         </td>
                                         <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img role="presentation"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medLicenseDocHash)}/></a></td>
                                         <td>
-                                            { (this.state.reasonIndexes).includes("2") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                            { (this.state.reasonIndexes).includes("3") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
@@ -193,21 +193,21 @@ class VotingView extends React.Component {
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}}
                                             src={getFileUrl(this.state.listing.application.specialtyCertificateDocHash)}/></a></td>
                                         <td>
-                                            { (this.state.reasonIndexes).includes("3") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                            { (this.state.reasonIndexes).includes("4") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">License Number</td>
                                         <td className="text-center"><strong>{this.state.listing.application.medLicenseNumber}</strong></td>
                                         <td>
-                                            { (this.state.reasonIndexes).includes("4") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                            { (this.state.reasonIndexes).includes("5") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td scope="row">Prescriber Number</td>
                                         <td className="text-center"><strong>{this.state.listing.application.prescribesNumber}</strong></td>
                                         <td>
-                                            { (this.state.reasonIndexes).includes("5") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
+                                            { (this.state.reasonIndexes).includes("6") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     </tbody>

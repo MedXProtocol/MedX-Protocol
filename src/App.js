@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, HashRouter } from 'react-router-dom';
+import {Route, Switch, HashRouter, Redirect} from 'react-router-dom';
 
 import SideNav from './components/navigation/SideNav';
 import MainPanel from './components/navigation/MainPanel';
@@ -84,6 +84,7 @@ class App extends Component {
             networkId={this.state.networkId}
             pageTitle={this.state.pageTitle}>
             <Switch>
+              <Redirect exact from="/" to="/registry-application"/>
               {
                 this.buildAppRoutes()
               }

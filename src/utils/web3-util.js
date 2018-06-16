@@ -99,7 +99,7 @@ export async function revealVote(pollID, voteOption, salt, callback) {
 export async function claimVoterReward(pollID, salt, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.claimVoterReward(parseInt(pollID, 10), parseInt(salt, 10), {from: ethConfig.selectedAccount});
+        const result = await ethConfig.registryInstance.claimVoterReward(parseInt(pollID, 10), parseInt(salt, 10), {from: ethConfig.selectedAccount, gas: 150000});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -168,7 +168,7 @@ export async function requestVotingRights(_numTokens, callback) {
 export async function withdrawVotingRights(_numTokens, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.PLCRVotingInstance.withdrawVotingRights(fromTokenDecimal(_numTokens), {from: ethConfig.selectedAccount});
+        const result = await ethConfig.PLCRVotingInstance.withdrawVotingRights(fromTokenDecimal(_numTokens), {from: ethConfig.selectedAccount, gas: 150000});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -178,7 +178,7 @@ export async function withdrawVotingRights(_numTokens, callback) {
 export async function exitRegistry(_listingHash, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.exit(_listingHash, {from: ethConfig.selectedAccount});
+        const result = await ethConfig.registryInstance.exit(_listingHash, {from: ethConfig.selectedAccount, gas: 150000});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -188,7 +188,17 @@ export async function exitRegistry(_listingHash, callback) {
 export async function withdrawUnstakedDeposit(_listingHash, _amount, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.withdraw(_listingHash, _amount, {from: ethConfig.selectedAccount});
+        const result = await ethConfig.registryInstance.withdraw(_listingHash, _amount, {from: ethConfig.selectedAccount, gas: 150000});
+        await waitForTxComplete(result.tx, callback);
+    } catch (error) {
+        callback(error, "");
+    }
+}
+
+export async function rescueTokens(pollID, callback) {
+    await ethConfig.ready();
+    try {
+        const result = await ethConfig.PLCRVotingInstance.rescueTokens(pollID, {from: ethConfig.selectedAccount, gas: 150000});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -425,6 +435,12 @@ export async function getSelectedAccountEthBalance() {
 export async function getVotingTokensBalance() {
     await ethConfig.ready();
     const result = await ethConfig.PLCRVotingInstance.voteTokenBalance(ethConfig.selectedAccount);
+    return toTokenDecimal(result.toNumber());
+}
+
+export async function getLockedTokens() {
+    await ethConfig.ready();
+    const result = await ethConfig.PLCRVotingInstance.getLockedTokens(ethConfig.selectedAccount);
     return toTokenDecimal(result.toNumber());
 }
 
