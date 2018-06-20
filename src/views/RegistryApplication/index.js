@@ -171,7 +171,7 @@ class RegistryApplication extends React.Component {
                   <Column
                     dataKey="licenseLocation"
                     label="Country"
-                    width={1250}
+                    width={1000}
                     cellRenderer={this.locationCellRenderer}
                   />
                   <Column
@@ -204,7 +204,7 @@ class RegistryApplication extends React.Component {
                   <Column
                     dataKey="timeRemaining"
                     label="Time Remaining"
-                    width={500}
+                    width={1000}
                     className={'text-center'}
                     headerClassName={'text-center'}
                     cellRenderer={
