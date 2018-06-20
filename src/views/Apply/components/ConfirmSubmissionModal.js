@@ -4,14 +4,15 @@ import { Modal } from 'react-bootstrap';
 const ConfirmSubmissionModal = ({
   show,
   onSubmit,
-  onCancel
+  onCancel,
+  confirmationMessage
 }) => (
   <Modal show={show}>
     <Modal.Body>
       <div className="row">
         <div className="col text-center">
           <h4>Are you sure?</h4>
-          <h5>This will require a deposit of 20 MEDX.</h5>
+          <h5>{confirmationMessage === undefined ? "This will require a deposit of 20 MEDX." : confirmationMessage}</h5>
         </div>
       </div>
     </Modal.Body>

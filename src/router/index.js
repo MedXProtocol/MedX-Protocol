@@ -1,4 +1,3 @@
-import Registry from '../views/Registry';
 import Wallet from '../views/Wallet';
 import RegistryApplication from '../views/RegistryApplication';
 import RegistryVoting from '../views/RegistryVoting';
@@ -12,11 +11,6 @@ export const sideNavRoutes = [
   {
     path: '/apply',
     title: 'APPLY',
-    icon: 'ti-pencil-alt',
-  },
-  {
-    path: '/applynocivic',
-    title: 'APPLY (Without Civic)',
     icon: 'ti-pencil-alt',
   },
   {
@@ -37,10 +31,6 @@ export const sideNavRoutes = [
 ];
 
 export const appRoutes = [
-  {
-    path: '/registry',
-    component: Registry,
-  },
   {
     path: '/apply',
     component: Apply,

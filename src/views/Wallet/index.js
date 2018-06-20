@@ -9,7 +9,7 @@ import {
     exitRegistry,
     withdrawUnstakedDeposit,
     getSelectedAccountEthBalance,
-    getLockedTokens
+    getLockedTokens, getDefaultDepositAmount
 } from '../../utils/web3-util';
 import {Modal} from 'react-bootstrap';
 
@@ -18,6 +18,7 @@ import WalletCard from './components/WalletCard';
 import GenericLoadingModal from '../../components/modals/GenericLoadingModal';
 import ErrorModal from '../../components/modals/ErrorModal';
 import './wallet.css';
+import ConfirmSubmissionModal from "../Apply/components/ConfirmSubmissionModal";
 
 class Wallet extends Component {
     constructor() {
@@ -34,6 +35,8 @@ class Wallet extends Component {
             submitInProgress: false,
             showManageVotingTokensModal: false,
             showErrorModal: false,
+            showConfirmExitRegistrySubmissionModal: false,
+            showConfirmWithdrawTokensSubmissionModal:false,
             ownerListings: [],
             tableDisplayString: "none"
         };
@@ -47,6 +50,7 @@ class Wallet extends Component {
         const selectedAccount = await getSelectedAccount();
         const votingTokens = await getVotingTokensBalance();
         const lockedTokens = await getLockedTokens();
+        const defaultDepositAmount = await getDefaultDepositAmount();
         const availableVotingTokens = (parseInt(votingTokens, 10) - parseInt(lockedTokens, 10));
 
         this.getOwnerListing(selectedAccount);
@@ -57,7 +61,8 @@ class Wallet extends Component {
             account: selectedAccount,
             votingTokens: votingTokens.toFixed(3),
             availableVotingTokens: availableVotingTokens.toFixed(3),
-            lockedTokens: lockedTokens.toFixed(3)
+            lockedTokens: lockedTokens.toFixed(3),
+            defaultDepositAmount: defaultDepositAmount.toFixed(3)
         });
     };
 
@@ -108,6 +113,39 @@ class Wallet extends Component {
         this.setState({showManageVotingTokensModal: false});
     };
 
+    handleAcceptExitRegistryConfirmSubmissionModal = () =>  {
+        this.setState({showConfirmExitRegistrySubmissionModal: false, submitInProgress: true});
+        exitRegistry(this.state.exitListingHash, (error, result) => {
+            if (!error) {
+                const newVoteTokenBalance = parseInt(this.state.votingTokens, 10) - parseInt(this.state.withdrawVotingTokens, 10);
+                this.setState({exitListingHash: null});
+                this.onSuccess(newVoteTokenBalance);
+            } else {
+                this.onError();
+            }
+        });
+    }
+
+    handleAcceptWithdrawTokensConfirmSubmissionModal = () =>  {
+        this.setState({showConfirmWithdrawTokensSubmissionModal: false, submitInProgress: true});
+
+        withdrawUnstakedDeposit(this.state.withdrawListingHash, this.state.withdrawAmount, (error, result) => {
+            if (!error) {
+                const newVoteTokenBalance = parseInt(this.state.votingTokens, 10) - parseInt(this.state.withdrawVotingTokens, 10);
+                this.setState({withdrawListingHash: null, withdrawAmount: null});
+                this.onSuccess(newVoteTokenBalance);
+            } else {
+                this.onError();
+            }
+        });
+    }
+
+    handleModalClose = (modalName) => {
+        return () => {
+            this.setState({ [modalName]: false });
+        };
+    }
+
     addVotingTokens = async () => {
         this.setState({submitInProgress: true, showManageVotingTokensModal: false});
         await requestVotingRights(this.state.addVotingTokens, (error, result) => {
@@ -134,30 +172,12 @@ class Wallet extends Component {
 
     handleExitClick = async (e) => {
         e.preventDefault();
-        this.setState({submitInProgress: true});
-        await exitRegistry(e.target.id, (error, result) => {
-            if (!error) {
-                const newVoteTokenBalance = parseInt(this.state.votingTokens, 10) - parseInt(this.state.withdrawVotingTokens, 10);
-                this.onSuccess(newVoteTokenBalance);
-            } else {
-                this.onError();
-            }
-        });
+        this.setState({ showConfirmExitRegistrySubmissionModal: true, exitListingHash: e.target.id});
     }
 
     handleWithdrawUnstakedClick = async (e) => {
         e.preventDefault();
-        this.setState({submitInProgress: true});
-
-        await withdrawUnstakedDeposit(e.target.id, e.target.title, (error, result) => {
-            if (!error) {
-                const newVoteTokenBalance = parseInt(this.state.votingTokens, 10) - parseInt(this.state.withdrawVotingTokens, 10);
-                this.onSuccess(newVoteTokenBalance);
-
-            } else {
-                this.onError();
-            }
-        });
+        this.setState({ showConfirmWithdrawTokensSubmissionModal: true, withdrawListingHash: e.target.id, withdrawAmount: e.target.title});
     }
 
     updatedAddVotingTokens = (event) => {
@@ -227,14 +247,14 @@ class Wallet extends Component {
 
                                     <div>
                                         <div className="row text-right">
-                                            <div className="col-lg-5"><h5>Listing Balance:</h5></div>
+                                            <div className="col-lg-5"><h5>Listing Deposit:</h5></div>
                                             <div className="col-lg-1">&nbsp;</div>
-                                            <div className="col-lg-5"><h5>Unstaked Deposit:</h5></div>
+                                            <div className="col-lg-5"><h5>Available Balance:</h5></div>
                                             <div className="col-lg-1">&nbsp;</div>
                                         </div>
                                         <div className="row numbers">
                                             <div className="col-lg-5 font-smaller">
-                                                {(listing.unstakedDeposit / 10 ** 18).toFixed(3)} <span className="text-muted font-smallcaps">Medx</span>
+                                                {this.state.defaultDepositAmount} <span className="text-muted font-smallcaps">Medx</span>
                                             </div>
                                             <div className="col-lg-1">
                                                 {
@@ -345,7 +365,7 @@ class Wallet extends Component {
                                 <div className="numbers">
                                     <form onSubmit={this.handleAddVotingTokensSubmit}>
                                         <div className="col-sm-8">
-                                            <input className="form-control" id="hash" onChange={this.updatedAddVotingTokens} required/>
+                                            <input className="form-control" id="hash" onChange={this.updatedAddVotingTokens} type="number" min="0" max={this.state.balance} placeholder={parseInt(this.state.balance, 10).toFixed(0)} required/>
                                         </div>
                                         <div className="col-sm-4">
                                             <button type="submit" className="btn btn-fill btn-success" disabled={this.state.submitInProgress}><i className="ti-plus"></i></button>
@@ -386,6 +406,17 @@ class Wallet extends Component {
 
                 <GenericLoadingModal showModal={this.state.submitInProgress}/>
                 <ErrorModal showModal={this.state.showErrorModal}/>
+                <ConfirmSubmissionModal
+                    show={this.state.showConfirmExitRegistrySubmissionModal}
+                    onSubmit={this.handleAcceptExitRegistryConfirmSubmissionModal}
+                    onCancel={this.handleModalClose('showConfirmExitRegistrySubmissionModal')}
+                    confirmationMessage="This will remove you from the registry and return any tokens to your account" />
+                <ConfirmSubmissionModal
+                    show={this.state.showConfirmWithdrawTokensSubmissionModal}
+                    onSubmit={this.handleAcceptWithdrawTokensConfirmSubmissionModal}
+                    onCancel={this.handleModalClose('showConfirmWithdrawTokensSubmissionModal')}
+                    confirmationMessage="This will transfer the all unstaked tokens from the listing into your wallet" />
+
             </div>
         );
     }

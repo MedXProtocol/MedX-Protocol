@@ -1,6 +1,7 @@
 import RegistryContract from '../../build/contracts/Registry.json';
 import PLCRVotingContract from '../../build/contracts/PLCRVoting.json';
 import TokenContract from '../../build/contracts/MedXToken.json';
+import ParameterizerContract from '../../build/contracts/Parameterizer.json';
 import contract from 'truffle-contract';
 import getWeb3 from './getWeb3';
 import { downloadJson } from './storage-util';
@@ -12,6 +13,7 @@ let ethConfig = {
     PLCRVotingInstance: null,
     selectedAccount: null,
     MEDXTokenInstance: null,
+    parameterizerInstance: null,
     verifierInstance: null,
 
     getWeb3Instance: async function () {
@@ -64,6 +66,17 @@ let ethConfig = {
         return this.selectedAccount;
     },
 
+    getParameterizerInstance: async function() {
+        if (!this.parameterizerInstance) {
+            const parameterizer = contract(ParameterizerContract);
+            parameterizer.setProvider((await this.getWeb3Instance()).currentProvider);
+            this.parameterizerInstance = await parameterizer.deployed();
+            return this.parameterizerInstance;
+        }
+        else
+            return this.parameterizerInstance;
+    },
+
     //this function hydrates all of the instance/address/account data that is needed to make web3 calls
     ready: async function () {
         await this.getWeb3Instance();
@@ -71,6 +84,7 @@ let ethConfig = {
         await this.getPLCRVotingInstance();
         await this.getMEDXTokenInstance();
         await this.getAccountInstance();
+        await this.getParameterizerInstance();
         return;
     }
 };
@@ -79,7 +93,7 @@ let ethConfig = {
 export async function apply(userId, documentHash, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.apply(ethConfig.web3.utils.sha3(userId.toString()), fromTokenDecimal(20), documentHash, { from: ethConfig.selectedAccount });
+        const result = await ethConfig.registryInstance.apply(ethConfig.web3.utils.sha3(userId.toString()), fromTokenDecimal(20), documentHash, { from: ethConfig.selectedAccount, gas: 300000 });
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -148,7 +162,7 @@ export async function verify(listingHash, callback) {
 export async function challenge(listingHash, challengeReasonHash, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.registryInstance.challenge(listingHash, challengeReasonHash, { from: ethConfig.selectedAccount });
+        const result = await ethConfig.registryInstance.challenge(listingHash, challengeReasonHash, { from: ethConfig.selectedAccount});
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -208,7 +222,7 @@ export async function rescueTokens(pollID, callback) {
 export async function approveRegistryAllowance(_numTokens, callback) {
     await ethConfig.ready();
     try {
-        const result = await ethConfig.MEDXTokenInstance.approve(ethConfig.registryInstance.address, fromTokenDecimal(_numTokens), { from: ethConfig.selectedAccount });
+        const result = await ethConfig.MEDXTokenInstance.approve(ethConfig.registryInstance.address, fromTokenDecimal(_numTokens), { from: ethConfig.selectedAccount, gas: 150000 });
         await waitForTxComplete(result.tx, callback);
     } catch (error) {
         callback(error, "");
@@ -441,6 +455,12 @@ export async function getVotingTokensBalance() {
 export async function getLockedTokens() {
     await ethConfig.ready();
     const result = await ethConfig.PLCRVotingInstance.getLockedTokens(ethConfig.selectedAccount);
+    return toTokenDecimal(result.toNumber());
+}
+
+export async function getDefaultDepositAmount() {
+    await ethConfig.ready();
+    const result = await ethConfig.parameterizerInstance.get("minDeposit");
     return toTokenDecimal(result.toNumber());
 }
 
