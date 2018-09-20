@@ -186,7 +186,10 @@ class Apply extends Component {
             header: {'x-api-key': apiKey},
             data: {'jwtToken': jwtToken}
         }).then((userObject) => {
+
+          console.log('GOT HERE: ', userObject)
             getListingbyId(userObject.data.userId).then((listingData) => {
+                console.log('LISTING DATA: ', listingData)
                 this.setState({civicLoading: false});
                 let _physicianName = null;
                 userObject.data.data.forEach((item) => {
@@ -209,8 +212,12 @@ class Apply extends Component {
                 } else if (listingData[2] !== '0x0000000000000000000000000000000000000000') {
                     this.setState({showAlreadyRegistered: true});
                 }
+            })
+            .catch((error) => {
+              console.log('getListingbyId ERROR: ', error)
             });
         }).catch((error) => {
+          console.log('ERRRORROR: ', error)
             this.setState({showErrorModal: true});
             console.log(error);
         });

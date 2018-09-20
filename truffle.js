@@ -3,11 +3,13 @@ require('dotenv').config();
 
 module.exports = {
     networks: {
-        /*development: {
+        development: {
             host: "localhost",
             port: 8545,
-            network_id: "*" // Match any network id
-        },*/
+            network_id: "1234", // Match any network id,
+            gas: 4700000,
+            gasPrice: 60 * 1000000000
+        },
         debug: {
             host: "localhost",
             port: 9545,

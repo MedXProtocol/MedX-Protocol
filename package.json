@@ -82,6 +82,7 @@
     "build-sass": "node-sass-chokidar src/ -o src/",
     "watch-sass": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start": "npm run build-sass && node scripts/start.js",
+    "ganache": "./scripts/ganache.sh",
     "build": "npm run build-sass && node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "test-solidity": "npm run lint ./test && truffle test",

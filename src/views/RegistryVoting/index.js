@@ -180,7 +180,7 @@ class RegistryVoting extends React.Component {
                                                 statusString = "Revealing";
                                             if (rowData.poll.pollEnded)
                                                 statusString = "Poll Ended";
-                                                
+
                                             //A check to see if this application needs to be whitelisted by calling updateStatus
                                             if ((rowData.poll.pollEnded && !rowData.challenge.resolved)) {
                                                 return (
@@ -196,6 +196,7 @@ class RegistryVoting extends React.Component {
                                         }
                                         }
                                     />
+
                                     <Column
                                         dataKey="commitPeriodActive"
                                         label="Time Remaining"
@@ -203,6 +204,11 @@ class RegistryVoting extends React.Component {
                                         cellRenderer={({
                                                            cellData, columnData, columnIndex, dataKey, isScrolling, rowData, rowIndex
                                                        }) => {
+                                                         console.log(rowData)
+                                                         console.log(rowData.poll)
+                                                         console.log(rowData.timeCalled)
+                                                         console.log(rowData.poll.commitEndDate.toString())
+                                                         console.log(rowData.poll.revealEndDate.toString())
                                             let timeString = "N/A";
                                             if (rowData.poll.commitPeriodActive)
                                                 timeString = msToTime(rowData.poll.commitEndDate * 1000 - rowData.timeCalled * 1000);

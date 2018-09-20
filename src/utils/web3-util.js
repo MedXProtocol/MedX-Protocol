@@ -79,11 +79,17 @@ let ethConfig = {
 
     //this function hydrates all of the instance/address/account data that is needed to make web3 calls
     ready: async function () {
+      console.log('waiting for web3')
         await this.getWeb3Instance();
+        console.log('waiting for getRegistryInstance')
         await this.getRegistryInstance();
+        console.log('waiting for getPLCRVotingInstance')
         await this.getPLCRVotingInstance();
+        console.log('waiting for getMEDXTokenInstance')
         await this.getMEDXTokenInstance();
+        console.log('waiting for getAccountInstance')
         await this.getAccountInstance();
+        console.log('waiting for getParameterizerInstance')
         await this.getParameterizerInstance();
         return;
     }
