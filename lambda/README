@@ -1,0 +1,5 @@
+With https://www.npmjs.com/package/aws-lambda-local
+
+$ lambda-local -f function index.js                                                                                               master ✖ ✖ ✚
+
+Convert this to netlify-lambda
