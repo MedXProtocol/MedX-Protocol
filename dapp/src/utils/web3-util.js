@@ -1,7 +1,7 @@
-import RegistryContract from '../../build/contracts/Registry.json';
-import PLCRVotingContract from '../../build/contracts/PLCRVoting.json';
-import TokenContract from '../../build/contracts/MedXToken.json';
-import ParameterizerContract from '../../build/contracts/Parameterizer.json';
+import RegistryContract from '../../../build/contracts/Registry.json';
+import PLCRVotingContract from '../../../build/contracts/PLCRVoting.json';
+import TokenContract from '../../../build/contracts/MedXToken.json';
+import ParameterizerContract from '../../../build/contracts/Parameterizer.json';
 import contract from 'truffle-contract';
 import getWeb3 from './getWeb3';
 import { downloadJson } from './storage-util';
