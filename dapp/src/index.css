@@ -39,9 +39,25 @@
 }
 
 .sidebar {
-  background-color: #051A38;
+  background-color: rgba(31, 31, 31, 1);
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
-  background-color: #030728;
+  background-color: #050505;
+}
+
+/* delete this later*/
+.special-icon {
+  height: 30px;
+  position: relative;
+  left: -15px;
+  top: -5px;
+  width: 30px;
+}
+
+/* delete this later*/
+@media (min-width: 768px) {
+.modal-content {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 }
