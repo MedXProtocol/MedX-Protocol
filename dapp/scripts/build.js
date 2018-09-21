@@ -30,8 +30,8 @@ if (process.env.NODE_ENV === 'production') {
   console.log('Using production config')
   config = require('../config/webpack.config.prod');
 } else {
-  console.log('Using development config')
-  config = require('../config/webpack.config.dev');
+  console.log('Using staging config')
+  config = require('../config/webpack.config.staging');
 }
 
 var paths = require('../config/paths');
