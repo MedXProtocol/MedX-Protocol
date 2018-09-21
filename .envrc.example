@@ -1,0 +1,3 @@
+export REACT_APP_LAMBDA_HOSTNAME=http://localhost:9000
+export REACT_APP_CIVIC_API_KEY=afsleifjalseigjasleg
+export REACT_APP_CIVIC_APP_ID=aflsjeifalise
