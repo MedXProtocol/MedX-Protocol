@@ -338,7 +338,7 @@ class Wallet extends Component {
                                 </div>
                                 <div className="col-lg-1">
                         <span onClick={this.handleVotingTokensManageClick} className="icon-danger" style={{cursor: 'pointer'}}>
-                            <i className="ti-settings small"/>
+                            <i className="ti-settings small special-icon"/>
                         </span>
                                 </div>
                             </div>

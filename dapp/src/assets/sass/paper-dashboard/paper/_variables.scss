@@ -25,7 +25,7 @@ $black-hr:                   #444444 !default;
 
 $white-background-color:        #FFFFFF !default;
 $brown-background-color:        $font-color !default;
-$medcredits-background-color:#051A38 !default;
+$medcredits-background-color:rgba(31, 31, 31, 1) !default;
 
 $light-gray:                 #E3E3E3 !default;
 $medium-gray:                #cfcfca !default;
@@ -50,10 +50,10 @@ $success-color:              #7AC29A !default;
 $success-bg:                 #7AC29A !default;
 $success-states-color:       darken($success-color,11%) !default;
 
-$info-color:                 #68B3C8 !default;
-$info-bg:                    #68B3C8 !default;
-//$info-color:                 #051A38 !default;
-//$info-bg:                    #051A38 !default;
+$info-color:                 #3177a0 !default;
+$info-bg:                    #3177a0 !default;
+//$info-color:                 rgba(31, 31, 31, 1) !default;
+//$info-bg:                    rgba(31, 31, 31, 1) !default;
 $info-states-color:          darken($info-color,11%) !default;
 
 $warning-color:              #F3BB45 !default;
@@ -61,8 +61,8 @@ $warning-bg:                 #F3BB45 !default;
 $warning-states-color:       darken($warning-color,11%) !default;
 
 
-$danger-color:               #EB5E28 !default;
-$danger-bg:                  #EB5E28 !default;
+$danger-color:               #3177a0 !default;
+$danger-bg:                  #3177a0 !default;
 $danger-states-color:        darken($danger-color,11%) !default;
 
 

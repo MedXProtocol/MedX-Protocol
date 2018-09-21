@@ -80,7 +80,7 @@ class Apply extends Component {
     }
 
     componentDidMount() {
-        this.props.parentCallback('Apply to the DocBase Registry');
+        this.props.parentCallback('Apply to the Physician Registry');
         this.setState({testMode: this.props.match.url !== '/apply'});
 
         if (this.props.match.url === '/apply') {
