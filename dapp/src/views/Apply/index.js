@@ -179,9 +179,9 @@ class Apply extends Component {
 
         // const apiKey = process.env.REACT_APP_CIVIC_API_KEY;
         const jwtToken = event.response;
-        const url = `${process.env.REACT_APP_LAMBDA_HOSTNAME}/receiveToken`
+        const url = process.env.REACT_APP_LAMBDA_HOSTNAME
         axios({
-            url: '/CivicServer',
+            url: '/receiveToken',
             method: 'POST',
             baseURL: url,
             // header: {'x-api-key': apiKey},
