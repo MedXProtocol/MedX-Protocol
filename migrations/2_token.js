@@ -1,6 +1,7 @@
 /* global artifacts */
 
 const Token = artifacts.require('MedXToken');
+const appendContract = require('truffle-deploy-registry').appendContract
 
 const fs = require('fs');
 
@@ -29,6 +30,7 @@ module.exports = (deployer, network, accounts) => {
     deployer.deploy(Token)
         .then(async () => {
             const _token = await Token.deployed();
+            await appendContract(deployer.network_id, Token)
             return _token.mint(accounts[0], config.token.supply, {from: accounts[0]});
         })
         .then(async () => giveTokensTo(config.token.tokenHolders));

@@ -6,3 +6,5 @@
 build/
 .ganache
 .envrc
+networks/1234.json
+lambda/functions

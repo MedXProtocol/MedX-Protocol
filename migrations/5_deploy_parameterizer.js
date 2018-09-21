@@ -1,10 +1,11 @@
 /* global artifacts */
 
-const Token = artifacts.require('MedXToken.sol');
-const Parameterizer = artifacts.require('Parameterizer.sol');
-const DLL = artifacts.require('dll/DLL.sol');
-const AttributeStore = artifacts.require('attrstore/AttributeStore.sol');
-const PLCRVoting = artifacts.require('PLCRVoting.sol');
+const Token = artifacts.require('MedXToken.sol')
+const Parameterizer = artifacts.require('Parameterizer.sol')
+const DLL = artifacts.require('dll/DLL.sol')
+const AttributeStore = artifacts.require('attrstore/AttributeStore.sol')
+const PLCRVoting = artifacts.require('PLCRVoting.sol')
+const appendContract = require('truffle-deploy-registry').appendContract
 
 const fs = require('fs');
 
@@ -37,6 +38,8 @@ module.exports = (deployer, network, accounts) => {
       parameterizerConfig.pDispensationPct,
       parameterizerConfig.voteQuorum,
       parameterizerConfig.pVoteQuorum,
-    );
+    ).then(() => {
+      appendContract(deployer.network_id, Parameterizer)
+    })
   }).catch((err) => { throw err; });
 };
