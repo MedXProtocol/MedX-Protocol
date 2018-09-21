@@ -1,0 +1,30 @@
+[
+  {
+    "contractName": "Migrations",
+    "address": "0xb087ab04ded18881d193f56273e241ef4d29c89d"
+  },
+  {
+    "contractName": "MedXToken",
+    "address": "0x5a468802247707e076a05521a2512958879732e2"
+  },
+  {
+    "contractName": "DLL",
+    "address": "0x7d1477b16238e3a9571f6a948310d96a6f2cf430"
+  },
+  {
+    "contractName": "AttributeStore",
+    "address": "0x9a61cb4f56bee5220fd8bff0619eb5617d035782"
+  },
+  {
+    "contractName": "PLCRVoting",
+    "address": "0x66a8bfc228d29b6163f9bc6c136f451f7a12b589"
+  },
+  {
+    "contractName": "Parameterizer",
+    "address": "0x895d864ed6004d6b52564343a3263871177d9de4"
+  },
+  {
+    "contractName": "Registry",
+    "address": "0x3682a9c6dde9761b32ef08f689f2ef2d0cac63f8"
+  }
+]

@@ -22,11 +22,19 @@ module.exports = {
         },
         rinkeby: {
             provider: function () {
-                return new HDWalletProvider(process.env.RINKEBY_MNEMONIC, "https://rinkeby.infura.io/" + process.env.INFURA_API_KEY, 0);
+                return new HDWalletProvider(process.env.RINKEBY_MNEMONIC, process.env.REACT_APP_RINKEBY_PROVIDER_URL, 0);
             },
             gas: 6000000,
-            gasPrice: 18000000000,
+            gasPrice: 10000000000,
             network_id: "4"
+        },
+        ropsten: {
+          provider: function () {
+              return new HDWalletProvider(process.env.ROPSTEN_MNEMONIC, process.env.REACT_APP_ROPSTEN_PROVIDER_URL, 0);
+          },
+          gas: 7000000,
+          gasPrice: 10000000000,
+          network_id: "3"
         },
         mainnet: {
             host: "Needs to be configured",

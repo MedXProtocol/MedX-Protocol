@@ -8,7 +8,4 @@ module.exports = (deployer) => {
   deployer.deploy(DLL).then(() => {
     return appendContract(deployer.network_id, DLL)
   })
-  deployer.deploy(AttributeStore).then(() => {
-    return appendContract(deployer.network_id, AttributeStore)
-  })
 };
