@@ -6,7 +6,7 @@ const AppBar = ({ title }) => (
     <div className="container-fluid">
       <div className="navbar-header">
         <div className="navbar-brand">
-          <h4 style={{ marginTop: -5 }}>{title}</h4>
+          <h4 style={{ marginTop: 3, marginLeft: 13 }}>{title}</h4>
         </div>
       </div>
       <div className="collapse navbar-collapse">

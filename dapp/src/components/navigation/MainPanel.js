@@ -32,9 +32,11 @@ class MainPanel extends React.Component {
   render () {
     return (
       <div className="main-panel">
+        {/*
         <div style={this.getNetworkStyle(this.props.networkId)}>
           You are currently connected to <b>{this.props.networkName}</b> network.
         </div>
+        */}
         <AppBar title={this.props.pageTitle}/>
         <div className="content">
           <div className="container-fluid">
