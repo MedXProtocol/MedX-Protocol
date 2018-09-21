@@ -177,14 +177,14 @@ class Apply extends Component {
     handleAuthCodeReceived(event) {
         this.setState({civicLoading: true});
 
-        const apiKey = process.env.REACT_APP_CIVIC_API_KEY;
+        // const apiKey = process.env.REACT_APP_CIVIC_API_KEY;
         const jwtToken = event.response;
         const url = `${process.env.REACT_APP_LAMBDA_HOSTNAME}/receiveToken`
         axios({
             url: '/CivicServer',
             method: 'POST',
             baseURL: url,
-            header: {'x-api-key': apiKey},
+            // header: {'x-api-key': apiKey},
             data: {'jwtToken': jwtToken}
         }).then((userObject) => {
 
