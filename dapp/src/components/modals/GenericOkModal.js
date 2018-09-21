@@ -7,7 +7,7 @@ class GenericOkModal extends Component {
         this.state = {showModal: false};
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.showModal !== this.state.showModal) {
             this.setState({showModal: nextProps.showModal});
         }

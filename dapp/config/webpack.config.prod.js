@@ -57,6 +57,8 @@ module.exports = {
     externals: {
         civic: 'civic'
     },
+    // Providing the mode configuration option tells webpack to use its built-in optimizations accordingly.
+    mode: 'production',
     // In production, we only want to load the polyfills and the app code.
     entry: [
         require.resolve('./polyfills'),

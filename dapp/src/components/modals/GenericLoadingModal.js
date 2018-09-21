@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Modal} from "react-bootstrap";
-import spinner from '../../img/spinner.gif';
+import spinner from '~/assets/img/spinner.gif';
 
 class GenericLoadingModal extends Component {
     render() {
@@ -17,7 +17,7 @@ class GenericLoadingModal extends Component {
                             <div className="row">
                                 <div className="col-xs-12 text-center">
                                     {this.props.contentText === undefined ? null : <div>{this.props.contentText}</div>}
-                                    <img role="presentation" style={{maxWidth: '100px'}} src={spinner}/>
+                                    <img alt="spinner" style={{maxWidth: '100px'}} src={spinner}/>
                                 </div>
                             </div>
                             <div className="row">

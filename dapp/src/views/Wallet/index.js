@@ -261,7 +261,7 @@ class Wallet extends Component {
                                                     listing.whitelisted &&
                                                     this.state[`${listing.listingHash}ListingStatus`] === 'Active' &&
                                                     <div>
-                                                        <a href="#" className="text-danger ti-na small" onClick={this.handleExitClick} id={listing.listingHash}>&nbsp;</a>
+                                                        <button className="text-danger ti-na small" onClick={this.handleExitClick} id={listing.listingHash}>&nbsp;</button>
                                                     </div>
                                                 }
                                             </div>
@@ -272,7 +272,7 @@ class Wallet extends Component {
                                                 {
                                                     getUnstakedDeposit() > 0 &&
                                                     <div>
-                                                        <a id={listing.listingHash} href="#" className="text-primary ti-export small" title={getUnstakedDeposit()} onClick={this.handleWithdrawUnstakedClick}>&nbsp;</a>
+                                                        <button id={listing.listingHash} className="text-primary ti-export small" title={getUnstakedDeposit()} onClick={this.handleWithdrawUnstakedClick}>&nbsp;</button>
                                                     </div>
                                                 }
                                             </div>

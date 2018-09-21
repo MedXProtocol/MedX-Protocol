@@ -2,13 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { sideNavRoutes } from '../../router/index';
-import logo from '../../img/logo.png';
+import logo from '~/assets/img/logo.png';
 
 const SideNav = () => (
   <div className="sidebar" data-background-color="medcredits" data-active-color="danger">
     <div className="logo">
       <a className="simple-text logo-normal">
-        <img src={logo} alt="MedCredits"/>
+        <img alt="MedCredits logo" src={logo} />
       </a>
     </div>
     <div className="sidebar-wrapper">

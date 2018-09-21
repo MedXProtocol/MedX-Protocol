@@ -1919,7 +1919,7 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc .fc-state-active:active:hover,
 .fc .fc-state-active:active {
   background-color: #66615B;
-  color: #FFFFFF; }
+  color: #caa; }
 
 /* Buttons Groups
 --------------------------------------------------------------------------------------------------*/
@@ -4302,7 +4302,7 @@ select.selectpicker {
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Muli', "Helvetica", Arial, sans-serif; }
+  font-family: 'Nunito', "Helvetica", Arial, sans-serif; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   font-weight: 400;
@@ -5485,7 +5485,7 @@ strong {
 body {
   color: #66615b;
   font-size: 14px;
-  font-family: 'Muli', Arial, sans-serif; }
+  font-family: 'Nunito', Arial, sans-serif; }
   body .wrapper {
     min-height: 100vh;
     position: relative; }

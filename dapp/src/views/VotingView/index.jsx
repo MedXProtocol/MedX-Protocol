@@ -152,15 +152,16 @@ class VotingView extends React.Component {
                                 <table className="table">
                                     <thead>
                                     <tr style={{fontVariant: 'small-caps', backgroundColor: '#d9d9da'}}>
-                                        <th scope="col">Verification</th>
-                                        <th scope="col" className="text-center">Supplied Information</th>
-                                        <th scope="col" className="text-center">&nbsp;</th>
+                                        <th>Verification</th>
+                                        <th className="text-center">Supplied Information</th>
+                                        <th className="text-center">&nbsp;</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td scope="row">Graduated from <strong>{this.state.listing.application.medSchoolName}</strong></td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash))}><img role="presentation"
+                                        <td>Graduated from <strong>{this.state.listing.application.medSchoolName}</strong></td>
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash))}>
+                                        <img alt="diploma"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash)}/></a>
                                         </td>
                                         <td>
@@ -168,9 +169,10 @@ class VotingView extends React.Component {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td scope="row">Completed <strong>{this.state.listing.application.specialty}</strong> at <strong>{this.state.listing.application.residencyProgram}</strong>
+                                        <td>Completed <strong>{this.state.listing.application.specialty}</strong> at <strong>{this.state.listing.application.residencyProgram}</strong>
                                         </td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}><img role="presentation"
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}>
+                                        <img alt="residency diploma"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.residencyDiplomaDocHash)}/></a>
                                         </td>
                                         <td>
@@ -178,18 +180,22 @@ class VotingView extends React.Component {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td scope="row">Is licensed to practice medicine
+                                        <td>Is licensed to practice medicine
                                             in <strong>{this.state.listing.application.medLicenseStateLocation != null && this.state.listing.application.medLicenseStateLocation !== "N/A" && <span>{this.state.listing.application.medLicenseStateLocation}, </span>} {this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
                                         </td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img role="presentation"
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}>
+                                        <img
+                                           alt="med-license"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}} src={getFileUrl(this.state.listing.application.medLicenseDocHash)}/></a></td>
                                         <td>
                                             { (this.state.reasonIndexes).includes("3") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td scope="row">Is a certified <strong>{this.state.listing.application.specialty}</strong></td>
-                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}><img role="presentation"
+                                        <td>Is a certified <strong>{this.state.listing.application.specialty}</strong></td>
+                                        <td className="text-center"><a onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}>
+                                        <img
+                                           alt="specialty img"
                                             style={{maxWidth: '100px', maxHeight: '100px', cursor: 'pointer'}}
                                             src={getFileUrl(this.state.listing.application.specialtyCertificateDocHash)}/></a></td>
                                         <td>
@@ -197,14 +203,14 @@ class VotingView extends React.Component {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td scope="row">License Number</td>
+                                        <td>License Number</td>
                                         <td className="text-center"><strong>{this.state.listing.application.medLicenseNumber}</strong></td>
                                         <td>
                                             { (this.state.reasonIndexes).includes("5") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td scope="row">Prescriber Number</td>
+                                        <td>Prescriber Number</td>
                                         <td className="text-center"><strong>{this.state.listing.application.prescribesNumber}</strong></td>
                                         <td>
                                             { (this.state.reasonIndexes).includes("6") ? <i className="ti-alert text-danger" style={{fontSize: "x-large"}} /> : null}
@@ -327,7 +333,7 @@ class VotingView extends React.Component {
                         <div className="row">
                             <div className="col text-center">
                                 <br/>
-                                <img role="presentation" id="zoomedImage" style={{width: 100 + '%'}} src={this.state.zoomedImageURL}/>
+                                <img alt="zoomedImage" id="zoomedImage" style={{width: 100 + '%'}} src={this.state.zoomedImageURL}/>
                             </div>
                         </div>
                     </Modal.Body>
@@ -339,7 +345,7 @@ class VotingView extends React.Component {
                 <GenericLoadingModal showModal={this.state.showLoadingModal} />
                 <ErrorModal showModal={this.state.showErrorModal} />
 
-                <div><a id="downloadSaltAnchorElem" style={{display: 'none'}}></a></div>
+                <div><button id="downloadSaltAnchorElem" style={{display: 'none'}}></button></div>
             </div>
         );
     }

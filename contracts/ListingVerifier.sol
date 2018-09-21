@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 /**
  * @title Listing Verification
@@ -14,7 +14,7 @@ contract ListingVerifier {
     /**
      * @dev Empty constructor
      */
-    constructor() public {}
+    constructor () public {}
 
     /**
      * @dev Function to increment the count of verifications for a given listing

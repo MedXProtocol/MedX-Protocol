@@ -1,0 +1,47 @@
+/* @import 'font-awesome/css/font-awesome.min.css'; */
+@import './assets/sass/themify-icons.css';
+@import './assets/sass/paper-dashboard/paper-dashboard.css';
+
+@import "./assets/sass/bootstrap-overrides";
+@import "./assets/sass/bootstrap-custom";
+
+/* @import 'react-redux-toastr/src/styles/index.scss';
+@import './assets/sass/toastr-animations';
+@import './assets/sass/toastr-overrides';
+
+@import "./assets/sass/address";
+@import "./assets/sass/alert";
+@import "./assets/sass/animation";
+@import "./assets/sass/button";
+@import "./assets/sass/card";
+@import "./assets/sass/case-details";
+@import "./assets/sass/case-list";
+@import "./assets/sass/dropdown";
+@import "./assets/sass/form";
+@import "./assets/sass/footer";
+@import "./assets/sass/label";
+@import './assets/sass/loading';
+@import "./assets/sass/loading-lines";
+@import "./assets/sass/modal";
+@import "./assets/sass/pagination";
+@import "./assets/sass/progress";
+@import "./assets/sass/navbar";
+@import "./assets/sass/star";
+@import "./assets/sass/style";
+@import "./assets/sass/table";
+@import "./assets/sass/well"; */
+
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,700);
+@import url(https://fonts.googleapis.com/css?family=Space+Mono:400);
+
+.main-panel {
+  overflow: auto;
+}
+
+.sidebar {
+  background-color: #051A38;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  background-color: #030728;
+}
