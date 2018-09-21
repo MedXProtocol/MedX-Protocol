@@ -26,7 +26,7 @@ class RegistryView extends React.Component {
         </div>
         <div className='right-column'>
           <div>Deposit Amount: $1 bajillion</div>
-          <img src="http://via.placeholder.com/400x500" role="presentation" />
+          <img alt="placeholder" src="http://via.placeholder.com/400x500" />
         </div>
       </div>
     );

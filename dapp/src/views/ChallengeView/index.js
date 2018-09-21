@@ -168,17 +168,18 @@ class ChallengeView extends React.Component {
                   <thead>
                   <tr style={{ fontVariant: 'small-caps', backgroundColor: '#d9d9da' }}>
                     <th>Verification</th>
-                    <th scope="col" className="text-center">Supplied Info</th>
-                    <th scope="col" className="text-center">Suspicious?</th>
+                    <th className="text-center">Supplied Info</th>
+                    <th className="text-center">Suspicious?</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
-                    <td scope="row">Graduated from <strong>{this.state.listing.application.medSchoolName}</strong></td>
+                    <td>Graduated from <strong>{this.state.listing.application.medSchoolName}</strong></td>
                     <td className="text-center">
                       <div
                         onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash))}>
-                        <img role="presentation"
+                        <img
+                          alt="diploma-icon"
                           style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
                           src={getFileUrl(this.state.listing.application.medSchoolDiplomaDocHash)}/>
                       </div>
@@ -192,11 +193,13 @@ class ChallengeView extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row">
+                    <td>
                       Completed <strong>{this.state.listing.application.specialty}</strong> at <strong>{this.state.listing.application.residencyProgram}</strong>
                     </td>
                     <td className="text-center"><a
-                      onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}><img role="presentation"
+                      onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.residencyDiplomaDocHash))}>
+                      <img
+                      alt="residencyDiplomaDoc"
                       style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
                       src={getFileUrl(this.state.listing.application.residencyDiplomaDocHash)}/></a>
                     </td>
@@ -208,11 +211,13 @@ class ChallengeView extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row">Is licensed to practice medicine
+                    <td>Is licensed to practice medicine
                       in <strong>{this.state.listing.application.medLicenseStateLocation != null && this.state.listing.application.medLicenseStateLocation !== "N/A" && <span>{this.state.listing.application.medLicenseStateLocation}, </span>} {this.state.listing.application.medLicenseLocation}</strong> until <strong>{this.state.listing.application.medLicenseExpirationDate}</strong>
                     </td>
                     <td className="text-center"><a
-                      onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}><img role="presentation"
+                      onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.medLicenseDocHash))}>
+                      <img
+                       alt="med license"
                       style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
                       src={getFileUrl(this.state.listing.application.medLicenseDocHash)}/></a></td>
                     <td className="text-center">
@@ -224,9 +229,11 @@ class ChallengeView extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row">Is certified in <strong>{this.state.listing.application.specialty}</strong></td>
+                    <td>Is certified in <strong>{this.state.listing.application.specialty}</strong></td>
                     <td className="text-center"><a
-                      onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}><img role="presentation"
+                      onClick={() => this.handleImageZoom(getFileUrl(this.state.listing.application.specialtyCertificateDocHash))}>
+                      <img
+                      alt="specialty img"
                       style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
                       src={getFileUrl(this.state.listing.application.specialtyCertificateDocHash)}/></a></td>
                     <td className="text-center">
@@ -238,7 +245,7 @@ class ChallengeView extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row">License Number</td>
+                    <td>License Number</td>
                     <td className="text-center"><strong>{this.state.listing.application.medLicenseNumber}</strong></td>
                     <td className="text-center">
                       <input
@@ -249,7 +256,7 @@ class ChallengeView extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td className="" scope="row">Prescriber Number</td>
+                    <td className="">Prescriber Number</td>
                     <td className="text-center"><strong>{this.state.listing.application.prescribesNumber}</strong></td>
                     <td className="text-center">
                       <input
@@ -297,7 +304,7 @@ class ChallengeView extends React.Component {
             <div className="row">
               <div className="col text-center">
                 <br/>
-                <img role="presentation" id="zoomedImage" style={{ width: 100 + '%' }} src={this.state.zoomedImageURL}/>
+                <img alt="zoomedImage" id="zoomedImage" style={{ width: 100 + '%' }} src={this.state.zoomedImageURL}/>
               </div>
             </div>
           </Modal.Body>
@@ -318,7 +325,7 @@ class ChallengeView extends React.Component {
           tx2Desc={'Registering challenge'}/>
 
 
-        <div><a id="downloadSaltAnchorElem" style={{ display: 'none' }}></a></div>
+        <div><button id="downloadSaltAnchorElem" style={{ display: 'none' }}></button></div>
       </div>
     );
   }

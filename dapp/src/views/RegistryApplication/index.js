@@ -3,7 +3,7 @@ import { Column, Table, AutoSizer } from 'react-virtualized';
 import { Link } from 'react-router-dom';
 import 'react-virtualized/styles.css';
 import { updateStatus, getAllListings } from '../../utils/web3-util';
-import spinner from '../../img/spinner.gif';
+import spinner from '~/assets/img/spinner.gif';
 import ErrorModal from '../../components/modals/ErrorModal';
 import GenericOkModal from '../../components/modals/GenericOkModal';
 import GenericLoadingModal from '../../components/modals/GenericLoadingModal';
@@ -132,8 +132,10 @@ class RegistryApplication extends React.Component {
     return (
       <div className="card">
 
-        <div className="text-center" style={{ display: this.state.spinnerDisplayString }}><br/><img role="presentation"
-          style={{ maxWidth: '100px' }} src={spinner}/><br/>Loading...
+        <div className="text-center" style={{ display: this.state.spinnerDisplayString }}>
+          <br/>
+          <img alt="spinner"
+            style={{ maxWidth: '100px' }} src={spinner}/><br/>Loading...
         </div>
         <div className="text-center" style={{ display: this.state.noneDisplayString }}><br/><h5>There are no entries in the
             registry.</h5><br/></div>

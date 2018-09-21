@@ -12,7 +12,7 @@ class VoteUpload extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.show !== this.state.show) {
       this.setState({ showModal: nextProps.show });
     }
@@ -45,7 +45,7 @@ class VoteUpload extends React.Component {
           this.props.callback(result.pollID);
         }
         else{
-          this.setState({ errorString: 'An error occurred. Please try again.' });  
+          this.setState({ errorString: 'An error occurred. Please try again.' });
         }
       }
       catch (e) {
