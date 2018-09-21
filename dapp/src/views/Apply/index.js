@@ -84,7 +84,7 @@ class Apply extends Component {
         this.setState({testMode: this.props.match.url !== '/apply'});
 
         if (this.props.match.url === '/apply') {
-            const civicSip = new civic.sip({appId: 'HJZgzIcTM'});
+            const civicSip = new civic.sip({appId: process.env.REACT_APP_CIVIC_APP_ID});
             civicSip.on('auth-code-received', this.handleAuthCodeReceived);
             civicSip.on('civic-sip-error', this.handCivicError);
             civicSip.on('user-cancelled', this.navigateToRegistry);
@@ -177,12 +177,13 @@ class Apply extends Component {
     handleAuthCodeReceived(event) {
         this.setState({civicLoading: true});
 
-        const apiKey = 'jAWxgBs6fo49pq7Vx8wMgW1uyr9LAWb90l718EWa';
+        const apiKey = process.env.REACT_APP_CIVIC_API_KEY;
         const jwtToken = event.response;
+        const url = `${process.env.REACT_APP_LAMBDA_HOSTNAME}/receiveToken`
         axios({
             url: '/CivicServer',
             method: 'POST',
-            baseURL: 'https://wdpmsvxesi.execute-api.us-east-1.amazonaws.com/medcredits',
+            baseURL: url,
             header: {'x-api-key': apiKey},
             data: {'jwtToken': jwtToken}
         }).then((userObject) => {
