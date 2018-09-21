@@ -21,7 +21,7 @@ const DropdownInputGroup = ({
                     <FormControl componentClass="select" name={name} onChange={onChange} required={required}>
                         <option />
                         {options.map((option, index) => (
-                            <option id={index} value={option}>{option}</option>
+                            <option key={index} id={index} value={option}>{option}</option>
                         ))}
                     </FormControl>
                 </div>

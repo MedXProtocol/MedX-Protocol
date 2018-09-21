@@ -83,6 +83,7 @@
     "install": "truffle install",
     "compile": "truffle compile && apply-registry build/contracts",
     "staging-build": "./scripts/staging-build.sh",
+    "lambda": "cd lambda && ./lambda-serve.sh",
     "test": "truffle test",
     "fix": "eslint --fix",
     "lint": "eslint"
