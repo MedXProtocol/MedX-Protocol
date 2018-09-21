@@ -1,0 +1,3 @@
+http://medxprotocol-staging.netlify.com/*  https://medxprotocol-staging.netlify.com/:splat  301!
+/static/*                         /static/:splat                          200
+/*                                /index.html                             200
