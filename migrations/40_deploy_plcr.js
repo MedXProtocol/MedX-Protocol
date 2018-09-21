@@ -13,13 +13,8 @@ module.exports = (deployer, network, accounts) => {
   deployer.link(AttributeStore, PLCRVoting);
 
   return deployer.then(async () => {
-    const config = JSON.parse(fs.readFileSync('./conf/config.json'));
-    let tokenAddress = config.token.address;
-
-    if (config.token.deployToken) {
-      tokenAddress = Token.address;
-    }
-
+    await Token.deployed()
+    const tokenAddress = Token.address
     return deployer.deploy(
       PLCRVoting,
       tokenAddress,
