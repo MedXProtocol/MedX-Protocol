@@ -27,7 +27,7 @@ class RegistryApplication extends React.Component {
 
   componentDidMount () {
     this.getListings();
-    this.props.parentCallback('DocBase Registry');
+    this.props.parentCallback('Physician Registry');
   }
 
   getListings = async (event) => {

@@ -7,7 +7,7 @@ class Spinner extends Component {
     render() {
         return this.props.loading ?
             <div className="loading">
-                <BounceLoader color={'#051A38'}  />
+                <BounceLoader color={'rgba(31, 31, 31, 1)'}  />
             </div> : null;
     }
 }
