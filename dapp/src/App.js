@@ -7,12 +7,6 @@ import MainPanel from './components/navigation/MainPanel';
 import { appRoutes } from './router';
 
 import getWeb3 from './utils/getWeb3';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-import './css/themify-icons.css';
-import './sass/paper-dashboard/paper-dashboard.css';
-import './App.css';
 import GenericOkModal from "./components/modals/GenericOkModal";
 
 class App extends Component {

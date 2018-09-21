@@ -3,7 +3,7 @@ import {Column, Table, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import {getPoll, claimVoterReward, updateStatus, revealVote, getAllPolls, getAllListings, rescueTokens} from '../../utils/web3-util';
 import {msToTime} from '../../utils/common-util';
-import spinner from '../../img/spinner.gif';
+import spinner from '~/assets/img/spinner.gif';
 import VoteUpload from './components/VoteUpload'
 import GenericLoadingModal from "../../components/modals/GenericLoadingModal";
 import ErrorModal from "../../components/modals/ErrorModal";
@@ -319,7 +319,7 @@ class RegistryRevealing extends React.Component {
         return (
             <div className="card">
 
-                <div className="text-center" style={{display: this.state.spinnerDisplayString}}><br/><img style={{maxWidth: '100px'}} src={spinner} role="presentation"/><br/>Loading...</div>
+                <div className="text-center" style={{display: this.state.spinnerDisplayString}}><br/><img alt="spinner" style={{maxWidth: '100px'}} src={spinner}/><br/>Loading...</div>
                 <div className="text-center" style={{display: this.state.noneDisplayString}}><br/><h5>You have no votes to reveal.</h5><br/></div>
 
                 <div className="card-content table-responsive table-full-width">
