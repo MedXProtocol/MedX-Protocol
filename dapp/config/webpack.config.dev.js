@@ -170,7 +170,7 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   sourceMap: true,
-                  modules: true,
+                  modules: false, // "obfuscation" https://github.com/css-modules/css-modules
                   importLoaders: 1,
                 },
               },

@@ -1919,7 +1919,7 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc .fc-state-active:active:hover,
 .fc .fc-state-active:active {
   background-color: #66615B;
-  color: #FFFFFF; }
+  color: #caa; }
 
 /* Buttons Groups
 --------------------------------------------------------------------------------------------------*/

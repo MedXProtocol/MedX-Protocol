@@ -41,3 +41,7 @@
 .sidebar {
   background-color: #051A38;
 }
+
+.nav > li > a:hover, .nav > li > a:focus {
+  background-color: #030728;
+}
