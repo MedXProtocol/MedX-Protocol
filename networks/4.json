@@ -26,5 +26,17 @@
   {
     "contractName": "Registry",
     "address": "0x3682a9c6dde9761b32ef08f689f2ef2d0cac63f8"
+  },
+  {
+    "contractName": "PLCRVoting",
+    "address": "0x7f070f8ac06fd7c19495780b2535e9485a1d2518"
+  },
+  {
+    "contractName": "Parameterizer",
+    "address": "0xd76a80590aa2b7dea06475e21d46084c64f036f8"
+  },
+  {
+    "contractName": "Registry",
+    "address": "0xeb7a523a8ae989bd82b0d8d52267eb85d07ffd90"
   }
 ]
