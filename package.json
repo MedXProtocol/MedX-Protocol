@@ -79,9 +79,12 @@
     "react-virtualized": "^9.18.5"
   },
   "scripts": {
+    "ganache": "./scripts/ganache.sh",
     "start": "./scripts/ganache.sh",
+    "dapp": "cd dapp && npm run start",
     "install": "truffle install",
     "compile": "truffle compile && apply-registry build/contracts",
+    "migrate": "truffle migrate",
     "staging-build": "./scripts/staging-build.sh",
     "lambda": "cd lambda && ./lambda-serve.sh",
     "test": "truffle test",

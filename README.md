@@ -14,8 +14,8 @@ Run Ganache
     
 Run Solidity tests
 
-    npm run test-solidity
+    npm run test
 
 Run Dapp
 
-    npm run start
+    npm run dapp
