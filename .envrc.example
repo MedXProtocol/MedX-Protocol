@@ -1,0 +1,15 @@
+export REACT_APP_LAMBDA_HOSTNAME=http://localhost:9000
+
+export REACT_APP_CIVIC_APP_ID=dagwegaw
+
+export LAMBDA_CONFIG_CIVIC_APP_ID=dagwegaw
+export LAMBDA_CONFIG_CIVIC_PRIVATE_KEY=awegawegawe
+export LAMBDA_CONFIG_CIVIC_SECRET=awegawegadas
+export LAMBDA_CONFIG_CORS_ORIGIN=http://localhost:3000
+
+export ROPSTEN_MNEMONIC="your twelve word test mnemonic would go here and keep it safe"
+export RINKEBY_MNEMONIC="your twelve word test mnemonic would go here and keep it safe"
+export LOCALHOST_MNEMONIC="your twelve word test mnemonic would go here and keep it safe"
+
+export REACT_APP_ROPSTEN_PROVIDER_URL=https://ropsten.infura.io/<YOUR INFURA KEY>
+export REACT_APP_RINKEBY_PROVIDER_URL=https://rinkeby.infura.io/<YOUR INFURA KEY>
