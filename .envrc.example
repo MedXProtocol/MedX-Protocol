@@ -1,8 +1,11 @@
 export REACT_APP_LAMBDA_HOSTNAME=http://localhost:9000
 
 export REACT_APP_CIVIC_APP_ID=dagwegaw
-export REACT_APP_CIVIC_PRIVATE_KEY=dafwefase
-export REACT_APP_CIVIC_SECRET=vgawergaweg
+
+export LAMBDA_CONFIG_CIVIC_APP_ID=dagwegaw
+export LAMBDA_CONFIG_CIVIC_PRIVATE_KEY=awegawegawe
+export LAMBDA_CONFIG_CIVIC_SECRET=awegawegadas
+export LAMBDA_CONFIG_CORS_ORIGIN=http://localhost:3000
 
 export ROPSTEN_MNEMONIC="pony machine fee rent spawn doll erase dizzy remove logic unlock estate"
 export RINKEBY_MNEMONIC="pony machine fee rent spawn doll erase dizzy remove logic unlock estate"
