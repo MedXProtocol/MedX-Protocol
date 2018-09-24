@@ -9,7 +9,7 @@ import Apply from '../views/Apply';
 
 export const sideNavRoutes = [
   {
-    path: '/applynocivic',
+    path: '/apply',
     title: 'APPLY',
     icon: 'ti-pencil-alt',
   },
