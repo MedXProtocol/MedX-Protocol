@@ -1,5 +1,6 @@
 #! /bin/sh
-npm run install && \
+npm i && \
+npm run truffle-install && \
 npm run compile && \
 cd lambda && \
 ./lambda-build.sh && \
