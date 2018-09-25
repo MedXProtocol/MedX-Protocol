@@ -1,5 +1,5 @@
 #! /bin/sh
-npm i && \
+npm i --dev && \
 npm run truffle-install && \
 npm run compile && \
 cd lambda && \
