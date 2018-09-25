@@ -82,7 +82,7 @@
     "ganache": "./scripts/ganache.sh",
     "start": "./scripts/ganache.sh",
     "dapp": "cd dapp && npm run start",
-    "install": "truffle install",
+    "install": "npm i && truffle install",
     "compile": "truffle compile && apply-registry build/contracts",
     "migrate": "truffle migrate",
     "staging-build": "./scripts/build.sh",
