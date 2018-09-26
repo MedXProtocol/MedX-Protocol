@@ -2,7 +2,8 @@
   "name": "tcr-dapp",
   "version": "0.0.1",
   "private": true,
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "autoprefixer": "6.5.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.2.3",
@@ -59,9 +60,7 @@
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.1.4",
     "whatwg-fetch": "1.0.0",
-    "zeppelin-solidity": "1.8.0"
-  },
-  "dependencies": {
+    "zeppelin-solidity": "1.8.0",
     "ajv": "^6.5.3",
     "axios": "^0.17.1",
     "babel-cli": "^6.26.0",
