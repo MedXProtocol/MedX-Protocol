@@ -17,13 +17,15 @@ import {
 
 function mapStateToProps (state) {
   const address = get(state, 'accounts.address')
-  console.log('address', address)
+  // console.log('address', address)
 
-  const ethBalance = get(state, 'accounts.ethBalance')
-  console.log('ethBalance', ethBalance)
+  let ethBalance = get(state, 'accounts.ethBalance')
+  if (ethBalance) { ethBalance = ethBalance.toString() }
+  // console.log('ethBalance', ethBalance)
 
-  const medXBalance = get(state, 'accounts.medXBalance')
-  console.log('medXBalance', medXBalance)
+  let medXBalance = get(state, 'accounts.medXBalance')
+  if (medXBalance) { medXBalance = medXBalance.toString() }
+  // console.log('medXBalance', medXBalance)
 
   // const address = get(state, 'sagaGenesis.accounts[0]')
   // const workTokenAddress = contractByName(state, 'WorkToken')
@@ -219,6 +221,22 @@ export const BetaFaucetModal = connect(mapStateToProps, mapDispatchToProps)(
           sendExternalTransaction={this.sendExternalTransaction}
           dispatchSagaGenesisTxHash={this.props.dispatchSagaGenesisTxHash}
         />
+      } else {
+        content = (
+          <div className="col-xs-12 text-center">
+            <h2 className="header--no-top-margin">
+              You're all set!
+            </h2>
+            <br />
+            <p>
+              There is nothing more to do to start using this TCR beta.
+            </p>
+            <br />
+            <p>
+              <a onClick={this.closeModal} className="btn btn-primary">Close this</a>
+            </p>
+          </div>
+        )
       }
 
       if (step > 0) {
@@ -244,11 +262,13 @@ export const BetaFaucetModal = connect(mapStateToProps, mapDispatchToProps)(
           </Modal.Header>
           <Modal.Body className="modal__beta-faucet">
             <div className="row">
-              <ReactCSSTransitionReplace transitionName="page"
-                                         transitionEnterTimeout={400}
-                                         transitionLeaveTimeout={400}>
+              <div className="col-md-12 text-center">
+                <ReactCSSTransitionReplace transitionName="page"
+                                           transitionEnterTimeout={400}
+                                           transitionLeaveTimeout={400}>
                 {content}
               </ReactCSSTransitionReplace>
+              </div>
             </div>
           </Modal.Body>
           <Modal.Footer>

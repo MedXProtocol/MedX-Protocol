@@ -86,27 +86,27 @@ export const MEDXFaucetAPI = ReactTimeout(
       return (
         <div>
           <img
-            src={MEDXCoinImg}
+            src={MEDXCoinImg2x}
             alt="MEDX Token Icon"
-            srcSet={`${MEDXCoinImg} 1x, ${MEDXCoinImg2x} 2x`}
           />
 
-          <h5 className="is-size-5">
-            Current Balance: <MEDX wei={this.props.medXBalance} />
-          </h5>
-          <p className="small">
+          <h3 className="is-size-5">
+            Current Balance: {this.props.medXBalance}
+          </h3>
+          <p>
             <span className="eth-address has-text-grey-light">For address:&nbsp;
               <EthAddress address={this.props.address} />
             </span>
           </p>
           <br />
-          <p className="is-size-5">
+          <h4 className="is-size-5">
             You're low on MEDX
+            <br />
             <br />
             <span className="is-size-7 has-medXt-grey-light">
               MEDX is necessary for staking a deposit and submitting tokens. We can send some to you now:
             </span>
-          </p>
+          </h4>
 
           <p>
             <br />
@@ -122,7 +122,7 @@ export const MEDXFaucetAPI = ReactTimeout(
           <p>
             <button
               onClick={this.props.handleMoveToNextStep}
-              className="button is-light is-text is-size-7"
+              className="btn btn-light btn-text btn-size-7"
             >skip this for now</button>
           </p>
         </div>
@@ -130,8 +130,3 @@ export const MEDXFaucetAPI = ReactTimeout(
     }
   }
 )
-
-MEDXFaucetAPI.propTypes = {
-  medXBalance: PropTypes.object,
-  address: PropTypes.string
-}

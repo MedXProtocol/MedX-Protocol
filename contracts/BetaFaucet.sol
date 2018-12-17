@@ -30,9 +30,9 @@ contract BetaFaucet is Ownable {
    * @dev - Creates a new BetaFaucet contract with the given parameters
    * @param _medXTokenAddress - the address of the previously deployed Work token contract
    */
-  function init(IERC20 _medXTokenAddress, address _owner) public initializer {
+  function init(IERC20 _medXTokenAddress) public initializer {
     require(_medXTokenAddress != address(0), 'medxtoken address is defined');
-    Ownable.initialize(_owner);
+    Ownable.initialize(msg.sender);
     medXToken = _medXTokenAddress;
   }
 

@@ -85,24 +85,24 @@ export const EthFaucetAPI = ReactTimeout(
 
       return (
         <div>
-          <FontAwesomeIcon icon={faEthereum} width="100" />
-          <h5 className="is-size-5">
-            Current Balance:
+          <h3 className="is-size-5">
+            Current Ether Balance:
             &nbsp; {this.props.ethBalance} {/*<EtherFlip wei={this.props.ethBalance} />*/}
-          </h5>
-          <p className="small">
+          </h3>
+          <p>
             <span className="eth-address has-text-grey-light">For address:&nbsp;
               <EthAddress address={this.props.address} />
             </span>
           </p>
           <br />
-          <p className="is-size-5">
+          <h4>
             You're low on Ether
+            <br />
             <br />
             <span className="is-size-7 has-text-grey-light">
               Not to worry! We can have some sent to your account:
             </span>
-          </p>
+          </h4>
           <p>
             <br />
             <LoadingButton
@@ -116,7 +116,7 @@ export const EthFaucetAPI = ReactTimeout(
           <p>
             <button
               onClick={this.props.handleMoveToNextStep}
-              className="button is-light is-text is-small"
+              className="btn btn-light btn-text btn-small"
             >skip this for now</button>
           </p>
         </div>
@@ -124,8 +124,3 @@ export const EthFaucetAPI = ReactTimeout(
     }
   }
 )
-
-EthFaucetAPI.propTypes = {
-  ethBalance: PropTypes.string,
-  address: PropTypes.string
-}

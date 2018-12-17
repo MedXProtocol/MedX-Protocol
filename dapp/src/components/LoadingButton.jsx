@@ -7,9 +7,8 @@ export const LoadingButton = props => (
     onClick={props.handleClick ? props.handleClick : null}
     type="submit"
     className={classnames(
-      'button',
-      'is-outlined',
-      props.className || 'is-primary',
+      'btn',
+      props.className || 'btn-primary',
       {
         'is-small': props.isSmall
       }
