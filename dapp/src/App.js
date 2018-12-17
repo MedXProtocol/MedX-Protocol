@@ -46,6 +46,8 @@ class App extends Component {
           accounts: results.accounts
         });
 
+        console.log(results)
+
         if (results.accounts === 0)
           this.setState({ showNoAccountModal: true });
       })
