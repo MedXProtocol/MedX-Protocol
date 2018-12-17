@@ -1,3 +1,4 @@
+import BetaFaucetContract from '../../../build/contracts/BetaFaucet.json';
 import RegistryContract from '../../../build/contracts/Registry.json';
 import PLCRVotingContract from '../../../build/contracts/PLCRVoting.json';
 import TokenContract from '../../../build/contracts/MedXToken.json';
@@ -23,6 +24,17 @@ export let ethConfig = {
         }
         else
             return this.web3;
+    },
+
+    getBetaFaucetInstance: async function () {
+        if (!this.betaFaucetInstance) {
+            const betaFaucet = contract(BetaFaucetContract);
+            betaFaucet.setProvider((await this.getWeb3Instance()).currentProvider);
+            this.betaFaucetInstance = await betaFaucet.deployed();
+            return this.betaFaucetInstance;
+        }
+        else
+            return this.betaFaucetInstance;
     },
 
     getRegistryInstance: async function () {
@@ -82,6 +94,8 @@ export let ethConfig = {
       console.log('waiting for web3')
         await this.getWeb3Instance();
         console.log('waiting for getRegistryInstance')
+        await this.getBetaFaucetInstance();
+        console.log('waiting for getBetaFaucetInstance')
         await this.getRegistryInstance();
         console.log('waiting for getPLCRVotingInstance')
         await this.getPLCRVotingInstance();
