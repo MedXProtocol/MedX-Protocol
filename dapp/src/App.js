@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Route, Switch, HashRouter, Redirect} from 'react-router-dom';
 
+import { BetaFaucetModal } from './components/betaFaucet/BetaFaucetModal'
+
 import SideNav from './components/navigation/SideNav';
 import MainPanel from './components/navigation/MainPanel';
 
@@ -72,7 +74,8 @@ class App extends Component {
     return (
       <HashRouter>
         <div className="wrapper">
-          <SideNav/>
+          <BetaFaucetModal />
+          <SideNav />
           <MainPanel
             networkName={this.state.networkName}
             networkId={this.state.networkId}

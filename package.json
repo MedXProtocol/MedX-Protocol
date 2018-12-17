@@ -72,6 +72,7 @@
     "ethjs-util": "0.1.4",
     "ipfs-api": "^18.2.0",
     "node-sass-chokidar": "^0.0.3",
+    "openzeppelin-eth": "^2.0.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^15.4.2",

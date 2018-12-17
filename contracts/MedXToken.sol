@@ -11,7 +11,7 @@ contract MedXToken is MintableToken {
     /**
      * @dev - Empty constructor
      */
-    function MedXToken() {}
+    constructor() {}
 
     /**
      * @dev - Allow another contract to spend some tokens on your behalf
