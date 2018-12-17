@@ -1,13 +1,14 @@
-export const accountBalances = function (state, { type, ethBalance, medXBalance }) {
+export const accounts = function (state, { type, address, ethBalance, medXBalance }) {
   if (typeof state === 'undefined') {
     state = {
     }
   }
 
   switch(type) {
-    case 'SET_ACCOUNT_BALANCE':
+    case 'UPDATE_ACCOUNT':
       state = {
         ...state,
+        address,
         ethBalance,
         medXBalance
       }

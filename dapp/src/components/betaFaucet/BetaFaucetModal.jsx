@@ -9,13 +9,20 @@ import { EthFaucetAPI } from '~/components/betaFaucet/EthFaucetAPI'
 import { defined } from '~/utils/defined'
 // import { weiToEther } from '~/utils/weiToEther'
 
-import { getSelectedAccountBalance, getSelectedAccountEthBalance } from '../../utils/web3-util';
+import {
+  getSelectedAccount,
+  getSelectedAccountBalance,
+  getSelectedAccountEthBalance
+} from '../../utils/web3-util';
 
 function mapStateToProps (state) {
-  const ethBalance = get(state, 'accountBalances.ethBalance')
+  const address = get(state, 'accounts.address')
+  console.log('address', address)
+
+  const ethBalance = get(state, 'accounts.ethBalance')
   console.log('ethBalance', ethBalance)
 
-  const medXBalance = get(state, 'accountBalances.medXBalance')
+  const medXBalance = get(state, 'accounts.medXBalance')
   console.log('medXBalance', medXBalance)
 
   // const address = get(state, 'sagaGenesis.accounts[0]')
@@ -54,7 +61,7 @@ function mapStateToProps (state) {
   //   (needsEth || needsMEDX || manuallyOpened)
 
   return {
-    // address,
+    address,
     // betaFaucetAddress,
     step,
     showBetaFaucetModal,
@@ -94,8 +101,8 @@ function mapDispatchToProps(dispatch) {
     dispatchSagaGenesisTxHash: (transactionId, txHash) => {
       dispatch({ type: 'SG_TRANSACTION_HASH', transactionId, txHash })
     },
-    dispatchUpdateBalances: (ethBalance, medXBalance) => {
-      dispatch({ type: 'SET_ACCOUNT_BALANCE', ethBalance, medXBalance })
+    dispatchUpdateAccounts: (address, ethBalance, medXBalance) => {
+      dispatch({ type: 'UPDATE_ACCOUNT', address, ethBalance, medXBalance })
     }
   }
 }
@@ -117,10 +124,11 @@ export const BetaFaucetModal = connect(mapStateToProps, mapDispatchToProps)(
     }
 
     updateBalances = async () => {
+      const address = await getSelectedAccount()
       const ethBalance = await getSelectedAccountEthBalance()
       const medXBalance = await getSelectedAccountBalance()
 
-      this.props.dispatchUpdateBalances(ethBalance, medXBalance)
+      this.props.dispatchUpdateAccounts(address, ethBalance, medXBalance)
     }
 
     nextStep = (step, props) => {
