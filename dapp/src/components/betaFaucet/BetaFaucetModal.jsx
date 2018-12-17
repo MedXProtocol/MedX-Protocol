@@ -7,14 +7,19 @@ import { get } from 'lodash'
 import { MEDXFaucetAPI } from '~/components/betaFaucet/MEDXFaucetAPI'
 import { EthFaucetAPI } from '~/components/betaFaucet/EthFaucetAPI'
 import { defined } from '~/utils/defined'
-import { weiToEther } from '~/utils/weiToEther'
+// import { weiToEther } from '~/utils/weiToEther'
+
+import { getSelectedAccountBalance, getSelectedAccountEthBalance } from '../../utils/web3-util';
 
 function mapStateToProps (state) {
-  // const address = get(state, 'sagaGenesis.accounts[0]')
+  const ethBalance = get(state, 'accountBalances.ethBalance')
+  console.log('ethBalance', ethBalance)
 
+  const medXBalance = get(state, 'accountBalances.medXBalance')
+  console.log('medXBalance', medXBalance)
+
+  // const address = get(state, 'sagaGenesis.accounts[0]')
   // const workTokenAddress = contractByName(state, 'WorkToken')
-  // const medXBalance = cacheCallValueBigNumber(state, workTokenAddress, 'balanceOf', address)
-  // const ethBalance = get(state, 'sagaGenesis.ethBalance.balance')
   const betaFaucetModalDismissed = get(state, 'betaFaucet.betaFaucetModalDismissed')
   const step = get(state, 'betaFaucet.step')
   const manuallyOpened = get(state, 'betaFaucet.manuallyOpened')
@@ -28,7 +33,17 @@ function mapStateToProps (state) {
   // const medXWasMinted = sendMEDXTx && (sendMEDXTx.inFlight || sendMEDXTx.confirmed)
 
   // const needsEth = (weiToEther(ethBalance) < 0.1 && !hasBeenSentEther)
+  // const needsEth = (weiToEther(ethBalance) < 0.1)
   // const needsMEDX = (weiToEther(medXBalance) < 100)
+  const needsEth = (ethBalance < 0.1)
+  const needsMEDX = (medXBalance < 100)
+
+  const showBetaFaucetModal =
+    !betaFaucetModalDismissed &&
+    (
+      defined(ethBalance) && defined(medXBalance)
+    ) &&
+    (needsEth || needsMEDX || manuallyOpened)
 
   // const showBetaFaucetModal =
   //   !betaFaucetModalDismissed &&
@@ -42,12 +57,12 @@ function mapStateToProps (state) {
     // address,
     // betaFaucetAddress,
     step,
-    // showBetaFaucetModal,
-    // needsEth,
-    // needsMEDX,
-    // ethBalance,
+    showBetaFaucetModal,
+    needsEth,
+    needsMEDX,
+    ethBalance,
     // workTokenAddress,
-    // medXBalance,
+    medXBalance,
     // hasBeenSentEther,
     // etherWasDripped,
     // medXWasMinted,
@@ -78,6 +93,9 @@ function mapDispatchToProps(dispatch) {
     },
     dispatchSagaGenesisTxHash: (transactionId, txHash) => {
       dispatch({ type: 'SG_TRANSACTION_HASH', transactionId, txHash })
+    },
+    dispatchUpdateBalances: (ethBalance, medXBalance) => {
+      dispatch({ type: 'SET_ACCOUNT_BALANCE', ethBalance, medXBalance })
     }
   }
 }
@@ -90,6 +108,19 @@ export const BetaFaucetModal = connect(mapStateToProps, mapDispatchToProps)(
         const nextStepNum = this.nextStep(nextProps.step + 1, nextProps)
         this.props.dispatchSetBetaFaucetModalStep(nextStepNum)
       }
+
+      this.updateBalances()
+    }
+
+    componentDidMount() {
+      this.updateBalances()
+    }
+
+    updateBalances = async () => {
+      const ethBalance = await getSelectedAccountEthBalance()
+      const medXBalance = await getSelectedAccountBalance()
+
+      this.props.dispatchUpdateBalances(ethBalance, medXBalance)
     }
 
     nextStep = (step, props) => {

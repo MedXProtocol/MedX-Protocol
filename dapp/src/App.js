@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import {Route, Switch, HashRouter, Redirect} from 'react-router-dom';
 
+import { store } from './store';
+
+import { Provider } from 'react-redux';
+
 import { BetaFaucetModal } from './components/betaFaucet/BetaFaucetModal'
 
 import SideNav from './components/navigation/SideNav';
@@ -72,31 +76,33 @@ class App extends Component {
 
   render () {
     return (
-      <HashRouter>
-        <div className="wrapper">
-          <BetaFaucetModal />
-          <SideNav />
-          <MainPanel
-            networkName={this.state.networkName}
-            networkId={this.state.networkId}
-            pageTitle={this.state.pageTitle}>
-            <Switch>
-              <Redirect exact from="/" to="/registry-application"/>
-              {
-                this.buildAppRoutes()
-              }
-            </Switch>
-          </MainPanel>
+      <Provider store={store}>
+        <HashRouter>
+          <div className="wrapper">
+            <BetaFaucetModal />
+            <SideNav />
+            <MainPanel
+              networkName={this.state.networkName}
+              networkId={this.state.networkId}
+              pageTitle={this.state.pageTitle}>
+              <Switch>
+                <Redirect exact from="/" to="/registry-application"/>
+                {
+                  this.buildAppRoutes()
+                }
+              </Switch>
+            </MainPanel>
 
-          <GenericOkModal
-              showModal={this.state.showNoAccountModal}
-              headerText={"No Account Selected!"}
-              contentText={"It seems that you don't have an ETH account selected. If using MetaMask, please make sure that your wallet is unlocked and that you have at least one account in your accounts list."}
-              icon={"ti-lock text-warning"}
-          />
+            <GenericOkModal
+                showModal={this.state.showNoAccountModal}
+                headerText={"No Account Selected!"}
+                contentText={"It seems that you don't have an ETH account selected. If using MetaMask, please make sure that your wallet is unlocked and that you have at least one account in your accounts list."}
+                icon={"ti-lock text-warning"}
+            />
 
-        </div>
-      </HashRouter>
+          </div>
+        </HashRouter>
+      </Provider>
     );
   }
 }

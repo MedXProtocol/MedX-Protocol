@@ -6,7 +6,7 @@ import contract from 'truffle-contract';
 import getWeb3 from './getWeb3';
 import { downloadJson } from './storage-util';
 
-let ethConfig = {
+export let ethConfig = {
 
     web3: null,
     registryInstance: null,
@@ -94,7 +94,6 @@ let ethConfig = {
         return;
     }
 };
-
 
 export async function apply(userId, documentHash, callback) {
     await ethConfig.ready();
