@@ -20,7 +20,7 @@ class DoubleTxMiningModal extends Component {
                                 </div>
                                 <div className="col-xs-1 text-center">
                                     { this.props.processingTx1 ? <img alt="spinner" style={{maxWidth: '30px'}} src={spinner}/> : null }
-                                    { !this.props.processingTx1 ? <i className="ti-check text-success" /> : null }
+                                    { !this.props.processingTx1 ? <i className="ti-check" /> : null }
                                 </div>
                                 <div className="col-xs-2">&nbsp;</div>
                             </div>

@@ -118,7 +118,7 @@ class RegistryApplication extends React.Component {
     let verified = localStorage.getItem('verify' + rowData.listingHash);
     return (
       <div>{verified === 'true' ?
-        <b><i className="ti-check text-success" style={{ fontSize: 'x-large' }}/></b> : null}</div>
+        <b><i className="ti-check" style={{ fontSize: 'x-large' }}/></b> : null}</div>
     );
   }
 
