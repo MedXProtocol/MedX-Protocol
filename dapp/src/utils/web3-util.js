@@ -254,7 +254,10 @@ export async function getAllPolls(callback) {
     let highestPollNonce = await ethConfig.PLCRVotingInstance.pollNonce({ from: ethConfig.selectedAccount });
 
     let lastBlock = await ethConfig.web3.eth.getBlock('latest');
-    let lastBlockTime = lastBlock.timestamp;
+    let lastBlockTime = (new Date()).getTime()
+    if (lastBlock) {
+      lastBlockTime = lastBlock.timestamp;
+    }
 
     let polls = [];
     for (let i = 1; i <= highestPollNonce; i++) {

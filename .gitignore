@@ -8,3 +8,4 @@ build/
 .envrc
 networks/1234.json
 lambda/functions
+.nvmrc
