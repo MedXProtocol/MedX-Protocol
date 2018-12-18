@@ -11,7 +11,7 @@ Run Ganache
 
     npm run ganache
     truffle migrate
-    
+
 Run Solidity tests
 
     npm run test
@@ -19,3 +19,5 @@ Run Solidity tests
 Run Dapp
 
     npm run dapp
+
+.
