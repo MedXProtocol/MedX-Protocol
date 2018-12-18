@@ -130,10 +130,10 @@ class Apply extends Component {
     }
 
     async captureFile(e) {
-        this.setState({fileUploadInProgress: true});
+        // this.setState({fileUploadInProgress: true});
         const file = e.target.files[0];
         const imageHash = await uploadFile(file);
-        this.setState({fileUploadInProgress: false});
+        // this.setState({fileUploadInProgress: false});
         return imageHash;
     }
 
