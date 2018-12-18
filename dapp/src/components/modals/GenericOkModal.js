@@ -29,13 +29,17 @@ class GenericOkModal extends Component {
                         <div className="col-lg-12 col-md-12">
                             <div className="row">
                                 <div className="col-xs-12 text-center">
-                                    <span className={"text-info " + (this.props.icon === undefined ? "ti-announcement" : this.props.icon)} style={{fontSize: '46pt'}}>&nbsp;</span>
+                                  <br />
+                                    <span className={"" + (this.props.icon === undefined ? "ti-announcement" : this.props.icon)} style={{fontSize: '46pt'}}>&nbsp;</span>
+                                    <br />
+                                    <br />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-1">&nbsp;</div>
                                 <div className="col-xs-10 text-center">
-                                    <h5 className="card-title">{this.props.contentText}</h5>
+                                    <h4 className="card-title">{this.props.contentText}</h4>
+                                    <br />
                                 </div>
                                 <div className="col-xs-1">&nbsp;</div>
                             </div>

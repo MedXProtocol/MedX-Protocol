@@ -455,12 +455,18 @@ export async function getSelectedAccount(callback) {
 
 export async function getSelectedAccountBalance() {
     await ethConfig.ready();
+
+    if (!ethConfig.selectedAccount) { return }
+
     const result = await ethConfig.MEDXTokenInstance.balanceOf.call(ethConfig.selectedAccount);
     return toTokenDecimal(result.toNumber());
 }
 
 export async function getSelectedAccountEthBalance() {
     await ethConfig.ready();
+
+    if (!ethConfig.selectedAccount) { return }
+
     const result = await ethConfig.web3.eth.getBalance(ethConfig.selectedAccount);
     return toTokenDecimal(result);
 }

@@ -15,7 +15,7 @@ const DropdownInputGroup = ({
         <fieldset>
             <div className="form-group">
                 <label className={labelClassName || 'control-label col-xs-4'}>
-                    {label}{required && <star>*</star>}
+                    {label}{required && <span>*</span>}
                 </label>
                 <div className={inputClassName || 'col-xs-8'}>
                     <FormControl componentClass="select" name={name} onChange={onChange} required={required}>

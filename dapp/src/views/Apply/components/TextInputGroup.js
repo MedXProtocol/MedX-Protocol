@@ -13,7 +13,7 @@ const TextInputGroup = ({
     <fieldset>
       <div className="form-group">
         <label className={labelClassName || 'control-label col-xs-4'}>{label}
-          {required && <star>*</star>}
+          {required && <span>*</span>}
         </label>
         <div className={inputClassName || 'col-xs-8'}>
           <input

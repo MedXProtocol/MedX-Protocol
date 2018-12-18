@@ -13,9 +13,9 @@ import MainPanel from './components/navigation/MainPanel';
 import { appRoutes } from './router';
 
 import getWeb3 from './utils/getWeb3';
-import GenericOkModal from "./components/modals/GenericOkModal";
+import { LoginToMetaMaskModal } from "./components/modals/LoginToMetaMaskModal";
 
-class App extends Component {
+const App = class _App extends Component {
   constructor (props) {
     super(props);
 
@@ -45,8 +45,6 @@ class App extends Component {
           networkId: results.networkId,
           accounts: results.accounts
         });
-
-        console.log(results)
 
         if (results.accounts === 0)
           this.setState({ showNoAccountModal: true });
@@ -95,19 +93,16 @@ class App extends Component {
               </Switch>
             </MainPanel>
 
-            <GenericOkModal
+            {this.state.showNoAccountModal ? (
+              <LoginToMetaMaskModal
                 showModal={this.state.showNoAccountModal}
-                headerText={"No Account Selected!"}
-                contentText={"It seems that you don't have an ETH account selected. If using MetaMask, please make sure that your wallet is unlocked and that you have at least one account in your accounts list."}
-                icon={"ti-lock text-warning"}
-            />
-
+              />
+            ) : null}
           </div>
         </HashRouter>
       </Provider>
     );
   }
 }
-
 
 export default App;

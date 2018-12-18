@@ -180,7 +180,7 @@ const ApplyForm = ({
 
     </div>
     <div className="card-footer text-right">
-      <div className="category" style={{ marginRight: 5, marginBottom: 10 }}>Required fields <star>*</star></div>
+      <div className="category" style={{ marginRight: 5, marginBottom: 10 }}>Required fields <span>*</span></div>
       <Link to="/" className="btn btn-fill btn-danger">Cancel</Link>
       &nbsp;
       <button disabled={isSubmitDisabled} type="submit" className="btn btn-fill btn-primary">Submit Application</button>

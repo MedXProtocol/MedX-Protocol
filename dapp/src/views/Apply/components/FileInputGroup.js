@@ -12,7 +12,7 @@ const FileInputGroup = ({
     <fieldset>
       <div className="form-group">
         <label className="control-label col-xs-4">{label}
-          {required && <star>*</star>}
+          {required && <span>*</span>}
         </label>
         <div className="col-xs-8">
           <label className="btn btn-primary" style={{ width: '100%' }}>
