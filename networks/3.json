@@ -1,34 +1,34 @@
 [
   {
     "contractName": "Migrations",
-    "address": "0x7cef7a6366437f0a14c306b461298dbcdced12ef"
+    "address": "0xe02f089836d5a0230cf2031d0b086b3b69ead8a5"
   },
   {
     "contractName": "MedXToken",
-    "address": "0x96b57e36d417cd24ab757b5a57302c91e4ea090c"
+    "address": "0x728257e5a69553dc0d3f3c2f9ee44284dceea247"
   },
   {
     "contractName": "DLL",
-    "address": "0x68d4809361e150f56bcb1dfca74241fc22004d1d"
+    "address": "0x25a3e5acb387a2c5a629897fd357d916ff69df14"
   },
   {
     "contractName": "AttributeStore",
-    "address": "0x27551365cf03c3fba5b046fb1000c20f48744eab"
+    "address": "0xaab8f8a3c15de2f583b1e2db3f360a7aa7842f47"
   },
   {
     "contractName": "PLCRVoting",
-    "address": "0x31a97bf0902082466e1c4eea82b534337c813984"
+    "address": "0x06d6d67d19bd6d35ca5c9a7e0a27dd93e2d9dc75"
   },
   {
     "contractName": "Parameterizer",
-    "address": "0x8583ee2ac3bf276357f196e992ba268e0055fbda"
+    "address": "0x287f310bbbc09c57845312c795dc84508cfb98fd"
   },
   {
     "contractName": "Registry",
-    "address": "0x9aff0be02429f0881484d9f7580ca4fff22bdb3f"
+    "address": "0xeed8795423bf52155162b0128ce2b4ee99016a67"
   },
   {
     "contractName": "BetaFaucet",
-    "address": "0x23e2271a18b3b3cf0a28e3edd70fbdd21e5c46bd"
+    "address": "0x29b5e9695d427c1a722ccf28d1d547d5c2d0f5af"
   }
 ]
