@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, HashRouter, Redirect} from 'react-router-dom';
+import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 
 import { store } from './store';
 
@@ -77,7 +77,7 @@ const App = class _App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <HashRouter>
+        <BrowserRouter>
           <div className="wrapper">
             <BetaFaucetModal />
             <SideNav />
@@ -99,7 +99,7 @@ const App = class _App extends Component {
               />
             ) : null}
           </div>
-        </HashRouter>
+        </BrowserRouter>
       </Provider>
     );
   }
